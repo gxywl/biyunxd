@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h4>订货员：{{ current_user.username }}</h4>
+        <p>订货列表</p>
+    </div>
+
+
+
+
+{#<table class="table">#}
+{#  <thead>#}
+{#    <tr>#}
+{#      <th>项目</th>#}
+{#      <th>金额</th>#}
+{#      <!--th>日期</th-->#}
+{#      <th>经过</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{##}
+{#    {% for bujuan in bujuans %}#}
+{#    <tr>#}
+{#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
+{#      <td>{{ bujuan.jine }}</td>#}
+{#      <!--td>{{ moment(bujuan.outtime).format('YY年M月D日') }}</td-->#}
+{#      <td>{{ moment(bujuan.outtime).fromNow(refresh=True) }}{% if loop.first %}<!--span class="badge">新</span-->{% endif %}</td>#}
+{##}
+{#    </tr>#}
+{##}
+{#    {% endfor %}#}
+{#  </tbody>#}
+{#</table>#}
+
+{% endblock %}

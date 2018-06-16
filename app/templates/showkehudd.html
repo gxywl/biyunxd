@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h4>业务员：{{ current_user.username }}</h4>
+
+        <a class="btn btn-danger" href="{{  url_for('main.kehulist') }}" >返回</a>
+{#        <p>客户:{{ kehu.id }}</p>#}
+{#        <p>小区:{{ kehu.xiaoqu.xiaoqu }}</p>#}
+{#        <p>栋号:{{ kehu.donghao }}</p>#}
+{#        <p>房号:{{ kehu.fanghao }}</p>#}
+{#        <p>称呼:{{ kehu.chenghu }}</p>#}
+
+    <p>客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>
+        <p>状态:{{ kehu.status }}</p>
+        {% if (kehu.status != 'No') %}
+            <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>
+        {% endif %}
+     </div>
+
+     <div>
+        {{ wtf.quick_form(form) }}
+    </div>
+
+    <hr>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>产品</th>
+      <th>数量</th>
+      <th>位置</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for dingdan in kehu.dingdans %}
+    <tr>
+      <td>{{ dingdan.id }}</td>
+{#      <td>{{ kehu.id }}<a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >显示</a></td>#}
+      <td>{{ dingdan.chanpin.pinming }}</td>
+      <td>{{ dingdan.shuliang }}</td>
+      <td>{{ dingdan.weizhi }}</td>
+{#      <!--td>{{ moment(kehu.xdtime).format('YY年M月D日') }}</td-->#}
+      <td><a class="btn btn-danger" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" >删除</a>
+          <a class="btn btn-primary" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" >修改</a>
+      </td>
+
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{#<table class="table">#}
+{#  <thead>#}
+{#    <tr>#}
+{#      <th>项目</th>#}
+{#      <th>金额</th>#}
+{#      <!--th>日期</th-->#}
+{#      <th>经过</th>#}
+{#    </tr>#}
+{#  </thead>#}
+{#  <tbody>#}
+{##}
+{#    {% for bujuan in bujuans %}#}
+{#    <tr>#}
+{#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
+{#      <td>{{ bujuan.jine }}</td>#}
+{#      <!--td>{{ moment(bujuan.outtime).format('YY年M月D日') }}</td-->#}
+{#      <td>{{ moment(bujuan.outtime).fromNow(refresh=True) }}{% if loop.first %}<!--span class="badge">新</span-->{% endif %}</td>#}
+{##}
+{#    </tr>#}
+{##}
+{#    {% endfor %}#}
+{#  </tbody>#}
+{#</table>#}
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h4>业务员：{{ current_user.username }}</h4>
+
+{#        <p>客户:{{ kehu.id }}</p>#}
+{#        <p>小区:{{ kehu.xiaoqu.xiaoqu }}</p>#}
+{#        <p>栋号:{{ kehu.donghao }}</p>#}
+{#        <p>房号:{{ kehu.fanghao }}</p>#}
+{#        <p>称呼:{{ kehu.chenghu }}</p>#}
+
+    <p>客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>
+        <p>状态:{{ kehu.status }}</p>
+        {% if (kehu.status != 'No') %}
+            <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>
+        {% endif %}
+     </div>
+
+     <div>
+
+        <p>产品:{{ chanpin.pinming }}</p>
+         <hr>
+        {{ wtf.quick_form(form) }}
+    </div>
+
+
+
+
+{% endblock %}

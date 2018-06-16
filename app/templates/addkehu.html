@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h4>业务员：{{ current_user.username }}</h4>
+        <p>添加客户</p>
+    </div>
+
+    <div>
+        {{ wtf.quick_form(form) }}
+    </div>
+
+
+
+{% endblock %}

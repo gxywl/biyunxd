@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <!--div class="page-header">
+    <h3>{{ current_user.username }}</h3>
+        <p>心怀众生</p>
+    </div-->
+
+<h4>项目： {{ countbujuanbyusers[0][0] }}</h4>
+<table class="table">
+  <!--thead>
+    <tr>
+      <th>项目</th>
+      <th>用户</th>
+      <th>金额</th>
+    </tr>
+  </thead-->
+  <tbody>
+
+    {% for countbujuanbyuser in countbujuanbyusers %}
+    <tr>
+      <!--td>{{ countbujuanbyuser[0] }}</td-->
+      <td>{{ countbujuanbyuser[1] }}</td>
+      <td>{{ countbujuanbyuser[2] }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table>
+{% endblock %}

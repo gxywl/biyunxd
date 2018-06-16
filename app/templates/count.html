@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+
+{% block title %} To-Do {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h3>{{ current_user.username }}</h3>
+        <p>心怀众生</p>
+    </div>
+
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>项目</th>
+      <th>金额</th>
+
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for bujuan in bujuans %}
+    <tr>
+      <td><a href="{{ url_for('main.countlist',xiangmuid= bujuan[2]) }}">{{ bujuan[0] }}</a></td>
+      <td>{{ bujuan[1] }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+      <td class="text-right">总计</td>
+      <td>( {{ alls[0][0] }} )</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--table class="table">
+  <thead>
+    <tr>
+      <th>项目</th>
+      <th>用户</th>
+      <th>金额</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for countbujuanbyuser in countbujuanbyusers %}
+    <tr>
+      <td>{{ countbujuanbyuser[0] }}</td>
+      <td>{{ countbujuanbyuser[1] }}</td>
+      <td>{{ countbujuanbyuser[2] }}</td>
+    </tr>
+    {% endfor %}
+
+  </tbody>
+</table-->
+{% endblock %}

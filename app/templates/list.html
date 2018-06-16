@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %} list {% endblock %}
+
+{% block page_content %}
+    <div class="page-header">
+    <h3>您的历次捐赠</h3>
+    </div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>项目</th>
+      <th>数量</th>
+      <th>日期</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {% for bujuan in bujuans %}
+    <tr>
+      <td>{{ bujuan.xiangmu }}</td>
+      <td>{{ bujuan.jine }}</td>
+        <td>
+            {% if loop.first %}<span class="badge">新</span>{% endif %}
+            {{ moment(bujuan.outtime).format('YY年M月D日') }}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endblock %}
