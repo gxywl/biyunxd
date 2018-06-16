@@ -30,7 +30,17 @@
     {% for kehu in kehus %}
     <tr>
 {#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
-      <td>{{ kehu.id }}<a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >显示</a></td>
+      <td>
+          {{ kehu.id }}
+
+          {% for dingdan in kehu.dingdans %}
+             {{ dingdan.chanpin.pinming }} ({{ dingdan.shuliang }} ) /
+          {% endfor %}
+
+
+          <a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >编辑订单</a>
+          <a class="btn btn-danger" href="{{  url_for('main.viewkehudd', id=kehu.id) }}" >显示</a>
+      </td>
       <td>{{ kehu.xiaoqu.xiaoqu }}</td>
       <td>{{ kehu.donghao }}</td>
       <td>{{ kehu.fanghao }}</td>

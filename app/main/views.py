@@ -1,4 +1,10 @@
 # _*_ encoding: utf-8 _*_
+
+import hashlib
+import os
+import time
+from datetime import datetime
+
 from flask import redirect, url_for, render_template, flash
 from flask_login import current_user, login_required
 from sqlalchemy import func, engine
@@ -146,6 +152,12 @@ def delkehu(id):
 
     return redirect(url_for('main.kehulist'))
 
+@main.route('/viewkehudd/<int:id>', methods=['GET', 'POST'])
+@login_required
+def viewkehudd(id):
+    kehu = Kehu.query.get(id)
+    return render_template('viewkehudd.html', kehu=kehu)
+
 
 @main.route('/showkehudd/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -181,6 +193,28 @@ def showkehudd(id):
     return render_template('showkehudd.html', form=form, kehu=kehu)
 
 
+def getnewfilename(upfilename):
+    # ext
+    ext = os.path.splitext(upfilename)[1]
+
+    # uploaddir
+    pdir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    uploaddir = os.path.join(pdir, 'upload')
+
+    # filenamehead
+    t = time.time()
+    nowTime = lambda: int(round(t * 1000))
+    tmpstr = current_user.username + str(nowTime())
+    md5filename = hashlib.md5()
+    md5filename.update(tmpstr.encode('utf-8'))
+    filenamehead = md5filename.hexdigest()[:15]
+
+    savefilename = '%s%s' % (filenamehead, ext)
+    fullsavefilename = os.path.join(uploaddir, savefilename)
+
+    return fullsavefilename
+
+
 # 隐形网
 @main.route('/addyxw/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -194,7 +228,12 @@ def addyxw(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+
+        uploaded_file = form.uploadfile.data
+        fullsavefilename = getnewfilename(uploaded_file.filename)
+        uploaded_file.save(fullsavefilename)
+
+        #savefilename
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
@@ -523,6 +562,155 @@ def editlyj(ddid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 
+
+
+# # 纱窗
+@main.route('/editsc/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editsc(ddid, khid):
+    form = ScForm()
+
+    if form.validate_on_submit():
+
+
+        if form.ishaveht.data ==0:
+            ishaveht = False
+        else:
+            ishaveht = True
+
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi=form.weizhi.data
+        dingdan.shuliang=form.shuliang.data
+        dingdan.xinghao=form.xinghao.data
+        dingdan.kuan_chang=form.kuan.data
+        dingdan.gao=form.gao.data
+        dingdan.color=form.color.data
+
+        dingdan.meikuan_digao=form.digao.data
+        dingdan.dengfenshu=form.dengfenshu.data
+        dingdan.shuowei=form.shuowei.data
+
+
+        dingdan.ishaveht=ishaveht
+
+
+
+        db.session.add(dingdan)
+        db.session.commit()
+
+        flash('已成功修改订制')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = dingdan.shuliang
+    form.xinghao.data = dingdan.xinghao
+    form.kuan.data = dingdan.kuan_chang
+    form.gao.data = dingdan.gao
+    form.color.data = dingdan.color
+
+    form.digao.data = dingdan.meikuan_digao
+    form.dengfenshu.data = dingdan.dengfenshu
+    form.shuowei.data = dingdan.shuowei
+
+    if dingdan.ishaveht:
+        ishaveht = 1
+    else:
+        ishaveht = 0
+
+    form.ishaveht.data = ishaveht
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
+
+# # 指纹锁
+@main.route('/editzws/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editzws(ddid, khid):
+    form = ZwsForm()
+
+    if form.validate_on_submit():
+
+
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi=form.weizhi.data
+        dingdan.shuliang=form.shuliang.data
+        dingdan.xinghao=form.xinghao.data
+        dingdan.color=form.color.data
+        dingdan.shuowei=form.shuowei.data
+
+
+        db.session.add(dingdan)
+        db.session.commit()
+
+        flash('已成功修改订制')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = dingdan.shuliang
+    form.xinghao.data = dingdan.xinghao
+    form.color.data = dingdan.color
+    form.shuowei.data = dingdan.shuowei
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
+@main.route('/doxiadan/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def doxiadan(khid):
+
+    kehu = Kehu.query.get(khid)
+    kehu.status = u'已下单'
+    kehu.xdtime = datetime.utcnow()
+
+    for dingdan in kehu.dingdans:
+        dingdan.status = u'已下单'
+
+
+    db.session.add(kehu)
+    flash('已成功下单客户')
+
+    return redirect(url_for('main.showkehudd', id=khid))
+
+
+
+
+@main.route('/setkehuover/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def setkehuover(khid):
+
+    kehu = Kehu.query.get(khid)
+    kehu.status = u'已完成'
+    #kehu.xdtime = datetime.utcnow
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = u'已下单'
+
+
+    db.session.add(kehu)
+    flash('已标志完成客户')
+
+    return redirect(url_for('main.showkehudd', id=khid))
 #
 # @main.route('/list')
 # def list():

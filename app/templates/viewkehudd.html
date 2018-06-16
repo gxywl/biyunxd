@@ -20,15 +20,25 @@
             <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>
         {% endif %}
 
-    <a class="btn btn-danger " href="{{  url_for('main.setkehuover', khid=kehu.id) }}" >确认完成客户</a>
 
      </div>
 
-     <div>
-        {{ wtf.quick_form(form) }}
-    </div>
 
     <hr>
+
+{% for dingdan in kehu.dingdans %}
+    {% if dingdan.chanpin.pinming == '隐形网' %}
+        隐形网<br>
+    {% elif dingdan.chanpin.pinming == '纱门' %}
+        纱门<br>
+    {% elif dingdan.chanpin.pinming == '晾衣架' %}
+        晾衣架<br>
+    {% elif dingdan.chanpin.pinming == '纱窗' %}
+        纱窗<br>
+     {% elif dingdan.chanpin.pinming == '指纹锁' %}
+        指纹锁<br>
+    {% endif %}
+{% endfor %}
 
 
 <table class="table">
@@ -38,22 +48,20 @@
       <th>产品</th>
       <th>数量</th>
       <th>位置</th>
-      <th>操作</th>
+
     </tr>
   </thead>
   <tbody>
 
     {% for dingdan in kehu.dingdans %}
     <tr>
-      <td>{{ dingdan.id }}</td>
+      <td>{{ dingdan.id }}    {% if dingdan.chanpin.pinming == '隐形网' %}隐形网{% endif %}</td>
 {#      <td>{{ kehu.id }}<a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >显示</a></td>#}
       <td>{{ dingdan.chanpin.pinming }}</td>
       <td>{{ dingdan.shuliang }}</td>
       <td>{{ dingdan.weizhi }}</td>
 {#      <!--td>{{ moment(kehu.xdtime).format('YY年M月D日') }}</td-->#}
-      <td><a class="btn btn-danger" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" >删除</a>
-          <a class="btn btn-primary" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" >修改</a>
-      </td>
+
 
     </tr>
 
@@ -61,8 +69,6 @@
   </tbody>
 </table>
 
-
-<a class="btn btn-success " href="{{  url_for('main.doxiadan', khid=kehu.id) }}" >确认以上订单</a>
 
 
 

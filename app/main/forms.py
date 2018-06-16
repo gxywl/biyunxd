@@ -1,6 +1,6 @@
 # _*_ encoding: utf-8 _*_
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField
+from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField
 from wtforms.validators import DataRequired, InputRequired
 from ..models import Chanpin, Xiaoqu
 
@@ -44,6 +44,8 @@ class YxwForm(FlaskForm):
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
+
+    uploadfile = FileField('选择文件')
 
     # other = StringField("其他", validators=[DataRequired()])
 
