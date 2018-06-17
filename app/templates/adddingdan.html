@@ -5,7 +5,7 @@
 
 {% block page_content %}
     <div class="page-header">
-    <h4>业务员：{{ current_user.username }}</h4>
+{#    <h4>业务员：{{ current_user.username }}</h4>#}
 
 {#        <p>客户:{{ kehu.id }}</p>#}
 {#        <p>小区:{{ kehu.xiaoqu.xiaoqu }}</p>#}
@@ -13,21 +13,46 @@
 {#        <p>房号:{{ kehu.fanghao }}</p>#}
 {#        <p>称呼:{{ kehu.chenghu }}</p>#}
 
-    <p>客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>
-        <p>状态:{{ kehu.status }}</p>
-        {% if (kehu.status != 'No') %}
-            <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>
-        {% endif %}
-     </div>
+           <div class="panel panel-default">
+                <div class="panel-heading"> <a class="btn btn-default btn-sm" href="{{ url_for('main.showkehudd',id=kehu.id) }}">返回</a> 客户: {{ kehu.id }}</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                    <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.weizhi }} 」</li>
+                    <li>栋号: {{ kehu.donghao }}</li>
+                    <li>房号: {{ kehu.fanghao }}</li>
+                    <li>称呼: {{ kehu.chenghu }}</li>
+                    <li>电话: {{ kehu.tel }}</li>
+                    <li>状态: {{ kehu.status }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer"></div>
+            </div>
 
-     <div>
+{#    <p>客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>#}
+{#        <p>状态:{{ kehu.status }}</p>#}
+{#        {% if (kehu.status != 'No') %}#}
+{#            <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>#}
+{#        {% endif %}#}
+{#     </div>#}
 
-        <p>产品:{{ chanpin.pinming }}</p>
-         <hr>
-        {{ wtf.quick_form(form) }}
-    </div>
+{#     <div>#}
+{##}
+{#        <p>产品:{{ chanpin.pinming }}</p>#}
+{#         <hr>#}
+{#        {{ wtf.quick_form(form) }}#}
+{#    </div>#}
 
 
-
+           <div class="panel panel-primary">
+                <div class="panel-heading"> <h3>产品: {{ chanpin.pinming }}</h3></div>
+                <div class="post-body">
+                    <blockquote>
+                        {{ wtf.quick_form(form) }}
+                    </blockquote>
+                </div>
+                <div class="panel-footer"></div>
+            </div>
 
 {% endblock %}

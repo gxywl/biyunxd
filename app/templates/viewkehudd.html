@@ -1,99 +1,211 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %} To-Do {% endblock %}
+{% block title %} 浏览订单{% endblock %}
 
 {% block page_content %}
-    <div class="page-header">
-    <h4>业务员：{{ current_user.username }}</h4>
-
-        <a class="btn btn-danger" href="{{  url_for('main.kehulist') }}" >返回</a>
-{#        <p>客户:{{ kehu.id }}</p>#}
-{#        <p>小区:{{ kehu.xiaoqu.xiaoqu }}</p>#}
-{#        <p>栋号:{{ kehu.donghao }}</p>#}
-{#        <p>房号:{{ kehu.fanghao }}</p>#}
-{#        <p>称呼:{{ kehu.chenghu }}</p>#}
-
-    <p>客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>
-        <p>状态:{{ kehu.status }}</p>
-        {% if (kehu.status != 'No') %}
-            <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>
-        {% endif %}
 
 
-     </div>
+           <div class="panel panel-default">
+                <div class="panel-heading"> <a class="btn btn-default btn-sm" href="{{ url_for('main.kehulist') }}">返回</a> 客户: {{ kehu.id }}</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                    <li>小区: {{ kehu.xiaoqu.xiaoqu }}</li>
+                    <li>栋号: {{ kehu.donghao }}</li>
+                    <li>房号: {{ kehu.fanghao }}</li>
+                    <li>称呼: {{ kehu.chenghu }}</li>
+                    <li>电话: {{ kehu.tel }}</li>
+                    <li>状态: {{ kehu.status }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+            </div>
 
 
-    <hr>
-
-{% for dingdan in kehu.dingdans %}
-    {% if dingdan.chanpin.pinming == '隐形网' %}
-        隐形网<br>
-    {% elif dingdan.chanpin.pinming == '纱门' %}
-        纱门<br>
-    {% elif dingdan.chanpin.pinming == '晾衣架' %}
-        晾衣架<br>
-    {% elif dingdan.chanpin.pinming == '纱窗' %}
-        纱窗<br>
-     {% elif dingdan.chanpin.pinming == '指纹锁' %}
-        指纹锁<br>
-    {% endif %}
-{% endfor %}
-
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>产品</th>
-      <th>数量</th>
-      <th>位置</th>
-
-    </tr>
-  </thead>
-  <tbody>
+{#    <div class="page-header">#}
+        {#    <h4>业务员：{{ current_user.username }}</h4>#}
+{##}
+{#        <a class="btn btn-danger" href="{{ url_for('main.kehulist') }}">返回</a>#}
+{#        <blockquote>#}
+{#                <p>客户:{{ kehu.id }}</p>#}
+{#                <p>小区:{{ kehu.xiaoqu.xiaoqu }}</p>#}
+{#                <p>栋号:{{ kehu.donghao }}</p>#}
+{#                <p>房号:{{ kehu.fanghao }}</p>#}
+{#                <p>称呼:{{ kehu.chenghu }}</p>#}
+{#                <p>电话:{{ kehu.tel }}</p>#}
+{#                <p>状态:{{ kehu.status }}</p>#}
+{#            <p>#}
+{#                客户（{{ kehu.id }}）{{ kehu.xiaoqu.xiaoqu }}小区 {{ kehu.donghao }}栋 {{ kehu.fanghao }}号房 {{ kehu.chenghu }}（{{ kehu.tel }}）</p>#}
+{#            <p>状态:{{ kehu.status }}</p>#}
+{#            {% if (kehu.status != 'No') %}#}
+{#                <p>下单日:{{ moment(kehu.xdtime).format('YY年M月D日 H时') }}</p>#}
+{#            {% endif %}#}
+{#        </blockquote>#}
+{##}
+{#    </div>#}
+{##}
+{##}
+{#    <hr>#}
 
     {% for dingdan in kehu.dingdans %}
-    <tr>
-      <td>{{ dingdan.id }}    {% if dingdan.chanpin.pinming == '隐形网' %}隐形网{% endif %}</td>
-{#      <td>{{ kehu.id }}<a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >显示</a></td>#}
-      <td>{{ dingdan.chanpin.pinming }}</td>
-      <td>{{ dingdan.shuliang }}</td>
-      <td>{{ dingdan.weizhi }}</td>
-{#      <!--td>{{ moment(kehu.xdtime).format('YY年M月D日') }}</td-->#}
+            <div class="panel panel-default">
+
+        {% if dingdan.chanpin.pinming == '隐形网' %}
+
+                <div class="panel-heading">[ {{ dingdan.id }} ] 隐形网</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                        <li>位置: {{ dingdan.weizhi }}</li>
+                        <li>数量: {{ dingdan.shuliang }}</li>
+                        <li>型号: {{ dingdan.xinghao }}</li>
+                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                        <li>高(mm): {{ dingdan.gao }}</li>
+                        <li>颜色: {{ dingdan.color }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer">状态</div>
+
+        {% elif dingdan.chanpin.pinming == '纱门' %}
+
+                <div class="panel-heading">[ {{ dingdan.id }} ] 纱门</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                        <li>位置: {{ dingdan.weizhi }}</li>
+                        <li>数量: {{ dingdan.shuliang }}</li>
+                        <li>型号: {{ dingdan.xinghao }}</li>
+                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                        <li>高(mm): {{ dingdan.gao }}</li>
+                        <li>颜色: {{ dingdan.color }}</li>
+
+                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>
+                        <li>扇数: {{ dingdan.shanshu }}</li>
+                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
+                        <li>锁位: {{ dingdan.shuowei }}</li>
+                        <li>装法: {{ dingdan.zhangfa }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer">状态</div>
+
+        {% elif dingdan.chanpin.pinming == '晾衣架' %}
+                 <div class="panel-heading">[ {{ dingdan.id }} ] 晾衣架</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                        <li>位置: {{ dingdan.weizhi }}</li>
+                        <li>数量: {{ dingdan.shuliang }}</li>
+                        <li>型号: {{ dingdan.xinghao }}</li>
+                        <li>长(mm): {{ dingdan.kuan_chang }}</li>
+                        <li>高(mm): {{ dingdan.gao }}</li>
+                        <li>颜色: {{ dingdan.color }}</li>
+                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer">状态</div>
 
 
-    </tr>
+        {% elif dingdan.chanpin.pinming == '纱窗' %}
 
+                <div class="panel-heading">[ {{ dingdan.id }} ] 纱窗</div>
+                <div class="post-body">
+                    <blockquote>
+                    <ul>
+                        <li>位置: {{ dingdan.weizhi }}</li>
+                        <li>数量: {{ dingdan.shuliang }}</li>
+                        <li>型号: {{ dingdan.xinghao }}</li>
+                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                        <li>高(mm): {{ dingdan.gao }}</li>
+                        <li>颜色: {{ dingdan.color }}</li>
+
+                        <li>底高(mm): {{ dingdan.meikuan_digao }}</li>
+                        <li>等分数: {{ dingdan.dengfenshu }}</li>
+                        <li>有否横条: {{ dingdan.ishaveht }}</li>
+                        <li>锁位: {{ dingdan.shuowei }}</li>
+                    </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer">状态</div>
+
+        {% elif dingdan.chanpin.pinming == '指纹锁' %}
+            指纹锁<br>
+
+                <div class="panel-heading">[ {{ dingdan.id }} ] 纱窗</div>
+                <div class="post-body">
+                    <blockquote><ul>
+                        <li>位置: {{ dingdan.weizhi }}</li>
+                        <li>数量: {{ dingdan.shuliang }}</li>
+                        <li>型号: {{ dingdan.xinghao }}</li>
+                        <li>颜色: {{ dingdan.color }}</li>
+
+                        <li>锁位: {{ dingdan.shuowei }}</li>
+                    </ul></blockquote>
+                </div>
+                <div class="panel-footer">状态</div>
+
+        {% endif %}
+
+            </div>
     {% endfor %}
-  </tbody>
-</table>
 
-
-
-
-{#<table class="table">#}
-{#  <thead>#}
-{#    <tr>#}
-{#      <th>项目</th>#}
-{#      <th>金额</th>#}
-{#      <!--th>日期</th-->#}
-{#      <th>经过</th>#}
-{#    </tr>#}
-{#  </thead>#}
-{#  <tbody>#}
 {##}
-{#    {% for bujuan in bujuans %}#}
-{#    <tr>#}
-{#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
-{#      <td>{{ bujuan.jine }}</td>#}
-{#      <!--td>{{ moment(bujuan.outtime).format('YY年M月D日') }}</td-->#}
-{#      <td>{{ moment(bujuan.outtime).fromNow(refresh=True) }}{% if loop.first %}<!--span class="badge">新</span-->{% endif %}</td>#}
+{#    <table class="table">#}
+{#        <thead>#}
+{#        <tr>#}
+{#            <th>id</th>#}
+{#            <th>产品</th>#}
+{#            <th>数量</th>#}
+{#            <th>位置</th>#}
 {##}
-{#    </tr>#}
+{#        </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
 {##}
-{#    {% endfor %}#}
-{#  </tbody>#}
-{#</table>#}
+{#        {% for dingdan in kehu.dingdans %}#}
+{#            <tr>#}
+{#                <td>{{ dingdan.id }}    {% if dingdan.chanpin.pinming == '隐形网' %}隐形网{% endif %}</td>#}
+                {#      <td>{{ kehu.id }}<a class="btn btn-danger" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >显示</a></td>#}
+{#                <td>{{ dingdan.chanpin.pinming }}</td>#}
+{#                <td>{{ dingdan.shuliang }}</td>#}
+{#                <td>{{ dingdan.weizhi }}</td>#}
+                {#      <!--td>{{ moment(kehu.xdtime).format('YY年M月D日') }}</td-->#}
+{##}
+{##}
+{#            </tr>#}
+{##}
+{#        {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{##}
+{##}
+
+
+    {#<table class="table">#}
+    {#  <thead>#}
+    {#    <tr>#}
+    {#      <th>项目</th>#}
+    {#      <th>金额</th>#}
+    {#      <!--th>日期</th-->#}
+    {#      <th>经过</th>#}
+    {#    </tr>#}
+    {#  </thead>#}
+    {#  <tbody>#}
+    {##}
+    {#    {% for bujuan in bujuans %}#}
+    {#    <tr>#}
+    {#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
+    {#      <td>{{ bujuan.jine }}</td>#}
+    {#      <!--td>{{ moment(bujuan.outtime).format('YY年M月D日') }}</td-->#}
+    {#      <td>{{ moment(bujuan.outtime).fromNow(refresh=True) }}{% if loop.first %}<!--span class="badge">新</span-->{% endif %}</td>#}
+    {##}
+    {#    </tr>#}
+    {##}
+    {#    {% endfor %}#}
+    {#  </tbody>#}
+    {#</table>#}
 
 {% endblock %}

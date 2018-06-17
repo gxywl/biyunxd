@@ -5,7 +5,7 @@ import os
 import time
 from datetime import datetime
 
-from flask import redirect, url_for, render_template, flash
+from flask import redirect, url_for, render_template, flash, make_response, send_file
 from flask_login import current_user, login_required
 from sqlalchemy import func, engine
 
@@ -13,6 +13,8 @@ from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm
 from . import main
+
+import tablib
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -69,15 +71,17 @@ def kehulist():
     return render_template('kehulist.html', kehus=kehus)  # form=form,
 
 
+
+
+
+
 @main.route('/dinghuolist', methods=['GET', 'POST'])
 @login_required
 def dinghuolist():
-    # form = NameForm()
-    # bujuan=None
-    kehus = Kehu.query.filter_by(user=current_user._get_current_object()).order_by(
-        Kehu.id)  # .order_by(Guke.outtime.desc())
 
-    return render_template('dinghuolist.html', kehus=kehus)  # form=form,
+    #dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter_by(status=u"已下单").order_by(Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    return render_template('dinghuolist.html', dingdans=dingdans)  # form=form,
 
 
 @main.route('/fahuolist', methods=['GET', 'POST'])
@@ -89,6 +93,9 @@ def fahuolist():
         Kehu.id)  # .order_by(Guke.outtime.desc())
 
     return render_template('fahuolist.html', kehus=kehus)  # form=form,
+
+
+
 
 
 @main.route('/addkehu', methods=['GET', 'POST'])
@@ -706,11 +713,100 @@ def setkehuover(khid):
     # for dingdan in kehu.dingdans:
     #     dingdan.status = u'已下单'
 
-
     db.session.add(kehu)
     flash('已标志完成客户')
 
     return redirect(url_for('main.showkehudd', id=khid))
+
+@main.route('/outtoxls/<string:pm>', methods=['GET', 'POST'])
+@login_required
+def outtoxls(pm):
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = u'已完成'
+    # #kehu.xdtime = datetime.utcnow
+    #
+    # # for dingdan in kehu.dingdans:
+    # #     dingdan.status = u'已下单'
+    #
+    #
+    # db.session.add(kehu)
+    # flash('已标志完成客户')
+
+    chanpin = Chanpin.query.filter_by(pinming=pm).first()
+    dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
+                                                               Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    if pm == '隐形网':
+        headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色")
+    elif pm == '纱门':
+        headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色",u"内空宽（毫米）",u'扇数',u'中横条数',u'锁位',u'装法')
+    elif pm == '晾衣架':
+        headers = (u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"颜色", u"杆条数")
+    elif pm == '纱窗':
+        headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"底高（毫米）", u"等分数", u"有否横条", u"锁位")
+    elif pm == '指纹锁':
+        headers = (u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位")
+
+
+    info = []
+    data = tablib.Dataset(*info, headers=headers)
+
+    for dingdan in dingdans:
+
+        if pm == '隐形网':
+            data.append([u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao, dingdan.color])
+        elif pm == '纱门':
+            data.append([u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                         dingdan.color,dingdan.meikuan_digao,dingdan.shanshu,dingdan.zhonghengtiaoshu_gantiaoshu,dingdan.shuowei,dingdan.zhangfa,])
+        elif pm == '晾衣架':
+            data.append([u'晾衣架', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                         dingdan.color,dingdan.zhonghengtiaoshu_gantiaoshu])
+        elif pm == '纱窗':
+            data.append([u'纱窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                         dingdan.color,dingdan.meikuan_digao,dingdan.dengfenshu,dingdan.ishaveht,dingdan.shuowei])
+        elif pm == '指纹锁':
+            data.append([u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei])
+
+
+    t = time.time()
+    nowTime = lambda: int(round(t * 1000))
+    tmpstr = current_user.username + str(nowTime())
+    md5filename = hashlib.md5()
+    md5filename.update(tmpstr.encode('utf-8'))
+    filenamehead = md5filename.hexdigest()[:15]
+
+    # 导出excel表
+    open('app/cxls/xxx.xls', 'wb').write(data.xls)
+
+    response = make_response(send_file("cxls/xxx.xls"))
+    response.headers["Content-Disposition"] = "attachment; filename="+'yxw'+".xls;"
+    return response
+
+    #return redirect(url_for('main.showkehudd', id=1))
+
+
+@main.route('/taggetit/<string:pm>', methods=['GET', 'POST'])
+@login_required
+def taggetit(pm):
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = u'已完成'
+    # #kehu.xdtime = datetime.utcnow
+    #
+    # # for dingdan in kehu.dingdans:
+    # #     dingdan.status = u'已下单'
+    #
+    #
+    # db.session.add(kehu)
+    # flash('已标志完成客户')
+
+    chanpin = Chanpin.query.filter_by(pinming=pm).first()
+    dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
+                                                               Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    return redirect(url_for('main.dinghuolist'))
+
 #
 # @main.route('/list')
 # def list():

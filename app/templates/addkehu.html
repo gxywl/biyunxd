@@ -4,15 +4,25 @@
 {% block title %} To-Do {% endblock %}
 
 {% block page_content %}
-    <div class="page-header">
-    <h4>业务员：{{ current_user.username }}</h4>
-        <p>添加客户</p>
+
+
+{#    <div class="page-header">#}
+{#    <h4>业务员：{{ current_user.username }}</h4>#}
+{#        <p>添加客户</p>#}
+{#    </div>#}
+{##}
+{#    <div>#}
+{#        {{ wtf.quick_form(form) }}#}
+{#    </div>#}
+
+   <div class="panel panel-primary">
+        <div class="panel-heading"><a class="btn btn-default btn-sm" href="{{ url_for('main.kehulist') }}">返回</a> <h4>添加客户</h4></div>
+        <div class="post-body">
+            <blockquote>
+                {{ wtf.quick_form(form) }}
+            </blockquote>
+        </div>
+        <div class="panel-footer"></div>
     </div>
-
-    <div>
-        {{ wtf.quick_form(form) }}
-    </div>
-
-
 
 {% endblock %}

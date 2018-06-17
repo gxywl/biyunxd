@@ -23,9 +23,9 @@ class KehuForm(FlaskForm):
 
 class WilladdcpForm(FlaskForm):
 
-    chanpin = SelectField('产品', validators=[DataRequired()], coerce=int)
+    chanpin = SelectField('选择产品', validators=[DataRequired()], coerce=int)
 
-    submit = SubmitField('加这个')
+    submit = SubmitField('添加这个')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -56,7 +56,7 @@ class YxwForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
         #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 class SmForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
@@ -81,7 +81,7 @@ class SmForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(SmForm, self).__init__(*args, **kwargs)
         #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 
 class LyjForm(FlaskForm):
@@ -103,7 +103,7 @@ class LyjForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
         #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 
 class ScForm(FlaskForm):
@@ -128,7 +128,7 @@ class ScForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ScForm, self).__init__(*args, **kwargs)
         #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 
 class ZwsForm(FlaskForm):
@@ -148,7 +148,7 @@ class ZwsForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ZwsForm, self).__init__(*args, **kwargs)
         #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 class NameForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])
@@ -175,6 +175,6 @@ class NameForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(NameForm, self).__init__(*args, **kwargs)
         self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 # class EditProfileForm(FlaskForm):
