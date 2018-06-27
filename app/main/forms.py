@@ -4,7 +4,7 @@ from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenF
 from wtforms.validators import DataRequired, InputRequired
 from ..models import Chanpin, Xiaoqu
 
-
+# 客户
 class KehuForm(FlaskForm):
     xiaoqu = SelectField('小区', validators=[DataRequired()], coerce=int)
     # donghao = StringField('栋号', validators=[DataRequired()])
@@ -46,7 +46,8 @@ class YxwForm(FlaskForm):
     # khid = HiddenField()
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = StringField("型号", validators=[DataRequired()])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
@@ -62,17 +63,18 @@ class YxwForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        self.color.choices = [('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 
 class SmForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = StringField("型号", validators=[DataRequired()])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'), ('碧云805E', '碧云805E')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    color = SelectField("颜色", validators=[DataRequired()])
     neikuan = IntegerField("内空宽（毫米）", validators=[DataRequired()])
+    color = SelectField("颜色", validators=[DataRequired()])
     shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     zhonghengtiaoshu = SelectField('中横条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     shuowei = SelectField('锁位', validators=[DataRequired()],
@@ -91,7 +93,7 @@ class SmForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(SmForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        self.color.choices = [('深灰', '深灰')]
 
 
 # 晾衣杆

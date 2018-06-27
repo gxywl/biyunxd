@@ -8,6 +8,7 @@ from app.models import User
 
 class LoginForm(FlaskForm):
     user = StringField('账号', validators=[DataRequired()])
+    # , render_kw = {"placeholder": "Your name","style": "background: url(/static/login-locked-icon.png) no-repeat 15px center;text-indent: 28px"}
     pin = PasswordField('校验码', validators=[DataRequired()])
     remember_me = BooleanField('保持登录')
     submit = SubmitField('登录')
