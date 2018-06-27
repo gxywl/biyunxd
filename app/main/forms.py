@@ -6,12 +6,17 @@ from ..models import Chanpin, Xiaoqu
 
 
 class KehuForm(FlaskForm):
-
     xiaoqu = SelectField('小区', validators=[DataRequired()], coerce=int)
-    donghao = StringField('栋号', validators=[DataRequired()])
-    fanghao = StringField('房号', validators=[DataRequired()])
+    # donghao = StringField('栋号', validators=[DataRequired()])
+    # fanghao = StringField('房号', validators=[DataRequired()])
+    fangjian = StringField('栋单元房号', validators=[DataRequired()])
     chenghu = StringField('称呼', validators=[DataRequired()])
     tel = StringField('手机', validators=[DataRequired()])
+    zhuangtai = SelectField('进度状态', validators=[DataRequired()],
+                            choices=[('测尺', '测尺'), ('已下单', '已下单'), ('已安装', '已安装'), ('已清款', '已清款')])
+    # 状态：测尺，已下单，已安装，已清款
+
+    beizhu = StringField('备注')
 
     submit = SubmitField('确认保存')
 
@@ -21,8 +26,8 @@ class KehuForm(FlaskForm):
         self.xiaoqu.choices = [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
-class WilladdcpForm(FlaskForm):
 
+class WilladdcpForm(FlaskForm):
     chanpin = SelectField('选择产品', validators=[DataRequired()], coerce=int)
 
     submit = SubmitField('添加这个')
@@ -33,6 +38,7 @@ class WilladdcpForm(FlaskForm):
         self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.id).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+# 隐形网
 class YxwForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])
     # xiangmu = SelectField('布放项目', validators=[DataRequired()], choices=[('0', '放生'),('1', '火施'),('2', '其他')])
@@ -44,19 +50,20 @@ class YxwForm(FlaskForm):
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
-
-    uploadfile = FileField('选择文件')
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
 
     # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认订制')
+    submit = SubmitField('保存修改')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
-        #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
         self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+
 
 class SmForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
@@ -69,86 +76,166 @@ class SmForm(FlaskForm):
     shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     zhonghengtiaoshu = SelectField('中横条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                            choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
+                          choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
     zhangfa = SelectField('装法', validators=[DataRequired()],
-                            choices=[('内装', '内装'), ('外装', '外装')])
+                          choices=[('内装', '内装'), ('外装', '外装')])
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
+
     # other = StringField("其他", validators=[DataRequired()])
 
     # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认订制')
+    submit = SubmitField('保存修改')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(SmForm, self).__init__(*args, **kwargs)
-        #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
         self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 
+# 晾衣杆
 class LyjForm(FlaskForm):
-
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = StringField("型号", validators=[DataRequired()])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('G1-25', 'G1-25'), ('G2-32', 'G2-32'), ('G3-32', 'G3-32'), ('手摇型', '手摇型')])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
+
     # other = StringField("其他", validators=[DataRequired()])
 
     # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认订制')
+    submit = SubmitField('保存修改')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
-        #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
+        self.color.choices = [('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
 
 
-class ScForm(FlaskForm):
+# 晾衣机
+class LyjForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = StringField("型号", validators=[DataRequired()])
-    kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
+    xinghao = SelectField("型号", validators=[DataRequired()], choices=[('BY-02', 'BY-02'), (' BY-06', ' BY-06')])
+    chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
-    digao= IntegerField("底高（毫米）", validators=[DataRequired()])
-    dengfenshu = SelectField('等分数', validators=[DataRequired()], choices=[('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '有横条')])
-    shuowei = SelectField('锁位', validators=[DataRequired()],
-                            choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
+
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
 
     # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认订制')
+    submit = SubmitField('保存修改')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(LyjForm, self).__init__(*args, **kwargs)
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
+        self.color.choices = [('香槟金', '香槟金'), ('太空银', '太空银')]
+
+# 纱窗
+class ScForm(FlaskForm):
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('ST613', 'ST613'), ('不可拆左右趟', '不可拆左右趟'), ('可拆左右趟', '可拆左右趟'), ('普及上下趟', '普及上下趟')])
+    kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
+    gao = IntegerField("高（毫米）", validators=[DataRequired()])
+    # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
+    bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
+    shuowei = SelectField('锁位', validators=[DataRequired()],
+                          choices=[('', ''), ('左', '左'), ('右', '右')])  # ( '中', '中'),, ('上', '上'), ('下', '下')
+    color = SelectField("颜色", validators=[DataRequired()])
+
+    dengfenshu = SelectField('等分数', validators=[DataRequired()],
+                             choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '有横条')])
+
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
+
+    # other = StringField("其他", validators=[DataRequired()])
+
+    # jine = IntegerField("金额", validators=[DataRequired()])
+    submit = SubmitField('保存修改')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(ScForm, self).__init__(*args, **kwargs)
-        #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
+        self.color.choices = [('深灰', '深灰')]
 
 
-class ZwsForm(FlaskForm):
+# 窗花
+class ChForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = StringField("型号", validators=[DataRequired()])
-    color = SelectField("颜色", validators=[DataRequired()])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('一帆风顺', '一帆风顺'), ('双喜临门', '双喜临门'), ('心心相印', '心心相印'), ('招财进宝', '招财进宝')])
+    kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
+    gao = IntegerField("高（毫米）", validators=[DataRequired()])
+    # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
+    bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                            choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
+                          choices=[('', ''), ('左', '左'), ('右', '右')])  # ( '中', '中'),, ('上', '上'), ('下', '下')
+    color = SelectField("颜色", validators=[DataRequired()])
+
+    dengfenshu = SelectField('等分数', validators=[DataRequired()],
+                             choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '有横条')])
+
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
 
     # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认订制')
+    submit = SubmitField('保存修改')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(ScForm, self).__init__(*args, **kwargs)
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
+        self.color.choices = [('深灰', '深灰')]
+
+# 指纹锁
+class ZwsForm(FlaskForm):
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+    xinghao = SelectField("型号", validators=[DataRequired()],
+                          choices=[('9001', '9001'), ('935', '935'), ('938', '938'), ('普及型', '普及型')])
+    color = SelectField("颜色", validators=[DataRequired()])
+    shuowei = SelectField('锁位', validators=[DataRequired()],
+                          choices=[('', ''), ('左', '左'), ('右', '右')])
+    dakaifs = SelectField('开锁方式', validators=[DataRequired()],
+                          choices=[('内开', '内开'), ('外开', '外开')])
+    # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
+
+    beizhu = StringField('备注', validators=[DataRequired()])
+    uploadfile = FileField('上传图片/草图')
+
+    # other = StringField("其他", validators=[DataRequired()])
+
+    # jine = IntegerField("金额", validators=[DataRequired()])
+    submit = SubmitField('保存修改')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(ZwsForm, self).__init__(*args, **kwargs)
-        #self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
+        self.color.choices = [('古铜红', '古铜红'), ('香槟金', '香槟金')]
+
 
 class NameForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])
