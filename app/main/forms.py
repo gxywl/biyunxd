@@ -54,7 +54,7 @@ class YxwForm(FlaskForm):
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])

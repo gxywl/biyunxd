@@ -10,7 +10,7 @@
                 <div class="panel-heading"> <a class="btn btn-default btn-sm" href="{{ url_for('main.kehulist') }}">返回</a> 客户: {{ kehu.id }}</div>
                 <div class="post-body">
                     <blockquote>
-                    <ul>
+                    <ul class="list-unstyled">
                     <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.weizhi }} 」</li>
                     <li>栋号: {{ kehu.donghao }}</li>
                     <li>房号: {{ kehu.fanghao }}</li>
@@ -43,13 +43,19 @@
                 <div class="panel-heading">[ {{ dingdan.id }} ] 隐形网</div>
                 <div class="post-body">
                     <blockquote>
-                    <ul>
+                    <ul class="list-unstyled">
                         <li>位置: {{ dingdan.weizhi }}</li>
                         <li>数量: {{ dingdan.shuliang }}</li>
                         <li>型号: {{ dingdan.xinghao }}</li>
                         <li>宽(mm): {{ dingdan.kuan_chang }}</li>
                         <li>高(mm): {{ dingdan.gao }}</li>
                         <li>颜色: {{ dingdan.color }}</li>
+                        <li>备注: {{ dingdan.beizhu }}</li>
+{#                        <li>图示: <img src="{{ url_for('static', filename='/upload{{ dingdan.tushipic }}') }}">  </li>#}
+
+                        <li>图示: <img height="180" src="/static/upload/{{ dingdan.tushipic }}">  </li>
+{#                        #}
+{#                        url_for('static', filename='styles.css')#}
                     </ul>
                     </blockquote>
                 </div>

@@ -29,16 +29,20 @@ def index():
     # 管理账号转到管理页
     if current_user.role == 'adm':
         return redirect(url_for('admin.index'))
+
     # pass
     elif current_user.role == '业务员':
         # 一般用户转转到首页..
         return redirect(url_for('main.kehulist'))
+
     elif current_user.role == '订货员':
         # 一般用户转转到首页..
         return redirect(url_for('main.dinghuolist'))
+
     elif current_user.role == '发货员':
         # 一般用户转转到首页..
         return redirect(url_for('main.fahuolist'))
+
     else:
         # 一般用户转转到首页..
         # return redirect(request.args.get('next') or url_for('main.kehulist'))
@@ -200,7 +204,7 @@ def getnewfilename(upfilename):
 
     # uploaddir
     pdir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-    uploaddir = os.path.join(pdir, 'upload')
+    uploaddir = os.path.join(pdir, 'static/upload')
 
     # filenamehead
     t = time.time()
@@ -230,14 +234,17 @@ def addyxw(cpid, khid):
 
     if form.validate_on_submit():
         uploaded_file = form.uploadfile.data
-        fullsavefilename = getnewfilename(uploaded_file.filename)
-        uploaded_file.save(fullsavefilename)
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
 
         # savefilename
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                          color=form.color.data, status='No')
+                          color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
 
         db.session.add(dingdan)
 
@@ -245,7 +252,7 @@ def addyxw(cpid, khid):
 
         return redirect(url_for('main.showkehudd', id=khid))
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
 
 
 # # 纱门
@@ -419,6 +426,13 @@ def edityxw(ddid, khid):
         dingdan.kuan_chang = form.kuan.data
         dingdan.gao = form.gao.data
         dingdan.color = form.color.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
 
         db.session.add(dingdan)
 
@@ -440,8 +454,12 @@ def edityxw(ddid, khid):
     form.kuan.data = dingdan.kuan_chang
     form.gao.data = dingdan.gao
     form.color.data = dingdan.color
+    form.beizhu.data = dingdan.beizhu
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+    #form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
+
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
 # # 纱门

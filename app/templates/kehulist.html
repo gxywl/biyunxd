@@ -21,14 +21,13 @@
                <a class="btn btn-primary" href="{{  url_for('main.editkehu', id=kehu.id) }}" >修改客户</a></div>
                 <div class="post-body">
                     <blockquote>
-                    <ul>
+                    <ul class="list-unstyled">
                     <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.weizhi }} 」</li>
-                    <li>栋号: {{ kehu.donghao }}</li>
-                    <li>房号: {{ kehu.fanghao }}</li>
+                    <li>房间: {{ kehu.fangjian }}</li>
                     <li>称呼: {{ kehu.chenghu }}</li>
                     <li>电话: {{ kehu.tel }}</li>
                     <li>状态: {{ kehu.status }}</li>
-                    <li> {{ moment(kehu.xdtime).fromNow(refresh=True) }}{% if loop.first %}<span class="badge">新</span>{% endif %}</li>
+{#                    <li> {{ moment(kehu.xdtime).fromNow(refresh=True) }}{% if loop.first %}<span class="badge">新</span>{% endif %}</li>#}
                     </ul>
 
 
