@@ -14,6 +14,7 @@ from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm
 from . import main
 
+
 # import tablib
 
 
@@ -66,21 +67,17 @@ def kehulist():
     # form = NameForm()
     # bujuan=None
     kehus = Kehu.query.filter_by(user=current_user._get_current_object()).order_by(
-        Kehu.id)  # .order_by(Guke.outtime.desc())
+        Kehu.id.desc())  # .order_by(Guke.outtime.desc())
 
     return render_template('kehulist.html', kehus=kehus)  # form=form,
-
-
-
-
 
 
 @main.route('/dinghuolist', methods=['GET', 'POST'])
 @login_required
 def dinghuolist():
-
-    #dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
-    dingdans = Dingdan.query.filter_by(status=u"已下单").order_by(Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter_by(status=u"已下单").order_by(Dingdan.chanpin_id,
+                                                               Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
     return render_template('dinghuolist.html', dingdans=dingdans)  # form=form,
 
 
@@ -95,28 +92,24 @@ def fahuolist():
     return render_template('fahuolist.html', kehus=kehus)  # form=form,
 
 
-
-
-
 @main.route('/addkehu', methods=['GET', 'POST'])
 @login_required
 def addkehu():
     form = KehuForm()
     # bujuan=None
-    kehus = Kehu.query.filter_by(user=current_user._get_current_object()).order_by(
-        Kehu.id)  # .order_by(Guke.outtime.desc())
 
     user = current_user._get_current_object()
     if form.validate_on_submit():
         xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
-
-        kehu = Kehu(user=user, xiaoqu=xiaoqu, donghao=form.donghao.data, fanghao=form.fanghao.data,
-                    chenghu=form.chenghu.data, tel=form.tel.data, status='No')
-
+        kehu = Kehu(user=user, xiaoqu=xiaoqu, fangjian=form.fangjian.data, chenghu=form.chenghu.data, tel=form.tel.data,
+                    zje=form.zje.data, beizhu=form.beizhu.data, status=form.status.data)  # status='No'
         db.session.add(kehu)
         flash('已成功添加客户')
         return redirect(url_for('main.kehulist'))
 
+    # kehus = Kehu.query.filter_by(user=current_user._get_current_object()).order_by(
+    #     Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+    form.zje.data = 0
     return render_template('addkehu.html', form=form)
 
 
@@ -158,6 +151,7 @@ def delkehu(id):
     flash('已成功删除客户')
 
     return redirect(url_for('main.kehulist'))
+
 
 @main.route('/viewkehudd/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -235,12 +229,11 @@ def addyxw(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-
         uploaded_file = form.uploadfile.data
         fullsavefilename = getnewfilename(uploaded_file.filename)
         uploaded_file.save(fullsavefilename)
 
-        #savefilename
+        # savefilename
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
@@ -329,7 +322,7 @@ def addsc(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        if form.ishaveht.data ==0:
+        if form.ishaveht.data == 0:
             ishaveht = False
         else:
             ishaveht = True
@@ -341,7 +334,6 @@ def addsc(cpid, khid):
                           ishaveht=ishaveht,
                           shuowei=form.shuowei.data,
                           status='No')
-
 
         db.session.add(dingdan)
 
@@ -365,11 +357,9 @@ def addzws(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
                           status='No')
-
 
         db.session.add(dingdan)
 
@@ -390,16 +380,13 @@ def deldingdan(ddid, khid):
     return redirect(url_for('main.showkehudd', id=khid))
 
 
-
-
 @main.route('/editdingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def editdingdan(ddid,khid):
-
+def editdingdan(ddid, khid):
     dingdan = Dingdan.query.get(ddid)
     pinming = dingdan.chanpin.pinming
 
-    #chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    # chanpin = Chanpin.query.get(dingdan.chanpin.id)
 
     if pinming == '隐形网':
         toview = 'edityxw'
@@ -424,23 +411,20 @@ def edityxw(ddid, khid):
     form = YxwForm()
 
     if form.validate_on_submit():
-
         dingdan = Dingdan.query.get(ddid)
 
-        dingdan.weizhi=form.weizhi.data
-        dingdan.shuliang=form.shuliang.data
-        dingdan.xinghao=form.xinghao.data
-        dingdan.kuan_chang=form.kuan.data
-        dingdan.gao=form.gao.data
-        dingdan.color=form.color.data
-
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.kuan.data
+        dingdan.gao = form.gao.data
+        dingdan.color = form.color.data
 
         db.session.add(dingdan)
 
         flash('已成功修改订制')
 
         return redirect(url_for('main.showkehudd', id=khid))
-
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -460,8 +444,6 @@ def edityxw(ddid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 
-
-
 # # 纱门
 @main.route('/editsm/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -469,15 +451,14 @@ def editsm(ddid, khid):
     form = SmForm()
 
     if form.validate_on_submit():
-
         dingdan = Dingdan.query.get(ddid)
 
-        dingdan.weizhi=form.weizhi.data
-        dingdan.shuliang=form.shuliang.data
-        dingdan.xinghao=form.xinghao.data
-        dingdan.kuan_chang=form.kuan.data
-        dingdan.gao=form.gao.data
-        #dingdan.color=form.color.data
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.kuan.data
+        dingdan.gao = form.gao.data
+        # dingdan.color=form.color.data
 
         dingdan.meikuan_digao = form.neikuan.data
         dingdan.shanshu = form.shanshu.data
@@ -486,13 +467,11 @@ def editsm(ddid, khid):
         dingdan.zhangfa = form.zhangfa.data
         dingdan.color = form.color.data
 
-
         db.session.add(dingdan)
 
         flash('已成功修改订制')
 
         return redirect(url_for('main.showkehudd', id=khid))
-
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -514,11 +493,9 @@ def editsm(ddid, khid):
     form.zhonghengtiaoshu.data = dingdan.zhonghengtiaoshu_gantiaoshu
     form.shuowei.data = dingdan.shuowei
     form.zhangfa.data = dingdan.zhangfa
-    #form.color.data =dingdan.color
-
+    # form.color.data =dingdan.color
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
-
 
 
 # # 晾衣架
@@ -528,25 +505,22 @@ def editlyj(ddid, khid):
     form = LyjForm()
 
     if form.validate_on_submit():
-
         dingdan = Dingdan.query.get(ddid)
 
-        dingdan.weizhi=form.weizhi.data
-        dingdan.shuliang=form.shuliang.data
-        dingdan.xinghao=form.xinghao.data
-        dingdan.kuan_chang=form.chang.data
-        dingdan.gao=form.gao.data
-        dingdan.color=form.color.data
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.chang.data
+        dingdan.gao = form.gao.data
+        dingdan.color = form.color.data
 
         dingdan.zhonghengtiaoshu_gantiaoshu = form.gantiaoshu.data
-
 
         db.session.add(dingdan)
 
         flash('已成功修改订制')
 
         return redirect(url_for('main.showkehudd', id=khid))
-
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -565,10 +539,7 @@ def editlyj(ddid, khid):
 
     form.gantiaoshu.data = dingdan.zhonghengtiaoshu_gantiaoshu
 
-
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
-
-
 
 
 # # 纱窗
@@ -579,29 +550,25 @@ def editsc(ddid, khid):
 
     if form.validate_on_submit():
 
-
-        if form.ishaveht.data ==0:
+        if form.ishaveht.data == 0:
             ishaveht = False
         else:
             ishaveht = True
 
         dingdan = Dingdan.query.get(ddid)
 
-        dingdan.weizhi=form.weizhi.data
-        dingdan.shuliang=form.shuliang.data
-        dingdan.xinghao=form.xinghao.data
-        dingdan.kuan_chang=form.kuan.data
-        dingdan.gao=form.gao.data
-        dingdan.color=form.color.data
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.kuan.data
+        dingdan.gao = form.gao.data
+        dingdan.color = form.color.data
 
-        dingdan.meikuan_digao=form.digao.data
-        dingdan.dengfenshu=form.dengfenshu.data
-        dingdan.shuowei=form.shuowei.data
+        dingdan.meikuan_digao = form.digao.data
+        dingdan.dengfenshu = form.dengfenshu.data
+        dingdan.shuowei = form.shuowei.data
 
-
-        dingdan.ishaveht=ishaveht
-
-
+        dingdan.ishaveht = ishaveht
 
         db.session.add(dingdan)
         db.session.commit()
@@ -609,7 +576,6 @@ def editsc(ddid, khid):
         flash('已成功修改订制')
 
         return redirect(url_for('main.showkehudd', id=khid))
-
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -647,16 +613,13 @@ def editzws(ddid, khid):
     form = ZwsForm()
 
     if form.validate_on_submit():
-
-
         dingdan = Dingdan.query.get(ddid)
 
-        dingdan.weizhi=form.weizhi.data
-        dingdan.shuliang=form.shuliang.data
-        dingdan.xinghao=form.xinghao.data
-        dingdan.color=form.color.data
-        dingdan.shuowei=form.shuowei.data
-
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.color = form.color.data
+        dingdan.shuowei = form.shuowei.data
 
         db.session.add(dingdan)
         db.session.commit()
@@ -664,7 +627,6 @@ def editzws(ddid, khid):
         flash('已成功修改订制')
 
         return redirect(url_for('main.showkehudd', id=khid))
-
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -682,10 +644,10 @@ def editzws(ddid, khid):
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
+
 @main.route('/doxiadan/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def doxiadan(khid):
-
     kehu = Kehu.query.get(khid)
     kehu.status = u'已下单'
     kehu.xdtime = datetime.utcnow()
@@ -693,22 +655,18 @@ def doxiadan(khid):
     for dingdan in kehu.dingdans:
         dingdan.status = u'已下单'
 
-
     db.session.add(kehu)
     flash('已成功下单客户')
 
     return redirect(url_for('main.showkehudd', id=khid))
 
 
-
-
 @main.route('/setkehuover/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def setkehuover(khid):
-
     kehu = Kehu.query.get(khid)
     kehu.status = u'已完成'
-    #kehu.xdtime = datetime.utcnow
+    # kehu.xdtime = datetime.utcnow
 
     # for dingdan in kehu.dingdans:
     #     dingdan.status = u'已下单'
@@ -718,10 +676,10 @@ def setkehuover(khid):
 
     return redirect(url_for('main.showkehudd', id=khid))
 
+
 @main.route('/outtoxls/<string:pm>', methods=['GET', 'POST'])
 @login_required
 def outtoxls(pm):
-
     # chanpin = Chanpin.query.filter_by(pinming=pm).first()
     # dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
     #                                                            Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
@@ -769,16 +727,15 @@ def outtoxls(pm):
     # open('app/cxls/xxx.xls', 'wb').write(data.xls)
 
     response = make_response(send_file("cxls/xxx.xls"))
-    response.headers["Content-Disposition"] = "attachment; filename="+'yxw'+".xls;"
+    response.headers["Content-Disposition"] = "attachment; filename=" + 'yxw' + ".xls;"
     return response
 
-    #return redirect(url_for('main.showkehudd', id=1))
+    # return redirect(url_for('main.showkehudd', id=1))
 
 
 @main.route('/taggetit/<string:pm>', methods=['GET', 'POST'])
 @login_required
 def taggetit(pm):
-
     # kehu = Kehu.query.get(khid)
     # kehu.status = u'已完成'
     # #kehu.xdtime = datetime.utcnow
@@ -792,7 +749,7 @@ def taggetit(pm):
 
     chanpin = Chanpin.query.filter_by(pinming=pm).first()
     dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
-                                                               Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+                                                                                      Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     return redirect(url_for('main.dinghuolist'))
 

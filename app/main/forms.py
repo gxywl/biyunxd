@@ -1,8 +1,9 @@
 # _*_ encoding: utf-8 _*_
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField
+from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField, FloatField
 from wtforms.validators import DataRequired, InputRequired
 from ..models import Chanpin, Xiaoqu
+
 
 # 客户
 class KehuForm(FlaskForm):
@@ -12,8 +13,9 @@ class KehuForm(FlaskForm):
     fangjian = StringField('栋单元房号', validators=[DataRequired()])
     chenghu = StringField('称呼', validators=[DataRequired()])
     tel = StringField('手机', validators=[DataRequired()])
-    zhuangtai = SelectField('进度状态', validators=[DataRequired()],
-                            choices=[('测尺', '测尺'), ('已下单', '已下单'), ('已安装', '已安装'), ('已清款', '已清款')])
+    zje = FloatField('总金额')
+    status = SelectField('进度状态', validators=[DataRequired()],
+                         choices=[('0', '已测尺'), ('2', '已下单'), ('3', '已安装'), ('4', '已清款')])
     # 状态：测尺，已下单，已安装，已清款
 
     beizhu = StringField('备注')
@@ -37,6 +39,7 @@ class WilladdcpForm(FlaskForm):
         super(WilladdcpForm, self).__init__(*args, **kwargs)
         self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.id).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 
 # 隐形网
 class YxwForm(FlaskForm):
@@ -66,11 +69,13 @@ class YxwForm(FlaskForm):
         self.color.choices = [('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 
+# 纱门
 class SmForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'), ('碧云805E', '碧云805E')])
+                          choices=[('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'),
+                                   ('碧云805E', '碧云805E')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     neikuan = IntegerField("内空宽（毫米）", validators=[DataRequired()])
@@ -146,6 +151,7 @@ class LyjForm(FlaskForm):
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
         self.color.choices = [('香槟金', '香槟金'), ('太空银', '太空银')]
 
+
 # 纱窗
 class ScForm(FlaskForm):
     weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
@@ -210,6 +216,7 @@ class ChForm(FlaskForm):
         super(ScForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
         self.color.choices = [('深灰', '深灰')]
+
 
 # 指纹锁
 class ZwsForm(FlaskForm):
