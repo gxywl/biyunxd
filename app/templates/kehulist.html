@@ -17,8 +17,7 @@
     {% for kehu in kehus %}
 
            <div class="panel panel-default">
-                <div class="panel-heading"><h3>客户: {{ kehu.id }} </h3><a class="btn btn-danger" href="{{  url_for('main.delkehu', id=kehu.id) }}" >删除客户</a>
-               <a class="btn btn-primary" href="{{  url_for('main.editkehu', id=kehu.id) }}" >修改客户</a></div>
+                <div class="panel-heading"><h4>客户: {{ kehu.id }}  </h4></div>
                 <div class="post-body">
                     <blockquote>
                     <ul class="list-unstyled">
@@ -27,132 +26,151 @@
                     <li>称呼: {{ kehu.chenghu }}</li>
                     <li>电话: {{ kehu.tel }}</li>
                     <li>状态: {{ kehu.status }}</li>
+                    <li>备注: {{ kehu.beizhu }}</li>
+                    <li><a class="btn btn-danger glyphicon glyphicon-remove" href="{{  url_for('main.delkehu', id=kehu.id) }}" > 删</a>
+               <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editkehu', id=kehu.id) }}" > 改</a></li>
 {#                    <li> {{ moment(kehu.xdtime).fromNow(refresh=True) }}{% if loop.first %}<span class="badge">新</span>{% endif %}</li>#}
                     </ul>
+                    <hr>
 
+                    <table class="table">
+                    <thead>
+                        <tr>
+                        <td>No</td><td>产品</td><td>位置</td><td>状态</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for dingdan in kehu.dingdans %}
+                        <tr>
+                        <td>{{ loop.index }}</td><td>{{ dingdan.chanpin.pinming }}</td><td>{{ dingdan.weizhi }}</td><td>{{ dingdan.status }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    </table>
+                <a class="btn btn-primary glyphicon glyphicon-th-list" href="{{  url_for('main.showkehudd', id=kehu.id) }}" > 详细</a>
 
-                       <div class="panel panel-default">
-                            <div class="panel-heading"> <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#c{{ kehu.id }}">显示</button> [...] <span class="pull-right"> <a class="btn btn-primary btn-sm" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >编辑订单</a></span></div>
-                            <div id="c{{ kehu.id }}" class="post-body collapse off">
-                                <blockquote>
-
-                                    {% for dingdan in kehu.dingdans %}
-                                            <div class="panel panel-default">
-
-                                        {% if dingdan.chanpin.pinming == '隐形网' %}
-
-                                                <div class="panel-heading">[ {{ dingdan.id }} ] 隐形网</div>
-                                                <div class="post-body">
-                                                    <blockquote>
-                                                    <ul>
-                                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                                        <li>数量: {{ dingdan.shuliang }}</li>
-                                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                                                        <li>高(mm): {{ dingdan.gao }}</li>
-                                                        <li>颜色: {{ dingdan.color }}</li>
-                                                    </ul>
-                                                    </blockquote>
-                                                </div>
+{#                  #}
+{#                       <div class="panel panel-default">#}
+{#                            <div class="panel-heading"> <button type="button" class="btn btn-primary" data-toggle="collapse" data-target="#c{{ kehu.id }}">显示</button> [...] <span class="pull-right"> <a class="btn btn-primary btn-sm" href="{{  url_for('main.showkehudd', id=kehu.id) }}" >编辑订单</a></span></div>#}
+{#                            <div id="c{{ kehu.id }}" class="post-body collapse off">#}
+{#                                <blockquote>#}
+{##}
+{#                                    {% for dingdan in kehu.dingdans %}#}
+{#                                            <div class="panel panel-default">#}
+{##}
+{#                                        {% if dingdan.chanpin.pinming == '隐形网' %}#}
+{##}
+{#                                                <div class="panel-heading">[ {{ dingdan.id }} ] 隐形网</div>#}
+{#                                                <div class="post-body">#}
+{#                                                    <blockquote>#}
+{#                                                    <ul>#}
+{#                                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                                                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+{#                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                                                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                                                        <li>颜色: {{ dingdan.color }}</li>#}
+{#                                                    </ul>#}
+{#                                                    </blockquote>#}
+{#                                                </div>#}
                                 {#                <div class="panel-footer">状态</div>#}
-
-                                        {% elif dingdan.chanpin.pinming == '纱门' %}
-
-                                                <div class="panel-heading">[ {{ dingdan.id }} ] 纱门</div>
-                                                <div class="post-body">
-                                                    <blockquote>
-                                                    <ul>
-                                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                                        <li>数量: {{ dingdan.shuliang }}</li>
-                                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                                                        <li>高(mm): {{ dingdan.gao }}</li>
-                                                        <li>颜色: {{ dingdan.color }}</li>
-
-                                                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>
-                                                        <li>扇数: {{ dingdan.shanshu }}</li>
-                                                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
-                                                        <li>锁位: {{ dingdan.shuowei }}</li>
-                                                        <li>装法: {{ dingdan.zhangfa }}</li>
-                                                    </ul>
-                                                    </blockquote>
-                                                </div>
+{##}
+{#                                        {% elif dingdan.chanpin.pinming == '纱门' %}#}
+{##}
+{#                                                <div class="panel-heading">[ {{ dingdan.id }} ] 纱门</div>#}
+{#                                                <div class="post-body">#}
+{#                                                    <blockquote>#}
+{#                                                    <ul>#}
+{#                                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                                                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+{#                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                                                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                                                        <li>颜色: {{ dingdan.color }}</li>#}
+{##}
+{#                                                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>#}
+{#                                                        <li>扇数: {{ dingdan.shanshu }}</li>#}
+{#                                                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+{#                                                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+{#                                                        <li>装法: {{ dingdan.zhangfa }}</li>#}
+{#                                                    </ul>#}
+{#                                                    </blockquote>#}
+{#                                                </div>#}
                                 {#                <div class="panel-footer">状态</div>#}
-
-                                        {% elif dingdan.chanpin.pinming == '晾衣架' %}
-                                                 <div class="panel-heading">[ {{ dingdan.id }} ] 晾衣架</div>
-                                                <div class="post-body">
-                                                    <blockquote>
-                                                    <ul>
-                                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                                        <li>数量: {{ dingdan.shuliang }}</li>
-                                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                                        <li>长(mm): {{ dingdan.kuan_chang }}</li>
-                                                        <li>高(mm): {{ dingdan.gao }}</li>
-                                                        <li>颜色: {{ dingdan.color }}</li>
-                                                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
-                                                    </ul>
-                                                    </blockquote>
-                                                </div>
+{##}
+{#                                        {% elif dingdan.chanpin.pinming == '晾衣架' %}#}
+{#                                                 <div class="panel-heading">[ {{ dingdan.id }} ] 晾衣架</div>#}
+{#                                                <div class="post-body">#}
+{#                                                    <blockquote>#}
+{#                                                    <ul>#}
+{#                                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                                                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+{#                                                        <li>长(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                                                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                                                        <li>颜色: {{ dingdan.color }}</li>#}
+{#                                                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+{#                                                    </ul>#}
+{#                                                    </blockquote>#}
+{#                                                </div>#}
                                 {#                <div class="panel-footer">状态</div>#}
-
-
-                                        {% elif dingdan.chanpin.pinming == '纱窗' %}
-                                                <div class="panel-heading">[ {{ dingdan.id }} ] 纱窗</div>
-                                                <div class="post-body">
-                                                    <blockquote>
-                                                    <ul>
-                                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                                        <li>数量: {{ dingdan.shuliang }}</li>
-                                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                                                        <li>高(mm): {{ dingdan.gao }}</li>
-                                                        <li>颜色: {{ dingdan.color }}</li>
-
-                                                        <li>底高(mm): {{ dingdan.meikuan_digao }}</li>
-                                                        <li>等分数: {{ dingdan.dengfenshu }}</li>
-                                                        <li>有否横条: {{ dingdan.ishaveht }}</li>
-                                                        <li>锁位: {{ dingdan.shuowei }}</li>
-                                                    </ul>
-                                                    </blockquote>
-                                                </div>
+{##}
+{##}
+{#                                        {% elif dingdan.chanpin.pinming == '纱窗' %}#}
+{#                                                <div class="panel-heading">[ {{ dingdan.id }} ] 纱窗</div>#}
+{#                                                <div class="post-body">#}
+{#                                                    <blockquote>#}
+{#                                                    <ul>#}
+{#                                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                                                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+{#                                                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                                                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                                                        <li>颜色: {{ dingdan.color }}</li>#}
+{##}
+{#                                                        <li>底高(mm): {{ dingdan.meikuan_digao }}</li>#}
+{#                                                        <li>等分数: {{ dingdan.dengfenshu }}</li>#}
+{#                                                        <li>有否横条: {{ dingdan.ishaveht }}</li>#}
+{#                                                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+{#                                                    </ul>#}
+{#                                                    </blockquote>#}
+{#                                                </div>#}
                                 {#                <div class="panel-footer">状态</div>#}
-
-                                        {% elif dingdan.chanpin.pinming == '指纹锁' %}
-                                                   <div class="panel-heading">[ {{ dingdan.id }} ] 指纹锁</div>
-                                                <div class="post-body">
-                                                    <blockquote><ul>
-                                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                                        <li>数量: {{ dingdan.shuliang }}</li>
-                                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                                        <li>颜色: {{ dingdan.color }}</li>
-
-                                                        <li>锁位: {{ dingdan.shuowei }}</li>
-                                                    </ul></blockquote>
-                                                </div>
-
-
-                                        {% endif %}
-
-
-                                                <div class="panel-footer">状态: {{ dingdan.status }} </div>
-                                            </div>
-                                    {% endfor %}
-
-
-
-
-                                </blockquote>
-                            </div>
-                           <div class="panel-footer"></div>
-                        </div>
-
+{##}
+{#                                        {% elif dingdan.chanpin.pinming == '指纹锁' %}#}
+{#                                                   <div class="panel-heading">[ {{ dingdan.id }} ] 指纹锁</div>#}
+{#                                                <div class="post-body">#}
+{#                                                    <blockquote><ul>#}
+{#                                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                                                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+{#                                                        <li>颜色: {{ dingdan.color }}</li>#}
+{##}
+{#                                                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+{#                                                    </ul></blockquote>#}
+{#                                                </div>#}
+{##}
+{##}
+{#                                        {% endif %}#}
+{##}
+{##}
+{#                                                <div class="panel-footer">状态: {{ dingdan.status }} </div>#}
+{#                                            </div>#}
+{#                                    {% endfor %}#}
+{##}
+{##}
+{##}
+{##}
+{#                                </blockquote>#}
+{#                            </div>#}
+{#                           <div class="panel-footer"></div>#}
+{#                        </div>#}
 
                     </blockquote>
 
 
                 </div>
-           <div class="panel-footer"></div>
+{#           <div class="panel-footer"></div>#}
             </div>
 
     {% endfor %}

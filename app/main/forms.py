@@ -86,7 +86,7 @@ class SmForm(FlaskForm):
                           choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
     zhangfa = SelectField('装法', validators=[DataRequired()],
                           choices=[('内装', '内装'), ('外装', '外装')])
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
@@ -112,7 +112,7 @@ class LyjForm(FlaskForm):
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
@@ -137,7 +137,7 @@ class LyjForm(FlaskForm):
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
@@ -168,9 +168,9 @@ class ScForm(FlaskForm):
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
                              choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '有横条')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('无横条', '无横条'), ('有横条', '有横条')])
 
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
@@ -201,9 +201,9 @@ class ChForm(FlaskForm):
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
                              choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '有横条')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('无横条', '无横条'), ('有横条', '有横条')])
 
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])
@@ -227,11 +227,11 @@ class ZwsForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
                           choices=[('', ''), ('左', '左'), ('右', '右')])
-    dakaifs = SelectField('开锁方式', validators=[DataRequired()],
+    kaishuofs = SelectField('开锁方式', validators=[DataRequired()],
                           choices=[('内开', '内开'), ('外开', '外开')])
     # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
 
-    beizhu = StringField('备注', validators=[DataRequired()])
+    beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
     # other = StringField("其他", validators=[DataRequired()])

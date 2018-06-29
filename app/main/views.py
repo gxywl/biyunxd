@@ -184,10 +184,10 @@ def showkehudd(id):
             toview = 'addyxw'
         elif chanpin.pinming == '纱门':
             toview = 'addsm'
-        elif chanpin.pinming == '晾衣架':
-            toview = 'addlyj'
-        elif chanpin.pinming == '纱窗':
-            toview = 'addsc'
+        elif chanpin.pinming == '晾衣杆' or chanpin.pinming == '晾衣机':
+            toview = 'addlyg_j'
+        elif chanpin.pinming == '纱窗' or chanpin.pinming == '窗花':
+            toview = 'addsc_ch'
         elif chanpin.pinming == '指纹锁':
             toview = 'addzws'
         else:
@@ -269,14 +269,21 @@ def addsm(cpid, khid):
 
     if form.validate_on_submit():
         # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
                           color=form.color.data,
-                          meikuan_digao=form.neikuan.data, shanshu=form.shanshu.data,
+                          meikongkuan_bashoudigao=form.neikuan.data, shanshu=form.shanshu.data,
                           zhonghengtiaoshu_gantiaoshu=form.zhonghengtiaoshu.data,
-                          shuowei=form.shuowei.data, zhangfa=form.zhangfa.data,
-                          status='No')
+                          shuowei=form.shuowei.data, zhangfa_dengfenshu_kaishuofangshi=form.zhangfa.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                          status=0)
 
         db.session.add(dingdan)
 
@@ -284,13 +291,13 @@ def addsm(cpid, khid):
 
         return redirect(url_for('main.showkehudd', id=khid))
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
 
 
-# 晾衣架
+# 晾衣杆_机
 @main.route('/addlyj/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def addlyj(cpid, khid):
+def addlyg_j(cpid, khid):
     form = LyjForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -301,11 +308,17 @@ def addlyj(cpid, khid):
 
     if form.validate_on_submit():
         # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
-                          zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data,
-                          color=form.color.data, status='No')
+                          zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
 
         db.session.add(dingdan)
 
@@ -316,10 +329,10 @@ def addlyj(cpid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 
-# # 纱窗
+# # 纱窗 窗花
 @main.route('/addsc/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def addsc(cpid, khid):
+def addsc_ch(cpid, khid):
     form = ScForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -329,22 +342,28 @@ def addsc(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        if form.ishaveht.data == 0:
-            ishaveht = False
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            ishaveht = True
+            fullsavefilename = ''
+
+        # if form.ishaveht.data == 0:
+        #     ishaveht = False
+        # else:
+        #     ishaveht = True
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
                           color=form.color.data,
-                          meikuan_digao=form.digao.data, dengfenshu=form.dengfenshu.data,
-                          ishaveht=ishaveht,
-                          shuowei=form.shuowei.data,
-                          status='No')
+                          meikongkuan_bashoudigao=form.bashoudg.data, zhangfa_dengfenshu_kaishuofangshi=form.dengfenshu.data,
+                          ishaveht=form.ishaveht.data, shuowei=form.shuowei.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
 
         db.session.add(dingdan)
 
-        flash('已成功添加订制')
+        flash('已成功添加')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -364,13 +383,22 @@ def addzws(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
+
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
-                          status='No')
+                          zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
+
 
         db.session.add(dingdan)
 
-        flash('已成功添加订制')
+        flash('已成功添加')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -399,10 +427,10 @@ def editdingdan(ddid, khid):
         toview = 'edityxw'
     elif pinming == '纱门':
         toview = 'editsm'
-    elif pinming == '晾衣架':
-        toview = 'editlyj'
-    elif pinming == '纱窗':
-        toview = 'editsc'
+    elif pinming == '晾衣杆' or pinming == '晾衣机':
+        toview = 'editlyg_j'
+    elif pinming == '纱窗' or pinming == '纱窗':
+        toview = 'editsc_ch'
     elif pinming == '指纹锁':
         toview = 'editzws'
     else:
@@ -436,7 +464,7 @@ def edityxw(ddid, khid):
 
         db.session.add(dingdan)
 
-        flash('已成功修改订制')
+        flash('已成功修改')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -469,6 +497,7 @@ def editsm(ddid, khid):
     form = SmForm()
 
     if form.validate_on_submit():
+
         dingdan = Dingdan.query.get(ddid)
 
         dingdan.weizhi = form.weizhi.data
@@ -476,14 +505,20 @@ def editsm(ddid, khid):
         dingdan.xinghao = form.xinghao.data
         dingdan.kuan_chang = form.kuan.data
         dingdan.gao = form.gao.data
-        # dingdan.color=form.color.data
+        dingdan.color = form.color.data
 
-        dingdan.meikuan_digao = form.neikuan.data
+        dingdan.meikongkuan_bashoudigao = form.neikuan.data
         dingdan.shanshu = form.shanshu.data
         dingdan.zhonghengtiaoshu_gantiaoshu = form.zhonghengtiaoshu.data
         dingdan.shuowei = form.shuowei.data
-        dingdan.zhangfa = form.zhangfa.data
-        dingdan.color = form.color.data
+        dingdan.zhangfa_dengfenshu_kaishuofangshi = form.zhangfa.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
 
         db.session.add(dingdan)
 
@@ -492,7 +527,6 @@ def editsm(ddid, khid):
         return redirect(url_for('main.showkehudd', id=khid))
 
     dingdan = Dingdan.query.get(ddid)
-
     chanpin = Chanpin.query.get(dingdan.chanpin.id)
     kehu = Kehu.query.get(khid)
 
@@ -506,20 +540,21 @@ def editsm(ddid, khid):
     form.gao.data = dingdan.gao
     form.color.data = dingdan.color
 
-    form.neikuan.data = dingdan.meikuan_digao
+    form.neikuan.data = dingdan.meikongkuan_bashoudigao
     form.shanshu.data = dingdan.shanshu
     form.zhonghengtiaoshu.data = dingdan.zhonghengtiaoshu_gantiaoshu
     form.shuowei.data = dingdan.shuowei
-    form.zhangfa.data = dingdan.zhangfa
-    # form.color.data =dingdan.color
+    form.zhangfa.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
+    form.beizhu.data = dingdan.beizhu
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
 # # 晾衣架
 @main.route('/editlyj/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def editlyj(ddid, khid):
+def editlyg_j(ddid, khid):
     form = LyjForm()
 
     if form.validate_on_submit():
@@ -531,8 +566,14 @@ def editlyj(ddid, khid):
         dingdan.kuan_chang = form.chang.data
         dingdan.gao = form.gao.data
         dingdan.color = form.color.data
-
         dingdan.zhonghengtiaoshu_gantiaoshu = form.gantiaoshu.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
 
         db.session.add(dingdan)
 
@@ -554,24 +595,24 @@ def editlyj(ddid, khid):
     form.chang.data = dingdan.kuan_chang
     form.gao.data = dingdan.gao
     form.color.data = dingdan.color
-
     form.gantiaoshu.data = dingdan.zhonghengtiaoshu_gantiaoshu
+    form.beizhu.data = dingdan.beizhu
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
 # # 纱窗
 @main.route('/editsc/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def editsc(ddid, khid):
+def editsc_ch(ddid, khid):
     form = ScForm()
 
     if form.validate_on_submit():
 
-        if form.ishaveht.data == 0:
-            ishaveht = False
-        else:
-            ishaveht = True
+        # if form.ishaveht.data == 0:
+        #     ishaveht = False
+        # else:
+        #     ishaveht = True
 
         dingdan = Dingdan.query.get(ddid)
 
@@ -582,11 +623,17 @@ def editsc(ddid, khid):
         dingdan.gao = form.gao.data
         dingdan.color = form.color.data
 
-        dingdan.meikuan_digao = form.digao.data
-        dingdan.dengfenshu = form.dengfenshu.data
+        dingdan.meikongkuan_bashoudigao = form.bashoudg.data
+        dingdan.zhangfa_dengfenshu_kaishuofangshi = form.dengfenshu.data
         dingdan.shuowei = form.shuowei.data
+        dingdan.ishaveht = form.ishaveht.data
+        dingdan.beizhu = form.beizhu.data
 
-        dingdan.ishaveht = ishaveht
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
 
         db.session.add(dingdan)
         db.session.commit()
@@ -610,18 +657,17 @@ def editsc(ddid, khid):
     form.gao.data = dingdan.gao
     form.color.data = dingdan.color
 
-    form.digao.data = dingdan.meikuan_digao
-    form.dengfenshu.data = dingdan.dengfenshu
+    form.bashoudg.data = dingdan.meikongkuan_bashoudigao
+    form.dengfenshu.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
     form.shuowei.data = dingdan.shuowei
+    # if dingdan.ishaveht:
+    #     ishaveht = 1
+    # else:
+    #     ishaveht = 0
+    form.ishaveht.data = dingdan.ishaveht
+    form.beizhu.data = dingdan.beizhu
 
-    if dingdan.ishaveht:
-        ishaveht = 1
-    else:
-        ishaveht = 0
-
-    form.ishaveht.data = ishaveht
-
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
 # # 指纹锁
@@ -638,6 +684,14 @@ def editzws(ddid, khid):
         dingdan.xinghao = form.xinghao.data
         dingdan.color = form.color.data
         dingdan.shuowei = form.shuowei.data
+        dingdan.zhangfa_dengfenshu_kaishuofangshi = form.kaishuofs.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
 
         db.session.add(dingdan)
         db.session.commit()
@@ -659,22 +713,27 @@ def editzws(ddid, khid):
     form.xinghao.data = dingdan.xinghao
     form.color.data = dingdan.color
     form.shuowei.data = dingdan.shuowei
+    form.kaishuofs.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
+    form.beizhu.data = dingdan.beizhu
 
-    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
 @main.route('/doxiadan/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def doxiadan(khid):
     kehu = Kehu.query.get(khid)
-    kehu.status = u'已下单'
-    kehu.xdtime = datetime.utcnow()
+    kehu.status = 1
+    kehu.time1 = datetime.utcnow()
 
     for dingdan in kehu.dingdans:
-        dingdan.status = u'已下单'
+        dingdan.status = 1
+        dingdan.time1 = datetime.utcnow()
 
     db.session.add(kehu)
-    flash('已成功下单客户')
+    flash('已确认下单')
 
     return redirect(url_for('main.showkehudd', id=khid))
 
