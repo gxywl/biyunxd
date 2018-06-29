@@ -39,7 +39,7 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">[ {{ dingdan.id }} ] {{ dingdan.chanpin.pinming }}
-                    {% if kehu.beizhu == 0  %}
+                    {% if kehu.status == 0  %}
                     <a class="btn btn-danger btn-sm  glyphicon glyphicon-remove" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" > 删</a>
           <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" > 改</a>
                     {% else %}
@@ -167,7 +167,7 @@
 
           <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    {% if kehu.beizhu == 0  %}
+                    {% if kehu.status == 0 %}
                     <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
                     {% else %}
                         【已下单】 撤销？？

@@ -129,20 +129,25 @@ def editkehu(id):
         xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
 
         kehu.xiaoqu = xiaoqu
-        kehu.donghao = form.donghao.data
-        kehu.fanghao = form.fanghao.data
+        kehu.fangjian = form.fangjian.data
         kehu.chenghu = form.chenghu.data
         kehu.tel = form.tel.data
+        kehu.zje = form.zje.data
+        kehu.status = form.status.data
+        kehu.beizhu = form.beizhu.data
 
         db.session.add(kehu)
         flash('已成功修改客户')
         return redirect(url_for('main.kehulist'))
 
     form.xiaoqu.data = kehu.xiaoqu.id
-    form.donghao.data = kehu.donghao
-    form.fanghao.data = kehu.fanghao
+    form.fangjian.data = kehu.fangjian
     form.chenghu.data = kehu.chenghu
     form.tel.data = kehu.tel
+    form.zje.data = kehu.zje
+    form.status.data = kehu.status
+    form.beizhu.data = kehu.beizhu
+
 
     return render_template('addkehu.html', form=form)
 

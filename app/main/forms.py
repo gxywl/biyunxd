@@ -15,7 +15,7 @@ class KehuForm(FlaskForm):
     tel = StringField('手机', validators=[DataRequired()])
     zje = FloatField('总金额')
     status = SelectField('进度状态', validators=[DataRequired()],
-                         choices=[('0', '已测尺'), ('2', '已下单'), ('3', '已安装'), ('4', '已清款')])
+                         choices=[('0', '已测尺'), ('1', '已下单'), ('2', '已安装'), ('3', '已清款')])
     # 状态：测尺，已下单，已安装，已清款
 
     beizhu = StringField('备注')
