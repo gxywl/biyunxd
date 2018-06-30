@@ -38,8 +38,8 @@
     {% for dingdan in kehu.dingdans %}
             <div class="panel panel-default">
 
-                <div class="panel-heading">[ {{ dingdan.id }} ] {{ dingdan.chanpin.pinming }}
-                    {% if kehu.status == 0  %}
+                <div class="panel-heading">订单{{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
+                    {% if kehu.status == 1  %}
                     <a class="btn btn-danger btn-sm  glyphicon glyphicon-remove" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" > 删</a>
           <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" > 改</a>
                     {% else %}
@@ -48,10 +48,14 @@
                 </div>
                 <div class="post-body">
                     <blockquote>
-                    <ul class="list-unstyled">
-                        <li>位置: {{ dingdan.weizhi }}</li>
-                        <li>数量: {{ dingdan.shuliang }}</li>
-                        <li>型号: {{ dingdan.xinghao }}</li>
+{#                    <ul class="list-unstyled">#}
+{#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+{#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+{#                        <li>型号: {{ dingdan.xinghao }}</li>                    #}
+                    <table class="table">
+                        <tr><td style="width: 100px;">位置:</td><td>{{ dingdan.weizhi }}</td></tr>
+                        <tr><td>数量:</td><td>{{ dingdan.shuliang }}</td></tr>
+                        <tr><td>型号:</td><td>{{ dingdan.xinghao }}</td></tr>
 
         {% if dingdan.chanpin.pinming == '隐形网' %}
 
@@ -62,9 +66,14 @@
 {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
 {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
 {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
-                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                        <li>高(mm): {{ dingdan.gao }}</li>
-                        <li>颜色: {{ dingdan.color }}</li>
+{#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                        <li>颜色: {{ dingdan.color }}</li>#}
+
+                        <tr><td>宽(mm):</td><td>{{ dingdan.kuan_chang }}</td></tr>
+                        <tr><td>高(mm):</td><td>{{ dingdan.gao }}</td></tr>
+                        <tr><td>颜色:</td><td>{{ dingdan.color }}</td></tr>
+
 {#                        <li>备注: {{ dingdan.beizhu }}</li>#}
 {#                        <li>图示: <img src="{{ url_for('static', filename='/upload{{ dingdan.tushipic }}') }}">  </li>#}
 {##}
@@ -85,15 +94,23 @@
 {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
 {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
 {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
-                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                        <li>高(mm): {{ dingdan.gao }}</li>
-                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>
-                        <li>颜色: {{ dingdan.color }}</li>
-                        <li>扇数: {{ dingdan.shanshu }}</li>
-                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
-                        <li>锁位: {{ dingdan.shuowei }}</li>
-                        <li>装法: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>
+{#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>#}
+{#                        <li>颜色: {{ dingdan.color }}</li>#}
+{#                        <li>扇数: {{ dingdan.shanshu }}</li>#}
+{#                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+{#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+{#                        <li>装法: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
 
+                        <tr><td>宽(mm):</td><td>{{ dingdan.kuan_chang }}</td></tr>
+                        <tr><td>高(mm):</td><td>{{ dingdan.gao }}</td></tr>
+                        <tr><td>内空宽(mm):</td><td>{{ dingdan.meikongkuan_bashoudigao }}</td></tr>
+                        <tr><td>颜色:</td><td>{{ dingdan.color }}</td></tr>
+                        <tr><td>扇数:</td><td>{{ dingdan.shanshu }}</td></tr>
+                        <tr><td>中横条数:</td><td>{{ dingdan.zhonghengtiaoshu_gantiaoshu }}</td></tr>
+                        <tr><td>锁位:</td><td>{{ dingdan.shuowei }}</td></tr>
+                        <tr><td>装法:</td><td>{{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</td></tr>
 
 {#                    </ul>#}
 {#                    </blockquote>#}
@@ -108,11 +125,16 @@
 {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
 {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
 {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
-                        <li>长(mm): {{ dingdan.kuan_chang }}</li>
-                        <li>高(mm): {{ dingdan.gao }}</li>
-                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
-                        <li>颜色: {{ dingdan.color }}</li>
+{#                        <li>长(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+{#                        <li>颜色: {{ dingdan.color }}</li>#}
 
+
+                        <tr><td>长(mm):</td><td>{{ dingdan.kuan_chang }}</td></tr>
+                        <tr><td>高(mm):</td><td>{{ dingdan.gao }}</td></tr>
+                        <tr><td>杆条数:</td><td>{{ dingdan.zhonghengtiaoshu_gantiaoshu }}</td></tr>
+                        <tr><td>颜色:</td><td>{{ dingdan.color }}</td></tr>
 {#                    </ul>#}
 {#                    </blockquote>#}
 {#                </div>#}
@@ -127,14 +149,23 @@
 {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
 {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
 {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
-                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>
-                        <li>高(mm): {{ dingdan.gao }}</li>
-                        <li>颜色: {{ dingdan.color }}</li>
+{#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+{#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+{#                        <li>颜色: {{ dingdan.color }}</li>#}
+{##}
+{#                        <li>底高(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>#}
+{#                        <li>等分数: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
+{#                        <li>有否横条: {{ dingdan.ishaveht }}</li>#}
+{#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
 
-                        <li>底高(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>
-                        <li>等分数: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>
-                        <li>有否横条: {{ dingdan.ishaveht }}</li>
-                        <li>锁位: {{ dingdan.shuowei }}</li>
+                        <tr><td>宽(mm):</td><td>{{ dingdan.kuan_chang }}</td></tr>
+                        <tr><td>高(mm):</td><td>{{ dingdan.gao }}</td></tr>
+                        <tr><td>把手底高(mm):</td><td>{{ dingdan.meikongkuan_bashoudigao }}</td></tr>
+                        <tr><td>颜色:</td><td>{{ dingdan.color }}</td></tr>
+                        <tr><td>等分数:</td><td>{{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</td></tr>
+                        <tr><td>有否横条:</td><td>{{ dingdan.ishaveht }}</td></tr>
+                        <tr><td>锁位:</td><td>{{ dingdan.shuowei }}</td></tr>
+
 {#                    </ul>#}
 {#                    </blockquote>#}
 {#                </div>#}
@@ -147,18 +178,27 @@
 {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
 {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
 {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
-                        <li>颜色: {{ dingdan.color }}</li>
+{#                        <li>颜色: {{ dingdan.color }}</li>#}
+{#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+                        <tr><td>颜色:</td><td>{{ dingdan.color }}</td></tr>
+                        <tr><td>锁位:</td><td>{{ dingdan.shuowei }}</td></tr>
 
-                        <li>锁位: {{ dingdan.shuowei }}</li>
 {#                    </ul></blockquote>#}
 {#                </div>#}
 
 
         {% endif %}
-                        <li>备注: {{ dingdan.beizhu }}</li>
-                        <li>图示: <img height="180" src="/static/upload/{{ dingdan.tushipic }}">  </li>
+{#                        <li>备注: {{ dingdan.beizhu }}</li>#}
+{#                        <li>图示: <img height="180" src="/static/upload/{{ dingdan.tushipic }}">  </li>#}
 
-                    </ul></blockquote>
+{#                    </ul>#}
+                        <tr><td>备注:</td><td>{{ dingdan.beizhu }}</td></tr>
+{#                        <tr><td>图示:</td><td><img height="180" src="/static/upload/{{ dingdan.tushipic }}"></td></tr>#}
+                    </table>
+                        图示:<br>
+                        <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+
+                    </blockquote>
                 </div>
                 <div class="panel-footer">状态: {{ dingdan.status }}</div>
             </div>
@@ -167,7 +207,7 @@
 
           <div class="panel panel-default">
                 <div class="panel-heading text-center">
-                    {% if kehu.status == 0 %}
+                    {% if kehu.status == 1 %}
                     <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
                     {% else %}
                         【已下单】 撤销？？

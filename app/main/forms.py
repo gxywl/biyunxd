@@ -2,7 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField, FloatField
 from wtforms.validators import DataRequired, InputRequired
-from ..models import Chanpin, Xiaoqu
+from ..models import Chanpin, Xiaoqu, Chanpinxx
 
 
 # 客户
@@ -14,8 +14,9 @@ class KehuForm(FlaskForm):
     chenghu = StringField('称呼', validators=[DataRequired()])
     tel = StringField('手机', validators=[DataRequired()])
     zje = FloatField('总金额')
-    status = SelectField('进度状态', validators=[DataRequired()],
-                         choices=[('0', '已测尺'), ('1', '已下单'), ('2', '已安装'), ('3', '已清款')])
+    # status = SelectField('进度状态', validators=[DataRequired()],
+    #                      choices=[('0', '已测尺'), ('1', '已下单'), ('2', '已安装'), ('3', '已清款')])
+    status = SelectField('进度状态', validators=[DataRequired()], coerce=int)
     # 状态：测尺，已下单，已安装，已清款
 
     beizhu = StringField('备注')
@@ -26,6 +27,7 @@ class KehuForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(KehuForm, self).__init__(*args, **kwargs)
         self.xiaoqu.choices = [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
+        self.status.choices = [(1, '已测尺'), (2, '已下单'), (3, '已安装'), (4, '已清款')]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 
@@ -47,10 +49,11 @@ class YxwForm(FlaskForm):
     # xiangmu = SelectField('布放项目', validators=[DataRequired()], choices=[('0', '放生'),('1', '火施'),('2', '其他')])
     # cpid = HiddenField()
     # khid = HiddenField()
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''),('大阳台', '大阳台'), ('小阳台', '小阳台') ])
+    # weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
+                          choices=[('', ''), ('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
@@ -65,8 +68,9 @@ class YxwForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
+        # self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+        #     pinming = u'隐形网').all()]  #  and Chanpinxx.chanshux == '位置'
+        self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 
 # 纱门
@@ -228,7 +232,7 @@ class ZwsForm(FlaskForm):
     shuowei = SelectField('锁位', validators=[DataRequired()],
                           choices=[('', ''), ('左', '左'), ('右', '右')])
     kaishuofs = SelectField('开锁方式', validators=[DataRequired()],
-                          choices=[('内开', '内开'), ('外开', '外开')])
+                            choices=[('内开', '内开'), ('外开', '外开')])
     # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
 
     beizhu = StringField('备注')

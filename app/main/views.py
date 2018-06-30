@@ -730,11 +730,11 @@ def editzws(ddid, khid):
 @login_required
 def doxiadan(khid):
     kehu = Kehu.query.get(khid)
-    kehu.status = 1
+    kehu.status = 2
     kehu.time1 = datetime.utcnow()
 
     for dingdan in kehu.dingdans:
-        dingdan.status = 1
+        dingdan.status = 2
         dingdan.time1 = datetime.utcnow()
 
     db.session.add(kehu)

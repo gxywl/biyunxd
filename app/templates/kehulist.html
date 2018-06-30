@@ -25,7 +25,20 @@
                     <li>房间: {{ kehu.fangjian }}</li>
                     <li>称呼: {{ kehu.chenghu }}</li>
                     <li>电话: {{ kehu.tel }}</li>
-                    <li>状态: {{ kehu.status }}</li>
+{#                    <li>状态: {{ kehu.status }}</li>#}
+
+                    {% if kehu.status == 1 %}
+                        <li>状态: 已测尺</li>
+                    {% elif kehu.status == 2  %}
+                        <li>状态: 已下单</li>
+                    {% elif kehu.status == 3  %}
+                        <li>状态: 已安装</li>
+                    {% elif kehu.status == 4  %}
+                        <li>状态: 已清款</li>
+                    {% else %}
+                        <li>状态: 状态有误</li>
+                    {% endif %}
+
                     <li>备注: {{ kehu.beizhu }}</li>
                     <li><a class="btn btn-danger glyphicon glyphicon-remove" href="{{  url_for('main.delkehu', id=kehu.id) }}" > 删</a>
                <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editkehu', id=kehu.id) }}" > 改</a></li>
@@ -42,7 +55,30 @@
                     <tbody>
                     {% for dingdan in kehu.dingdans %}
                         <tr>
-                        <td>{{ loop.index }}</td><td>{{ dingdan.chanpin.pinming }}</td><td>{{ dingdan.weizhi }}</td><td>{{ dingdan.status }}</td>
+                        <td>{{ loop.index }}</td><td>{{ dingdan.chanpin.pinming }}</td><td>{{ dingdan.weizhi }}</td><td>
+
+{#                            {{ dingdan.status }}#}
+
+                    {% if dingdan.status == 1 %}
+                        已测尺
+                    {% elif dingdan.status == 2  %}
+                        业务下单
+                    {% elif dingdan.status == 3  %}
+                        工厂下单
+                    {% elif dingdan.status == 4  %}
+                        工厂入库
+                    {% elif dingdan.status == 5  %}
+                        工厂发货
+                    {% elif dingdan.status == 6  %}
+                        货到工地
+                    {% elif dingdan.status == 7  %}
+                        安装完成
+
+                    {% else %}
+                        状态有误
+                    {% endif %}
+
+                        </td>
                         </tr>
                     {% endfor %}
                     </tbody>

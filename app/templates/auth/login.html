@@ -4,9 +4,11 @@
 {% block title %}Login{% endblock %}
 
 {% block page_content %}
-<div class="page-header">
-    <h3>登录</h3>
+<div class="page-header text-center">
+{#    <h3>登录</h3>#}
+    <img src="/static/bylogo.jpg" height="100" class="text-center">
 </div>
+
 <div class="col-md-4">
     {{ wtf.quick_form(form) }}
 </div>

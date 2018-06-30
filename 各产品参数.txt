@@ -1,3 +1,6 @@
+ INSERT INTO chanpinxxs(pinming,chanshux,chanshuz) SELECT field2,field3,field4
+ FROM 产品参数工作簿
+
 
 产品: 隐形网
 
