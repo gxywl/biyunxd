@@ -14,13 +14,33 @@ def loginto(u,p):
     if user is not None and user.verify_pin(p):
         login_user(user)
 
-        #管理账号转到管理页
-        if user.isadm:
-            return redirect(url_for('main.count'))
+        # #管理账号转到管理页
+        # if user.isadm:
+        #     return redirect(url_for('main.count'))
+        # else:
+        # #一般用户转转到首页..
+        #     return redirect(request.args.get('next') or url_for('main.index'))
+
+        # 管理账号转到管理页
+        if user.role == 'adm':
+            return redirect(url_for('admin.index'))
+        # pass
+        elif user.role == '业务员':
+            # 一般用户转转到首页..
+            return redirect(request.args.get('next') or url_for('main.kehulist'))
+        elif user.role == '订货员':
+            # 一般用户转转到首页..
+            return redirect(request.args.get('next') or url_for('main.dinghuolist'))
+        elif user.role == '发货员':
+            # 一般用户转转到首页..
+            return redirect(request.args.get('next') or url_for('main.fahuolist'))
         else:
-        #一般用户转转到首页..
-            return redirect(request.args.get('next') or url_for('main.index'))
-    flash('Invalid username or password')
+            # 一般用户转转到首页..
+            # return redirect(request.args.get('next') or url_for('main.kehulist'))
+            pass
+
+    else:
+        flash('Invalid username or password')
 
 
 @auth.route('/login', methods=['Get', 'Post'])

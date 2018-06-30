@@ -14,8 +14,7 @@ from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm
 from . import main
 
-
-# import tablib
+import tablib
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -80,8 +79,8 @@ def kehulist():
 @login_required
 def dinghuolist():
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
-    dingdans = Dingdan.query.filter_by(status=u"已下单").order_by(Dingdan.chanpin_id,
-                                                               Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
+                                                          Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
     return render_template('dinghuolist.html', dingdans=dingdans)  # form=form,
 
 
@@ -147,7 +146,6 @@ def editkehu(id):
     form.zje.data = kehu.zje
     form.status.data = kehu.status
     form.beizhu.data = kehu.beizhu
-
 
     return render_template('addkehu.html', form=form)
 
@@ -249,7 +247,8 @@ def addyxw(cpid, khid):
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                          color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
+                          color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                          status=0)
 
         db.session.add(dingdan)
 
@@ -362,7 +361,8 @@ def addsc_ch(cpid, khid):
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
                           color=form.color.data,
-                          meikongkuan_bashoudigao=form.bashoudg.data, zhangfa_dengfenshu_kaishuofangshi=form.dengfenshu.data,
+                          meikongkuan_bashoudigao=form.bashoudg.data,
+                          zhangfa_dengfenshu_kaishuofangshi=form.dengfenshu.data,
                           ishaveht=form.ishaveht.data, shuowei=form.shuowei.data,
                           beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
 
@@ -399,7 +399,6 @@ def addzws(cpid, khid):
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
                           zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
                           beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
-
 
         db.session.add(dingdan)
 
@@ -489,8 +488,7 @@ def edityxw(ddid, khid):
     form.color.data = dingdan.color
     form.beizhu.data = dingdan.beizhu
 
-    #form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
-
+    # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
@@ -551,7 +549,6 @@ def editsm(ddid, khid):
     form.shuowei.data = dingdan.shuowei
     form.zhangfa.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
     form.beizhu.data = dingdan.beizhu
-
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
@@ -721,8 +718,6 @@ def editzws(ddid, khid):
     form.kaishuofs.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
     form.beizhu.data = dingdan.beizhu
 
-
-
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
@@ -762,51 +757,69 @@ def setkehuover(khid):
 @main.route('/outtoxls/<string:pm>', methods=['GET', 'POST'])
 @login_required
 def outtoxls(pm):
-    # chanpin = Chanpin.query.filter_by(pinming=pm).first()
-    # dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
-    #                                                            Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-    #
-    # if pm == '隐形网':
-    #     headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色")
-    # elif pm == '纱门':
-    #     headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色",u"内空宽（毫米）",u'扇数',u'中横条数',u'锁位',u'装法')
-    # elif pm == '晾衣架':
-    #     headers = (u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"颜色", u"杆条数")
-    # elif pm == '纱窗':
-    #     headers = (u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"底高（毫米）", u"等分数", u"有否横条", u"锁位")
-    # elif pm == '指纹锁':
-    #     headers = (u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位")
-    #
-    #
-    # info = []
-    # data = tablib.Dataset(*info, headers=headers)
-    #
-    # for dingdan in dingdans:
-    #
-    #     if pm == '隐形网':
-    #         data.append([u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao, dingdan.color])
-    #     elif pm == '纱门':
-    #         data.append([u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-    #                      dingdan.color,dingdan.meikuan_digao,dingdan.shanshu,dingdan.zhonghengtiaoshu_gantiaoshu,dingdan.shuowei,dingdan.zhangfa,])
-    #     elif pm == '晾衣架':
-    #         data.append([u'晾衣架', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-    #                      dingdan.color,dingdan.zhonghengtiaoshu_gantiaoshu])
-    #     elif pm == '纱窗':
-    #         data.append([u'纱窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-    #                      dingdan.color,dingdan.meikuan_digao,dingdan.dengfenshu,dingdan.ishaveht,dingdan.shuowei])
-    #     elif pm == '指纹锁':
-    #         data.append([u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei])
-    #
-    #
-    # t = time.time()
-    # nowTime = lambda: int(round(t * 1000))
-    # tmpstr = current_user.username + str(nowTime())
-    # md5filename = hashlib.md5()
-    # md5filename.update(tmpstr.encode('utf-8'))
-    # filenamehead = md5filename.hexdigest()[:15]
-    #
-    # # 导出excel表
-    # open('app/cxls/xxx.xls', 'wb').write(data.xls)
+    # 取出品名  过滤业务下单
+    chanpin = Chanpin.query.filter_by(pinming=pm).first()
+    dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
+                                                                                 Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    if pm == '隐形网':
+        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注")
+
+    elif pm == '纱门':
+        headers = (
+        u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法', u"备注")
+
+    elif pm == '晾衣杆' or pm == '晾衣机':
+        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色", u"备注")
+
+    elif pm == '纱窗' or pm == '窗花':
+        headers = (
+        u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注")
+
+    elif pm == '指纹锁':
+        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注")
+
+    info = []
+    data = tablib.Dataset(*info, headers=headers)
+
+    for dingdan in dingdans:
+
+        if pm == '隐形网':
+            data.append(
+                [dingdan.id, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.color, dingdan.beizhu])
+
+        elif pm == '纱门':
+            data.append(
+                [dingdan.id, u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.meikongkuan_bashoudigao, dingdan.color, dingdan.shanshu, dingdan.zhonghengtiaoshu_gantiaoshu,
+                 dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu])
+
+        elif pm == '晾衣杆' or pm == '晾衣机':
+            data.append(
+                [dingdan.id, u'晾衣架', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu])
+
+        elif pm == '纱窗' or pm == '窗花':
+            data.append(
+                [dingdan.id, u'纱窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu])
+
+        elif pm == '指纹锁':
+            data.append(
+                [dingdan.id, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei,
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu])
+
+    t = time.time()
+    nowTime = lambda: int(round(t * 1000))
+    tmpstr = current_user.username + str(nowTime())
+    md5filename = hashlib.md5()
+    md5filename.update(tmpstr.encode('utf-8'))
+    filenamehead = md5filename.hexdigest()[:15]
+
+    # 导出excel表
+    open('app/cxls/xxx.xls', 'wb').write(data.xls)
 
     response = make_response(send_file("cxls/xxx.xls"))
     response.headers["Content-Disposition"] = "attachment; filename=" + 'yxw' + ".xls;"
@@ -823,15 +836,20 @@ def taggetit(pm):
     # #kehu.xdtime = datetime.utcnow
     #
     # # for dingdan in kehu.dingdans:
-    # #     dingdan.status = u'已下单'
+    # #     dingdan.status = 3
     #
     #
     # db.session.add(kehu)
     # flash('已标志完成客户')
 
     chanpin = Chanpin.query.filter_by(pinming=pm).first()
-    dingdans = Dingdan.query.filter_by(status=u"已下单", chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
-                                                                                      Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id)
+
+    for dingdan in dingdans:
+        dingdan.status = 3
+        db.session.add(dingdan)
+
+
 
     return redirect(url_for('main.dinghuolist'))
 
