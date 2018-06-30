@@ -763,21 +763,25 @@ def outtoxls(pm):
                                                                                  Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     if pm == '隐形网':
-        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注")
+        headers = (
+        u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
     elif pm == '纱门':
         headers = (
-        u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法', u"备注")
+            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
+            u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
     elif pm == '晾衣杆' or pm == '晾衣机':
-        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色", u"备注")
+        headers = (
+        u"订单号", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
     elif pm == '纱窗' or pm == '窗花':
         headers = (
-        u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注")
+            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
+            u"客户", u"电话", u"地址", u"小区", u"房间")
 
     elif pm == '指纹锁':
-        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注")
+        headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
     info = []
     data = tablib.Dataset(*info, headers=headers)
@@ -787,29 +791,35 @@ def outtoxls(pm):
         if pm == '隐形网':
             data.append(
                 [dingdan.id, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-                 dingdan.color, dingdan.beizhu])
+                 dingdan.color, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
         elif pm == '纱门':
             data.append(
                 [dingdan.id, u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.color, dingdan.shanshu, dingdan.zhonghengtiaoshu_gantiaoshu,
-                 dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu])
+                 dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
+
 
         elif pm == '晾衣杆' or pm == '晾衣机':
             data.append(
-                [dingdan.id, u'晾衣架', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-                 dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu])
+                [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
         elif pm == '纱窗' or pm == '窗花':
             data.append(
-                [dingdan.id, u'纱窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
-                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu])
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
         elif pm == '指纹锁':
             data.append(
                 [dingdan.id, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei,
-                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu])
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
     t = time.time()
     nowTime = lambda: int(round(t * 1000))
@@ -848,8 +858,6 @@ def taggetit(pm):
     for dingdan in dingdans:
         dingdan.status = 3
         db.session.add(dingdan)
-
-
 
     return redirect(url_for('main.dinghuolist'))
 
