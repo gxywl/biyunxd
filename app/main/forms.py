@@ -49,7 +49,7 @@ class YxwForm(FlaskForm):
     # xiangmu = SelectField('布放项目', validators=[DataRequired()], choices=[('0', '放生'),('1', '火施'),('2', '其他')])
     # cpid = HiddenField()
     # khid = HiddenField()
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''),('大阳台', '大阳台'), ('小阳台', '小阳台') ])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
     # weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
@@ -75,21 +75,21 @@ class YxwForm(FlaskForm):
 
 # 纱门
 class SmForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'),
+                          choices=[('', ''), ('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'),
                                    ('碧云805E', '碧云805E')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     neikuan = IntegerField("内空宽（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
-    shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
-    zhonghengtiaoshu = SelectField('中横条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
+    shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
+    zhonghengtiaoshu = SelectField('中横条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
+                          choices=[('', ''), ('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
     zhangfa = SelectField('装法', validators=[DataRequired()],
-                          choices=[('内装', '内装'), ('外装', '外装')])
+                          choices=[('', ''), ('内装', '内装'), ('外装', '外装')])
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
 
@@ -107,13 +107,13 @@ class SmForm(FlaskForm):
 
 # 晾衣杆
 class LyjForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('G1-25', 'G1-25'), ('G2-32', 'G2-32'), ('G3-32', 'G3-32'), ('手摇型', '手摇型')])
+                          choices=[('', ''), ('G1-25', 'G1-25'), ('G2-32', 'G2-32'), ('G3-32', 'G3-32'), ('手摇型', '手摇型')])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
@@ -128,17 +128,17 @@ class LyjForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
+        self.color.choices = [('', ''), ('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
 
 
 # 晾衣机
 class LyjForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()], choices=[('BY-02', 'BY-02'), (' BY-06', ' BY-06')])
+    xinghao = SelectField("型号", validators=[DataRequired()], choices=[('', ''), ('BY-02', 'BY-02'), (' BY-06', ' BY-06')])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('1', '1'), ('2', '2')])
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
@@ -153,15 +153,17 @@ class LyjForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('香槟金', '香槟金'), ('太空银', '太空银')]
+        self.color.choices = [('', ''), ('香槟金', '香槟金'), ('太空银', '太空银')]
 
 
 # 纱窗
 class ScForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()],
+                         choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
+                                  ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('ST613', 'ST613'), ('不可拆左右趟', '不可拆左右趟'), ('可拆左右趟', '可拆左右趟'), ('普及上下趟', '普及上下趟')])
+                          choices=[('', ''), ('ST613', 'ST613'), ('不可拆左右趟', '不可拆左右趟'), ('可拆左右趟', '可拆左右趟'), ('普及上下趟', '普及上下趟')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
@@ -172,7 +174,7 @@ class ScForm(FlaskForm):
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
                              choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('无横条', '无横条'), ('有横条', '有横条')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
 
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
@@ -191,10 +193,12 @@ class ScForm(FlaskForm):
 
 # 窗花
 class ChForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()],
+                         choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
+                                  ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('一帆风顺', '一帆风顺'), ('双喜临门', '双喜临门'), ('心心相印', '心心相印'), ('招财进宝', '招财进宝')])
+                          choices=[('', ''), ('一帆风顺', '一帆风顺'), ('双喜临门', '双喜临门'), ('心心相印', '心心相印'), ('招财进宝', '招财进宝')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
@@ -205,7 +209,7 @@ class ChForm(FlaskForm):
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
                              choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('无横条', '无横条'), ('有横条', '有横条')])
+    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
 
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
@@ -224,15 +228,15 @@ class ChForm(FlaskForm):
 
 # 指纹锁
 class ZwsForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('阳台', '阳台'), ('客厅', '客厅'), ('餐厅', '餐厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('客厅', '客厅')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('9001', '9001'), ('935', '935'), ('938', '938'), ('普及型', '普及型')])
+                          choices=[('', ''), ('9001', '9001'), ('935', '935'), ('938', '938'), ('普及型', '普及型')])
     color = SelectField("颜色", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
                           choices=[('', ''), ('左', '左'), ('右', '右')])
     kaishuofs = SelectField('开锁方式', validators=[DataRequired()],
-                            choices=[('内开', '内开'), ('外开', '外开')])
+                            choices=[('', ''), ('内开', '内开'), ('外开', '外开')])
     # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
 
     beizhu = StringField('备注')
@@ -247,7 +251,7 @@ class ZwsForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ZwsForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('古铜红', '古铜红'), ('香槟金', '香槟金')]
+        self.color.choices = [('', ''), ('古铜红', '古铜红'), ('香槟金', '香槟金')]
 
 
 class NameForm(FlaskForm):
@@ -275,6 +279,6 @@ class NameForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(NameForm, self).__init__(*args, **kwargs)
         self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+        self.color.choices = [('', ''), ('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
 
 # class EditProfileForm(FlaskForm):
