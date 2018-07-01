@@ -6,7 +6,7 @@
 
     {% if current_user.is_authenticated %}
         欢迎来到后台管理系统！
-        <a class="btn btn-default" href="{{  url_for('auth.logout') }}" >登出</a>
+        <a class="btn btn-danger" href="{{  url_for('auth.logout') }}" >登出管理</a>
     {% else %}
 
 

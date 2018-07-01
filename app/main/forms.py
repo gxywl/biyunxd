@@ -49,11 +49,12 @@ class YxwForm(FlaskForm):
     # xiangmu = SelectField('布放项目', validators=[DataRequired()], choices=[('0', '放生'),('1', '火施'),('2', '其他')])
     # cpid = HiddenField()
     # khid = HiddenField()
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
-    # weizhi = SelectField('位置', validators=[DataRequired()])
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
@@ -68,18 +69,24 @@ class YxwForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
-        # self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-        #     pinming = u'隐形网').all()]  #  and Chanpinxx.chanshux == '位置'
-        self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'隐形网',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'隐形网',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'隐形网',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 
 # 纱门
 class SmForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'),
-                                   ('碧云805E', '碧云805E')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('普及型', '普及型'), ('基本型', '基本型'), ('碧云801', '碧云801'), ('碧云804E', '碧云804E'),
+    #                                ('碧云805E', '碧云805E')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     neikuan = IntegerField("内空宽（毫米）", validators=[DataRequired()])
@@ -101,16 +108,23 @@ class SmForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(SmForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('深灰', '深灰')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱门',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱门',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱门',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('深灰', '深灰')]
 
 
 # 晾衣杆
 class LyjForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('G1-25', 'G1-25'), ('G2-32', 'G2-32'), ('G3-32', 'G3-32'), ('手摇型', '手摇型')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('G1-25', 'G1-25'), ('G2-32', 'G2-32'), ('G3-32', 'G3-32'), ('手摇型', '手摇型')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
@@ -127,15 +141,22 @@ class LyjForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('', ''), ('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣杆',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣杆',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣杆',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('', ''), ('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
 
 
 # 晾衣机
 class LyjForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()], choices=[('', ''), ('BY-02', 'BY-02'), (' BY-06', ' BY-06')])
+    # xinghao = SelectField("型号", validators=[DataRequired()], choices=[('', ''), ('BY-02', 'BY-02'), (' BY-06', ' BY-06')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
@@ -152,18 +173,25 @@ class LyjForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('', ''), ('香槟金', '香槟金'), ('太空银', '太空银')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣机',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣机',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'晾衣机',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('', ''), ('香槟金', '香槟金'), ('太空银', '太空银')]
 
 
 # 纱窗
 class ScForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()],
-                         choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
-                                  ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
+    # weizhi = SelectField('位置', validators=[DataRequired()],
+    #                      choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
+    #                               ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('ST613', 'ST613'), ('不可拆左右趟', '不可拆左右趟'), ('可拆左右趟', '可拆左右趟'), ('普及上下趟', '普及上下趟')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('ST613', 'ST613'), ('不可拆左右趟', '不可拆左右趟'), ('可拆左右趟', '可拆左右趟'), ('普及上下趟', '普及上下趟')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
@@ -187,18 +215,25 @@ class ScForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(ScForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('深灰', '深灰')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱窗',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱窗',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'纱窗',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('深灰', '深灰')]
 
 
 # 窗花
 class ChForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()],
-                         choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
-                                  ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
+    # weizhi = SelectField('位置', validators=[DataRequired()],
+    #                      choices=[('', ''), ('主卧', '主卧'), ('次卧', '次卧'), ('客房', '客房'), ('书房', '书房'), ('衣帽间', '衣帽间'),
+    #                               ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('一帆风顺-带纱', '一帆风顺-带纱'), ('双喜临门-带纱', '双喜临门-带纱'), ('心心相印-带纱', '心心相印-带纱'), ('招财进宝-带纱', '招财进宝-带纱')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('一帆风顺-带纱', '一帆风顺-带纱'), ('双喜临门-带纱', '双喜临门-带纱'), ('心心相印-带纱', '心心相印-带纱'), ('招财进宝-带纱', '招财进宝-带纱')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
@@ -222,16 +257,23 @@ class ChForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(ChForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('深灰', '深灰')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'窗花',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'窗花',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'窗花',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('深灰', '深灰')]
 
 
 # 指纹锁
 class ZwsForm(FlaskForm):
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('客厅', '客厅')])
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('客厅', '客厅')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
-    xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('9001', '9001'), ('935', '935'), ('938', '938'), ('普及型', '普及型')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('9001', '9001'), ('935', '935'), ('938', '938'), ('普及型', '普及型')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
                           choices=[('', ''), ('左', '左'), ('右', '右')])
@@ -250,35 +292,41 @@ class ZwsForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(ZwsForm, self).__init__(*args, **kwargs)
-        # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
-        self.color.choices = [('', ''), ('古铜红', '古铜红'), ('香槟金', '香槟金')]
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'指纹锁',chanshux = u'位置').order_by(Chanpinxx.chanshuz).all()]  #  and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'指纹锁',chanshux = u'型号').order_by(Chanpinxx.chanshuz).all()]
+        self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming = u'指纹锁',chanshux = u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('', ''), ('古铜红', '古铜红'), ('香槟金', '香槟金')]
 
 
 class NameForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])
     # xiangmu = SelectField('布放项目', validators=[DataRequired()], choices=[('0', '放生'),('1', '火施'),('2', '其他')])
-    xiangmu = SelectField('产品', validators=[DataRequired()], coerce=int)
-    weizhi = SelectField('位置', validators=[DataRequired()], choices=[('0', '阳台'), ('1', '客厅'), ('2', '餐厅')])
-    color = SelectField("颜色", validators=[DataRequired()])
-    suoweizhi = SelectField('锁位', validators=[DataRequired()],
-                            choices=[('0', '中'), ('1', '左'), ('2', '右'), ('3', '上'), ('4', '下')])
-
-    # othercolor = StringField("另定颜色", validators=[DataRequired()])
-    zhongchang = IntegerField("总长", validators=[DataRequired()])
-    lidigao = IntegerField("离底", validators=[DataRequired()])
-    chang = IntegerField("长", validators=[DataRequired()])
-    kuan = IntegerField("宽", validators=[DataRequired()])
-    gao = IntegerField("高", validators=[DataRequired()])
-
-    other = StringField("其他", validators=[DataRequired()])
-
-    # jine = IntegerField("金额", validators=[DataRequired()])
-    submit = SubmitField('确认下单')
-
-    # 在构造化Form实例时指定selectField的choices内容,
-    def __init__(self, *args, **kwargs):
-        super(NameForm, self).__init__(*args, **kwargs)
-        self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
-        self.color.choices = [('', ''), ('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+    # xiangmu = SelectField('产品', validators=[DataRequired()], coerce=int)
+    # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('0', '阳台'), ('1', '客厅'), ('2', '餐厅')])
+    # color = SelectField("颜色", validators=[DataRequired()])
+    # suoweizhi = SelectField('锁位', validators=[DataRequired()],
+    #                         choices=[('0', '中'), ('1', '左'), ('2', '右'), ('3', '上'), ('4', '下')])
+    #
+    # # othercolor = StringField("另定颜色", validators=[DataRequired()])
+    # zhongchang = IntegerField("总长", validators=[DataRequired()])
+    # lidigao = IntegerField("离底", validators=[DataRequired()])
+    # chang = IntegerField("长", validators=[DataRequired()])
+    # kuan = IntegerField("宽", validators=[DataRequired()])
+    # gao = IntegerField("高", validators=[DataRequired()])
+    #
+    # other = StringField("其他", validators=[DataRequired()])
+    #
+    # # jine = IntegerField("金额", validators=[DataRequired()])
+    # submit = SubmitField('确认下单')
+    #
+    # # 在构造化Form实例时指定selectField的choices内容,
+    # def __init__(self, *args, **kwargs):
+    #     super(NameForm, self).__init__(*args, **kwargs)
+    #     self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu in Xiangmu.query.order_by(Xiangmu.id).all()]
+    #     self.color.choices = [('', ''), ('深灰', '深灰'), ('墨绿', '墨绿'), ('白色', '白色')]
+    pass
 
 # class EditProfileForm(FlaskForm):

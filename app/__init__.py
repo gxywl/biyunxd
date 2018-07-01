@@ -8,7 +8,6 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 
-
 from config import config
 
 moment = Moment()
@@ -36,7 +35,7 @@ def create_app(config_name):
     login_manager.init_app(app)
 
     # ----------------------
-    from app.admin import MyAdminIndexView, UserView, MyModelView,KehuView, ChanpinView, XiaoquView, DingdanView
+    from app.admin import MyAdminIndexView, UserView, MyModelView,KehuView, ChanpinView, XiaoquView, DingdanView, ChanpinxxView
     from app.models import Kehu, Dingdan, Chanpin, Xiaoqu
 
     babel.init_app(app)
@@ -52,6 +51,7 @@ def create_app(config_name):
     admin.add_view(ChanpinView(db.session, name='产品'))
     admin.add_view(XiaoquView(db.session, name='小区'))
     admin.add_view(DingdanView(db.session, name='订单'))
+    admin.add_view(ChanpinxxView(db.session, name='选项设置'))
 
     # models = [Kehu, Dingdan, Chanpin, Xiaoqu]
     # for model in models:
