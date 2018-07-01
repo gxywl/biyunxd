@@ -67,6 +67,10 @@ def index():
 @main.route('/kehulist', methods=['GET', 'POST'])
 @login_required
 def kehulist():
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     # form = NameForm()
     # bujuan=None
     kehus = Kehu.query.filter_by(user=current_user._get_current_object()).order_by(
@@ -78,6 +82,10 @@ def kehulist():
 @main.route('/dinghuolist', methods=['GET', 'POST'])
 @login_required
 def dinghuolist():
+
+    if current_user.role != '订货员':
+        return redirect(url_for('main.index'))
+
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
     dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
@@ -98,6 +106,10 @@ def fahuolist():
 @main.route('/addkehu', methods=['GET', 'POST'])
 @login_required
 def addkehu():
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = KehuForm()
     # bujuan=None
 
@@ -119,6 +131,10 @@ def addkehu():
 @main.route('/editkehu/<int:id>', methods=['GET', 'POST'])
 @login_required
 def editkehu(id):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = KehuForm()
 
     kehu = Kehu.query.get(id)
@@ -153,7 +169,15 @@ def editkehu(id):
 @main.route('/delkehu/<int:id>', methods=['GET', 'POST'])
 @login_required
 def delkehu(id):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     kehu = Kehu.query.get(id)
+    # 先删除
+    for dingdan in kehu.dingdans:
+        db.session.delete(dingdan)
+
     db.session.delete(kehu)
     flash('已成功删除客户')
 
@@ -170,6 +194,10 @@ def viewkehudd(id):
 @main.route('/showkehudd/<int:id>', methods=['GET', 'POST'])
 @login_required
 def showkehudd(id):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = WilladdcpForm()
 
     kehu = Kehu.query.get(id)
@@ -229,6 +257,10 @@ def getnewfilename(upfilename):
 @main.route('/addyxw/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addyxw(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = YxwForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -265,6 +297,10 @@ def addyxw(cpid, khid):
 @main.route('/addsm/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addsm(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = SmForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -304,6 +340,10 @@ def addsm(cpid, khid):
 @main.route('/addlyj/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addlyg_j(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = LyjForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -339,6 +379,10 @@ def addlyg_j(cpid, khid):
 @main.route('/addsc/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addsc(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ScForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -380,6 +424,10 @@ def addsc(cpid, khid):
 @main.route('/addch/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addch(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ChForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -421,6 +469,10 @@ def addch(cpid, khid):
 @main.route('/addzws/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addzws(cpid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ZwsForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -454,6 +506,10 @@ def addzws(cpid, khid):
 @main.route('/deldingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def deldingdan(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     dingdan = Dingdan.query.get(ddid)
     db.session.delete(dingdan)
     flash('已成功删除客户')
@@ -464,6 +520,10 @@ def deldingdan(ddid, khid):
 @main.route('/editdingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editdingdan(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     dingdan = Dingdan.query.get(ddid)
     pinming = dingdan.chanpin.pinming
 
@@ -491,6 +551,10 @@ def editdingdan(ddid, khid):
 @main.route('/edityxw/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def edityxw(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = YxwForm()
 
     if form.validate_on_submit():
@@ -541,6 +605,10 @@ def edityxw(ddid, khid):
 @main.route('/editsm/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editsm(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = SmForm()
 
     if form.validate_on_submit():
@@ -601,6 +669,10 @@ def editsm(ddid, khid):
 @main.route('/editlyj/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editlyg_j(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = LyjForm()
 
     if form.validate_on_submit():
@@ -651,6 +723,10 @@ def editlyg_j(ddid, khid):
 @main.route('/editsc/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editsc(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ScForm()
 
     if form.validate_on_submit():
@@ -720,6 +796,10 @@ def editsc(ddid, khid):
 @main.route('/editch/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editch(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ChForm()
 
     if form.validate_on_submit():
@@ -789,6 +869,10 @@ def editch(ddid, khid):
 @main.route('/editzws/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editzws(ddid, khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     form = ZwsForm()
 
     if form.validate_on_submit():
@@ -837,6 +921,10 @@ def editzws(ddid, khid):
 @main.route('/doxiadan/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def doxiadan(khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
     kehu = Kehu.query.get(khid)
     kehu.status = 2
     kehu.time1 = datetime.utcnow()
@@ -851,9 +939,59 @@ def doxiadan(khid):
     return redirect(url_for('main.showkehudd', id=khid))
 
 
+@main.route('/doxiadanone/<int:khid>/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def doxiadanone(khid, ddid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 2
+    dingdan.time1 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已确认下单')
+
+    return redirect(url_for('main.showkehudd', id=khid))
+
+
+@main.route('/undoxiadanone/<int:khid>/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def undoxiadanone(khid, ddid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 1
+    #dingdan.time1 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已撤单')
+
+    return redirect(url_for('main.showkehudd', id=khid))
+
 @main.route('/setkehuover/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def setkehuover(khid):
+
     kehu = Kehu.query.get(khid)
     kehu.status = u'已完成'
     # kehu.xdtime = datetime.utcnow
@@ -870,6 +1008,10 @@ def setkehuover(khid):
 @main.route('/outtoxls/<string:pm>', methods=['GET', 'POST'])
 @login_required
 def outtoxls(pm):
+
+    if current_user.role != '订货员':
+        return redirect(url_for('main.index'))
+
     # 取出品名  过滤业务下单
     chanpin = Chanpin.query.filter_by(pinming=pm).first()
     dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
@@ -966,6 +1108,10 @@ def outtoxls(pm):
 @main.route('/taggetit/<string:pm>', methods=['GET', 'POST'])
 @login_required
 def taggetit(pm):
+
+    if current_user.role != '订货员':
+        return redirect(url_for('main.index'))
+
     # kehu = Kehu.query.get(khid)
     # kehu.status = u'已完成'
     # #kehu.xdtime = datetime.utcnow

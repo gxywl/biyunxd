@@ -167,7 +167,7 @@ class ChanpinxxView(MyModelView):
 #    can_edit = False
 #     can_delete = False
 #     can_create = False
-#    page_size = 5
+    page_size = 8
 
     # 这里是为了自定义显示的column名字
     column_labels = dict(

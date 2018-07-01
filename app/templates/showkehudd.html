@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
+
 {% block title %} To-Do {% endblock %}
 
 {% block page_content %}
 
 
            <div class="panel panel-default">
-                <div class="panel-heading"> <a class="btn btn-default btn-sm" href="{{ url_for('main.kehulist') }}">返回</a> 客户: {{ kehu.id }}</div>
+                <div class="panel-heading"> <a class="btn btn-primary btn-sm   glyphicon glyphicon-chevron-left" href="{{ url_for('main.kehulist') }}">返回</a> 客户: {{ kehu.id }}</div>
                 <div class="post-body">
                     <blockquote>
                     <ul class="list-unstyled">
@@ -39,12 +40,20 @@
             <div class="panel panel-default">
 
                 <div class="panel-heading">订单「{{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
-                    {% if kehu.status == 1  %}
+{#                    {% if kehu.status == 1  %}#}
+{#                    <a class="btn btn-danger btn-sm  glyphicon glyphicon-remove" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" > 删</a>#}
+{#          <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" > 改</a>#}
+{#                    {% else %}#}
+{#                        【已下单，不可修改】#}
+{#                    {% endif %}#}
+
+                    {% if dingdan.status == 1  %}
                     <a class="btn btn-danger btn-sm  glyphicon glyphicon-remove" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" > 删</a>
           <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" > 改</a>
                     {% else %}
                         【已下单，不可修改】
                     {% endif %}
+
                 </div>
                 <div class="post-body">
                     <blockquote>
@@ -233,7 +242,7 @@
 
                     </blockquote>
                 </div>
-                <div class="panel-footer">状态:
+                <div class="panel-footer text-center">状态:
 
                     {% if dingdan.status == 1 %}
                         已测尺
@@ -255,21 +264,33 @@
 
 {#                    {{ dingdan.status }}#}
 
+{#                    {{ datetime.utcnow()-dingdan.time1 }}#}
+
+                    {% if dingdan.status == 1 %}
+                        <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 确认下单</a>
+                    {% elif dingdan.status== 2 %}  {#  and (datetime.utcnow – dingdan.time1)hours dingdan.time1 datetime.utcnow #}
+                       ( {{ moment(dingdan.time1).fromNow(refresh=True) }} )<a class="btn btn-primary  glyphicon glyphicon-repeat" href="{{  url_for('main.undoxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 撤单</a>
+                    {% elif dingdan.status == 3 %}
+                        【不可撤单】
+                    {% endif %}
+
 
                 </div>
             </div>
     {% endfor %}
 
 
-          <div class="panel panel-default">
-                <div class="panel-heading text-center">
-                    {% if kehu.status == 1 %}
-                    <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
-                    {% else %}
-                        【已下单】 撤销？？
-                    {% endif %}
-                </div>
-           </div>
+{#          <div class="panel panel-default">#}
+{#                <div class="panel-heading text-center">#}
+{#                    {% if kehu.status == 1 %}#}
+{#                    <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>#}
+{#                    {% else %}#}
+{#                        【已下单】 撤销？？#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#           </div>#}
+
+
 
 {#    <div class="page-header">#}
 {#    <h4>业务员：{{ current_user.username }}</h4>#}
