@@ -17,3 +17,10 @@ class LoginForm(FlaskForm):
 class ChangeUserNameForm(FlaskForm):
     username = StringField('用户姓名', validators=[DataRequired()])
     submit = SubmitField('更改')
+
+class ChangePinForm(FlaskForm):
+    opin = PasswordField('原口令', validators=[DataRequired()])
+    npin = PasswordField('新口令', validators=[DataRequired(),EqualTo('confirm', message="两次口令不一致")])
+    # rpin = PasswordField('新口令(重复)', validators=[DataRequired(),EqualTo(npin, message=None)])
+    confirm = PasswordField('新口令(重复)')
+    submit = SubmitField('更改口令')

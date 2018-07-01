@@ -80,7 +80,7 @@ class Kehu(db.Model):
     tel = db.Column(db.String(64))
     zje = db.Column(db.Float)
     beizhu = db.Column(db.String(64))
-    status = db.Column(db.Integer, default=0)  # 0已测尺、1已下单、2已安装、3已清款
+    status = db.Column(db.Integer, default=1)  # 1已测尺、2已下单、3已安装、4已清款
     time0 = db.Column(db.DateTime(), default=datetime.utcnow)
     time1 = db.Column(db.DateTime())
     time2 = db.Column(db.DateTime())
@@ -112,7 +112,7 @@ class Dingdan(db.Model):
     jiage = db.Column(db.Float)
     tushipic = db.Column(db.String(64))
     beizhu = db.Column(db.String(64))
-    status = db.Column(db.Integer, default=0)  # 0测尺、1业务下单、2工厂下单、3工厂入库、4工厂发货、5货到工地、6安装完成
+    status = db.Column(db.Integer, default=1)  # 1测尺、2业务下单、3工厂下单、4工厂入库、5工厂发货、6货到工地、7安装完成
     fakaidi = db.Column(db.String(64))
     time0 = db.Column(db.DateTime(), default=datetime.utcnow)
     user0_id = db.Column(db.Integer, db.ForeignKey('users.id'))

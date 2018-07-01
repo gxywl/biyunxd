@@ -198,18 +198,18 @@ class ChForm(FlaskForm):
                                   ('厨房', '厨房'), ('主卫', '主卫'), ('公卫', '公卫'), ('其他', '其他')])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()],
-                          choices=[('', ''), ('一帆风顺', '一帆风顺'), ('双喜临门', '双喜临门'), ('心心相印', '心心相印'), ('招财进宝', '招财进宝')])
+                          choices=[('', ''), ('一帆风顺-带纱', '一帆风顺-带纱'), ('双喜临门-带纱', '双喜临门-带纱'), ('心心相印-带纱', '心心相印-带纱'), ('招财进宝-带纱', '招财进宝-带纱')])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
     bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('', ''), ('左', '左'), ('右', '右')])  # ( '中', '中'),, ('上', '上'), ('下', '下')
+                          choices=[('', ''), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])  # ( '中', '中'),
     color = SelectField("颜色", validators=[DataRequired()])
 
-    dengfenshu = SelectField('等分数', validators=[DataRequired()],
-                             choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
+    # dengfenshu = SelectField('等分数', validators=[DataRequired()],
+    #                          choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
+    # ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
 
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
@@ -221,7 +221,7 @@ class ChForm(FlaskForm):
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
-        super(ScForm, self).__init__(*args, **kwargs)
+        super(ChForm, self).__init__(*args, **kwargs)
         # self.xiangmu.choices = [(xiangmu.id, xiangmu.xiangmu) for xiangmu i
         self.color.choices = [('深灰', '深灰')]
 

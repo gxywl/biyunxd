@@ -4,7 +4,7 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 from app import db
 from app.models import User
-from .forms import LoginForm,ChangeUserNameForm
+from .forms import LoginForm, ChangeUserNameForm, ChangePinForm
 from . import auth
 
 
@@ -27,21 +27,20 @@ def loginto(u,p):
         # pass
         elif user.role == '业务员':
             # 一般用户转转到首页..
-            return redirect(request.args.get('next') or url_for('main.kehulist'))
+            return redirect(url_for('main.kehulist')) #request.args.get('next') or
         elif user.role == '订货员':
             # 一般用户转转到首页..
-            return redirect(request.args.get('next') or url_for('main.dinghuolist'))
+            return redirect(url_for('main.dinghuolist')) #request.args.get('next') or
         elif user.role == '发货员':
             # 一般用户转转到首页..
-            return redirect(request.args.get('next') or url_for('main.fahuolist'))
+            return redirect(url_for('main.fahuolist'))
         else:
             # 一般用户转转到首页..
             # return redirect(request.args.get('next') or url_for('main.kehulist'))
             pass
 
     else:
-        flash('Invalid username or password')
-
+        flash('用户名或密码错误')
 
 @auth.route('/login', methods=['Get', 'Post'])
 def login():
@@ -57,13 +56,13 @@ def login():
             # pass
             elif user.role == '业务员':
                 # 一般用户转转到首页..
-                return redirect(request.args.get('next') or url_for('main.kehulist'))
+                return redirect(url_for('main.kehulist')) #request.args.get('next') or
             elif user.role == '订货员':
                 # 一般用户转转到首页..
-                return redirect(request.args.get('next') or url_for('main.dinghuolist'))
+                return redirect(url_for('main.dinghuolist'))
             elif user.role == '发货员':
                 # 一般用户转转到首页..
-                return redirect(request.args.get('next') or url_for('main.fahuolist'))
+                return redirect(url_for('main.fahuolist'))
             else:
             #一般用户转转到首页..
                 # return redirect(request.args.get('next') or url_for('main.kehulist'))
@@ -78,7 +77,7 @@ def login():
 
 
 
-        flash('Invalid username or password')
+        flash('用户名或密码错')
 
     return render_template('auth/login.html', form=form)
 
@@ -104,3 +103,19 @@ def change_username():
     form.username.data = current_user.username
     return render_template("auth/change_username.html", form=form)
 
+
+@auth.route('/change-pin', methods=['GET', 'POST'])
+@login_required
+def change_pin():
+    form = ChangePinForm()
+    if form.validate_on_submit():
+        if current_user.pin == form.opin.data:
+            current_user.pin = form.npin.data
+            db.session.add(current_user)
+            db.session.commit()
+            flash('你的口令已更改了.')
+            return redirect(url_for('main.index'))
+        else:
+            flash('原口令不对.')
+    # form.pin.data = current_user.pin
+    return render_template("auth/change_pin.html", form=form)

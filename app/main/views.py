@@ -11,7 +11,7 @@ from sqlalchemy import func, engine
 
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
 from .. import db
-from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm
+from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm
 from . import main
 
 import tablib
@@ -189,8 +189,10 @@ def showkehudd(id):
             toview = 'addsm'
         elif chanpin.pinming == '晾衣杆' or chanpin.pinming == '晾衣机':
             toview = 'addlyg_j'
-        elif chanpin.pinming == '纱窗' or chanpin.pinming == '窗花':
-            toview = 'addsc_ch'
+        elif chanpin.pinming == '纱窗':
+            toview = 'addsc'
+        elif chanpin.pinming == '窗花':
+            toview = 'addch'
         elif chanpin.pinming == '指纹锁':
             toview = 'addzws'
         else:
@@ -248,11 +250,11 @@ def addyxw(cpid, khid):
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
                           color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
-                          status=0)
+                          status=1)
 
         db.session.add(dingdan)
 
-        flash('已成功添加订制')
+        flash('已成功添加')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -287,11 +289,11 @@ def addsm(cpid, khid):
                           zhonghengtiaoshu_gantiaoshu=form.zhonghengtiaoshu.data,
                           shuowei=form.shuowei.data, zhangfa_dengfenshu_kaishuofangshi=form.zhangfa.data,
                           beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
-                          status=0)
+                          status=1)
 
         db.session.add(dingdan)
 
-        flash('已成功添加订制')
+        flash('已成功添加')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -322,21 +324,21 @@ def addlyg_j(cpid, khid):
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
                           zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
 
         db.session.add(dingdan)
 
-        flash('已成功添加订制')
+        flash('已成功添加')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 
-# # 纱窗 窗花
+# # 纱窗
 @main.route('/addsc/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def addsc_ch(cpid, khid):
+def addsc(cpid, khid):
     form = ScForm()
 
     chanpin = Chanpin.query.get(cpid)
@@ -364,7 +366,7 @@ def addsc_ch(cpid, khid):
                           meikongkuan_bashoudigao=form.bashoudg.data,
                           zhangfa_dengfenshu_kaishuofangshi=form.dengfenshu.data,
                           ishaveht=form.ishaveht.data, shuowei=form.shuowei.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
 
         db.session.add(dingdan)
 
@@ -374,6 +376,46 @@ def addsc_ch(cpid, khid):
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
+# # 窗花
+@main.route('/addch/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def addch(cpid, khid):
+    form = ChForm()
+
+    chanpin = Chanpin.query.get(cpid)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    if form.validate_on_submit():
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
+
+        # if form.ishaveht.data == 0:
+        #     ishaveht = False
+        # else:
+        #     ishaveht = True
+
+        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                          xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
+                          color=form.color.data,
+                          meikongkuan_bashoudigao=form.bashoudg.data,
+                          # zhangfa_dengfenshu_kaishuofangshi=form.dengfenshu.data,ishaveht=form.ishaveht.data,
+                          shuowei=form.shuowei.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+
+        db.session.add(dingdan)
+
+        flash('已成功添加')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 # # 指纹锁
 @main.route('/addzws/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
@@ -398,7 +440,7 @@ def addzws(cpid, khid):
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
                           zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=0)
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
 
         db.session.add(dingdan)
 
@@ -433,8 +475,10 @@ def editdingdan(ddid, khid):
         toview = 'editsm'
     elif pinming == '晾衣杆' or pinming == '晾衣机':
         toview = 'editlyg_j'
-    elif pinming == '纱窗' or pinming == '纱窗':
-        toview = 'editsc_ch'
+    elif pinming == '纱窗':
+        toview = 'editsc'
+    elif pinming == '窗花':
+        toview = 'editch'
     elif pinming == '指纹锁':
         toview = 'editzws'
     else:
@@ -579,7 +623,7 @@ def editlyg_j(ddid, khid):
 
         db.session.add(dingdan)
 
-        flash('已成功修改订制')
+        flash('已成功修改')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -606,7 +650,7 @@ def editlyg_j(ddid, khid):
 # # 纱窗
 @main.route('/editsc/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def editsc_ch(ddid, khid):
+def editsc(ddid, khid):
     form = ScForm()
 
     if form.validate_on_submit():
@@ -640,7 +684,7 @@ def editsc_ch(ddid, khid):
         db.session.add(dingdan)
         db.session.commit()
 
-        flash('已成功修改订制')
+        flash('已成功修改')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -672,6 +716,75 @@ def editsc_ch(ddid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
+# # 窗花
+@main.route('/editch/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editch(ddid, khid):
+    form = ChForm()
+
+    if form.validate_on_submit():
+
+        # if form.ishaveht.data == 0:
+        #     ishaveht = False
+        # else:
+        #     ishaveht = True
+
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.kuan.data
+        dingdan.gao = form.gao.data
+        dingdan.color = form.color.data
+
+        dingdan.meikongkuan_bashoudigao = form.bashoudg.data
+        # dingdan.zhangfa_dengfenshu_kaishuofangshi = form.dengfenshu.data
+        dingdan.shuowei = form.shuowei.data
+        # dingdan.ishaveht = form.ishaveht.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
+
+        db.session.add(dingdan)
+        db.session.commit()
+
+        flash('已成功修改')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = dingdan.shuliang
+    form.xinghao.data = dingdan.xinghao
+    form.kuan.data = dingdan.kuan_chang
+    form.gao.data = dingdan.gao
+    form.color.data = dingdan.color
+
+    form.bashoudg.data = dingdan.meikongkuan_bashoudigao
+    # form.dengfenshu.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
+    form.shuowei.data = dingdan.shuowei
+    # if dingdan.ishaveht:
+    #     ishaveht = 1
+    # else:
+    #     ishaveht = 0
+    # form.ishaveht.data = dingdan.ishaveht
+    form.beizhu.data = dingdan.beizhu
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
+
 # # 指纹锁
 @main.route('/editzws/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -698,7 +811,7 @@ def editzws(ddid, khid):
         db.session.add(dingdan)
         db.session.commit()
 
-        flash('已成功修改订制')
+        flash('已成功修改')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -775,16 +888,21 @@ def outtoxls(pm):
         headers = (
         u"订单号", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
-    elif pm == '纱窗' or pm == '窗花':
+    elif pm == '纱窗':
         headers = (
             u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
+            u"客户", u"电话", u"地址", u"小区", u"房间")
+
+    elif pm == '窗花':
+        headers = (
+            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"备注",
             u"客户", u"电话", u"地址", u"小区", u"房间")
 
     elif pm == '指纹锁':
         headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
     info = []
-    data = tablib.Dataset(*info, headers=headers)
+    data = tablib.Dataset(*info, headers=headers) # headers 数量要与 data 致
 
     for dingdan in dingdans:
 
@@ -808,11 +926,18 @@ def outtoxls(pm):
                  dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu, dingdan.kehu.chenghu,
                  dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
-        elif pm == '纱窗' or pm == '窗花':
+        elif pm == '纱窗':
             data.append(
                 [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
                  dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
+
+        elif pm == '窗花':
+            data.append(
+                [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                 dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
+                 dingdan.beizhu, dingdan.kehu.chenghu,
                  dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 
         elif pm == '指纹锁':
