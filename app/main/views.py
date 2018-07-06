@@ -3,7 +3,7 @@
 import hashlib
 import os
 import time
-from datetime import datetime
+from datetime import datetime,timedelta
 
 from flask import redirect, url_for, render_template, flash, make_response, send_file
 from flask_login import current_user, login_required
@@ -86,9 +86,22 @@ def dinghuolist():
     if current_user.role != '订货员':
         return redirect(url_for('main.index'))
 
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    #dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+
     dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+
     return render_template('dinghuolist.html', dingdans=dingdans)  # form=form,
 
 
@@ -926,12 +939,13 @@ def doxiadan(khid):
         return redirect(url_for('main.index'))
 
     kehu = Kehu.query.get(khid)
-    kehu.status = 2
-    kehu.time1 = datetime.utcnow()
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
 
     for dingdan in kehu.dingdans:
-        dingdan.status = 2
-        dingdan.time1 = datetime.utcnow()
+        if dingdan.status == 1:
+            dingdan.status = 2
+            dingdan.time1 = datetime.utcnow()
 
     db.session.add(kehu)
     flash('已确认下单')
@@ -981,7 +995,7 @@ def undoxiadanone(khid, ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 1
-    #dingdan.time1 = datetime.utcnow()
+    dingdan.time1 = None
 
     db.session.add(dingdan)
     flash('已撤单')
@@ -1128,6 +1142,7 @@ def taggetit(pm):
 
     for dingdan in dingdans:
         dingdan.status = 3
+        dingdan.time2 = datetime.utcnow()
         db.session.add(dingdan)
 
     return redirect(url_for('main.dinghuolist'))

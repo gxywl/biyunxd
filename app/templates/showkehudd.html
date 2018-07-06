@@ -50,8 +50,10 @@
                     {% if dingdan.status == 1  %}
                     <a class="btn btn-danger btn-sm  glyphicon glyphicon-remove" href="{{  url_for('main.deldingdan', ddid=dingdan.id, khid=kehu.id) }}" > 删</a>
           <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editdingdan', ddid=dingdan.id, khid=kehu.id) }}" > 改</a>
-                    {% else %}
+                    {% elif dingdan.status == 2 %}
                         【已下单，不可修改】
+                    {% elif dingdan.status == 3 %}
+                        【已订货，不可修改】
                     {% endif %}
 
                 </div>
@@ -245,7 +247,7 @@
                 <div class="panel-footer text-center">状态:
 
                     {% if dingdan.status == 1 %}
-                        已测尺
+                        已量尺
                     {% elif dingdan.status == 2  %}
                         已下单
                     {% elif dingdan.status == 3  %}
@@ -257,7 +259,11 @@
                     {% elif dingdan.status == 6  %}
                         已到货
                     {% elif dingdan.status == 7  %}
-                        已装完
+                        安装中
+                    {% elif dingdan.status == 8  %}
+                        安装完成
+                    {% elif dingdan.status == 9  %}
+                        完成收款
                     {% else %}
                         状态有误
                     {% endif %}
@@ -267,8 +273,12 @@
 {#                    {{ datetime.utcnow()-dingdan.time1 }}#}
 
                     {% if dingdan.status == 1 %}
-                        <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 确认下单</a>
-                    {% elif dingdan.status== 2 %}  {#  and (datetime.utcnow – dingdan.time1)hours dingdan.time1 datetime.utcnow #}
+                         {% if kehu.chenghu != '样板房' %}
+                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 确认下单</a>
+                         {% else %}
+                            样板房
+                         {% endif %}
+                     {% elif dingdan.status== 2 %}  {#  and (datetime.utcnow – dingdan.time1)hours dingdan.time1 datetime.utcnow #}
                        ( {{ moment(dingdan.time1).fromNow(refresh=True) }} )<a class="btn btn-primary  glyphicon glyphicon-repeat" href="{{  url_for('main.undoxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 撤单</a>
                     {% elif dingdan.status == 3 %}
                         【不可撤单】
@@ -280,15 +290,19 @@
     {% endfor %}
 
 
-{#          <div class="panel panel-default">#}
-{#                <div class="panel-heading text-center">#}
-{#                    {% if kehu.status == 1 %}#}
-{#                    <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>#}
+          <div class="panel panel-default">
+                <div class="panel-heading text-center">
+                    {% if kehu.status == 1 %}
+                        {% if kehu.chenghu != '样板房' %}
+                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
+                        {% else %}
+                            样板房
+                        {% endif %}
 {#                    {% else %}#}
 {#                        【已下单】 撤销？？#}
-{#                    {% endif %}#}
-{#                </div>#}
-{#           </div>#}
+                    {% endif %}
+                </div>
+           </div>
 
 
 

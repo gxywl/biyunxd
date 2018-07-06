@@ -42,6 +42,7 @@ def loginto(u,p):
     else:
         flash('用户名或密码错误')
 
+
 @auth.route('/login', methods=['Get', 'Post'])
 def login():
     form = LoginForm()
@@ -75,9 +76,8 @@ def login():
             # #一般用户转转到首页..
             #     return redirect(request.args.get('next') or url_for('main.index'))
 
-
-
-        flash('用户名或密码错')
+        else:
+            flash('用户名或密码错')
 
     return render_template('auth/login.html', form=form)
 
