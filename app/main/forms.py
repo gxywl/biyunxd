@@ -43,6 +43,19 @@ class WilladdcpForm(FlaskForm):
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 
+class FindkhForm(FlaskForm):
+    infosing = StringField('客户查找 「房号」或「称呼」或「电话」. 部分文字)')
+
+    submit = SubmitField('开始过滤')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(FindkhForm, self).__init__(*args, **kwargs)
+    #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
+    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
+
+
 # 隐形网
 class YxwForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])
