@@ -102,8 +102,32 @@ def dinghuolist():
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
 
-    return render_template('dinghuolist.html', dingdans=dingdans)  # form=form,
+    return render_template('dinghuolist.html', dingdans=dingdans, done='待订货')  # form=form,
 
+@main.route('/dinghuoedlist', methods=['GET', 'POST'])
+@login_required
+def dinghuoedlist():
+
+    if current_user.role != '订货员':
+        return redirect(url_for('main.index'))
+
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    #dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+
+    dingdans = Dingdan.query.filter_by(status=3).order_by(Dingdan.chanpin_id,
+                                                          Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+
+    return render_template('dinghuolist.html', dingdans=dingdans, done='已订货')  # form=form,
 
 @main.route('/fahuolist', methods=['GET', 'POST'])
 @login_required
@@ -1001,6 +1025,31 @@ def undoxiadanone(khid, ddid):
     flash('已撤单')
 
     return redirect(url_for('main.showkehudd', id=khid))
+
+@main.route('/udinghuoone/<int:ddid>', methods=['GET'])
+@login_required
+def udinghuoone(ddid):
+
+    if current_user.role != '订货员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 2
+    dingdan.time2 = None
+
+    db.session.add(dingdan)
+    flash('已撤订')
+
+    return redirect(url_for('main.dinghuoedlist'))
+
 
 @main.route('/setkehuover/<int:khid>', methods=['GET', 'POST'])
 @login_required

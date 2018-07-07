@@ -1,13 +1,24 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %} To-Do {% endblock %}
+{% block title %} 待订货 {% endblock %}
 
 {% block page_content %}
 {#    <div class="page-header">#}
 {#    <h4>订货员：{{ current_user.username }}</h4>#}
 {#        <p>订货列表</p>#}
 {#    </div>#}
+
+          <div class="panel panel-default">
+                <div class="panel-heading">
+                <h4>{{ done }}
+                    {% if done=='已订货' %}
+                        <a class="btn btn-default" href="{{  url_for('main.dinghuolist') }}" >转－待订货</a>
+                    {% else %}
+                        <a class="btn btn-default " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>
+                    {% endif %}</h4>
+                </div>
+          </div>
 
 
     <ul class="nav nav-pills">
@@ -25,18 +36,28 @@
 
         <div class="tab-pane active" id="A">
 
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='隐形网') }}" >导出数据xls(隐形网)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='隐形网') }}" >标志已订货</a>
                 </div>
           </div>
+        {% endif %}
 
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '隐形网' %}
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h4> 订单号「 {{ dingdan.id }} 」 隐形网</h4></div>
+                        <div class="panel-heading"><h4> 订单号「 {{ dingdan.id }} 」 隐形网
+                        {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                        </h4></div>
                         <div class="post-body">
                             <blockquote>
                             <ul>
@@ -69,18 +90,27 @@
 
         <div class="tab-pane" id="B">
 
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='纱门') }}" >导出数据xls(纱门)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='纱门') }}" >标志已订货</a>
                 </div>
           </div>
-
+        {% endif %}
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '纱门' %}
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 纱门</h4></div>
+                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 纱门
+                        {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                        </h4></div>
                         <div class="post-body">
                             <blockquote>
                             <ul>
@@ -118,17 +148,27 @@
         </div>
 
         <div class="tab-pane" id="C">
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='晾衣杆') }}" >导出数据xls(晾衣杆)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='晾衣杆') }}" >标志已订货</a>
                 </div>
           </div>
+        {% endif %}
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '晾衣杆' %}
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 晾衣杆</h4></div>
+                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 晾衣杆
+                            {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                        </h4></div>
                         <div class="post-body">
                             <blockquote>
                             <ul>
@@ -161,17 +201,27 @@
         </div>
 
         <div class="tab-pane" id="D">
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='纱窗') }}" >导出数据xls(纱窗)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='纱窗') }}" >标志已订货</a>
                 </div>
           </div>
+        {% endif %}
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '纱窗' %}
                      <div class="panel panel-default">
-                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 纱窗</h4></div>
+                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 纱窗
+                            {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                         </h4></div>
                         <div class="post-body">
                             <blockquote>
                             <ul>
@@ -207,20 +257,28 @@
         </div>
 
         <div class="tab-pane" id="E">
-
+            {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='指纹锁') }}" >导出数据xls(指纹锁)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='指纹锁') }}" >标志已订货</a>
                 </div>
           </div>
-
+            {% endif %}
             {% for dingdan in dingdans %}
 
 
                 {% if dingdan.chanpin.pinming == '指纹锁' %}
                      <div class="panel panel-default">
-                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 指纹锁</h4></div>
+                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 指纹锁
+                            {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                         </h4></div>
                         <div class="post-body">
                             <blockquote><ul>
                                 <li>位置: {{ dingdan.weizhi }}</li>
@@ -252,17 +310,28 @@
 
 
         <div class="tab-pane" id="F">
+
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='晾衣机') }}" >导出数据xls(晾衣机)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='晾衣机') }}" >标志已订货</a>
                 </div>
           </div>
+        {% endif %}
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '晾衣机' %}
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 晾衣机</h4></div>
+                        <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 晾衣机
+                               {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                        </h4></div>
                         <div class="post-body">
                             <blockquote>
                             <ul>
@@ -296,17 +365,27 @@
 
 
         <div class="tab-pane" id="G">
+        {% if done=='待订货' %}
           <div class="panel panel-default">
                 <div class="panel-heading">
                     <a class="btn btn-success " href="{{  url_for('main.outtoxls', pm='窗花') }}" >导出数据xls(窗花)</a>
                     <a class="btn btn-danger " href="{{  url_for('main.taggetit', pm='窗花') }}" >标志已订货</a>
                 </div>
           </div>
+        {% endif %}
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '窗花' %}
                      <div class="panel panel-default">
-                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 窗花</h4> </div>
+                         <div class="panel-heading"><h4>订单号「 {{ dingdan.id }} 」 窗花
+                            {% if done=='已订货' %}
+                            {% if dingdan.status == 3 %}
+                               ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )<a class="btn btn-danger  glyphicon glyphicon-repeat" href="{{  url_for('main.udinghuoone', ddid=dingdan.id) }}" > 撤订</a>
+                            {% elif dingdan.status == 4 %}
+                                【已入库 不可撤单】
+                            {% endif %}
+                        {% endif %}
+                         </h4> </div>
                         <div class="post-body">
                             <blockquote>
                             <ul>

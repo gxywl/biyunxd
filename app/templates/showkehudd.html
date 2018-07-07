@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 
-{% block title %} To-Do {% endblock %}
+{% block title %} 客户的订单 {% endblock %}
 
 {% block page_content %}
 
@@ -273,10 +273,10 @@
 {#                    {{ datetime.utcnow()-dingdan.time1 }}#}
 
                     {% if dingdan.status == 1 %}
-                         {% if kehu.chenghu != '样板房' %}
-                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 确认下单</a>
-                         {% else %}
+                         {% if '量房' in kehu.chenghu %}
                             样板房
+                         {% else %}
+                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 确认下单</a>
                          {% endif %}
                      {% elif dingdan.status== 2 %}  {#  and (datetime.utcnow – dingdan.time1)hours dingdan.time1 datetime.utcnow #}
                        ( {{ moment(dingdan.time1).fromNow(refresh=True) }} )<a class="btn btn-primary  glyphicon glyphicon-repeat" href="{{  url_for('main.undoxiadanone', khid=kehu.id, ddid=dingdan.id) }}" > 撤单</a>
@@ -293,10 +293,11 @@
           <div class="panel panel-default">
                 <div class="panel-heading text-center">
                     {% if kehu.status == 1 %}
-                        {% if kehu.chenghu != '样板房' %}
-                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
-                        {% else %}
+{#                        {% if kehu.chenghu != '样板房' %}#}
+                        {% if '量房' in kehu.chenghu  %}
                             样板房
+                        {% else %}
+                            <a class="btn btn-success  glyphicon glyphicon-tags" href="{{  url_for('main.doxiadan', khid=kehu.id) }}" > 全部确认下单</a>
                         {% endif %}
 {#                    {% else %}#}
 {#                        【已下单】 撤销？？#}
