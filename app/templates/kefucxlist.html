@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
+
+{% block page_content %}
+    {#    <div class="page-header">#}
+    {#    <h4>订货员：{{ current_user.username }}</h4>#}
+    {#        <p>订货列表</p>#}
+    {#    </div>#}
+
+    {#          <div class="panel panel-default">#}
+    {#                <div class="panel-heading">#}
+    {#                <h4>{{ done }}#}
+    {#                    {% if done=='已订货' %}#}
+    {#                        <a class="btn btn-success" href="{{  url_for('main.dinghuolist') }}" >转－待订货</a>#}
+    {#                    {% else %}#}
+    {#                        <a class="btn btn-primary " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>#}
+    {#                    {% endif %}</h4>#}
+    {#                </div>#}
+    {#          </div>#}
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            {{ prewhere }}
+        </div>
+        <div class="post-body">
+            <blockquote>
+                {{ wtf.quick_form(form) }}
+            </blockquote>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+
+
+
+    {% for dingdan in dingdans %}
+
+
+            <div class="panel panel-default">
+                <div class="panel-heading"><h4> 订单号「 {{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
+
+                    {% if dingdan.status == 1 %}
+                         「已测尺」
+                    {% elif dingdan.status == 2  %}
+                         「已下单」
+                    {% elif dingdan.status == 3  %}
+                         「已订货」
+                    {% elif dingdan.status == 4  %}
+                         「已入库」
+                    {% elif dingdan.status == 5  %}
+                         「已发货」
+                    {% elif dingdan.status == 6  %}
+                         「已收货」
+                    {% elif dingdan.status == 7  %}
+                         「安装中」
+                    {% elif dingdan.status == 8  %}
+                         「完成安装」
+                    {% elif dingdan.status == 9  %}
+                         「已清款」
+                    {% else %}
+                         「状态有误」
+                    {% endif %}
+
+                </h4></div>
+                <div class="post-body">
+                    <blockquote>
+                        <ul class="list-unstyled">
+                            <li>位置: {{ dingdan.weizhi }}</li>
+                            <li>型号: {{ dingdan.xinghao }}</li>
+{#                            <li>状态: {{ dingdan.status }}</li>#}
+                        </ul>
+                    </blockquote>
+                </div>
+                <div class="panel-footer">
+                    {#                          <blockquote>#}
+                    <p>客户ID: {{ dingdan.kehu.id }}</p>
+                    <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }}
+                        小区 {{ dingdan.kehu.fangjian }} 房</p>
+                    <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
+{#                    <p>备注: {{ dingdan.kehu.beizhu }}</p>#}
+                    <hr>
+                    <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+                    {#                          </blockquote>#}
+                </div>
+            </div>
+
+
+    {% endfor %}
+
+
+
+
+
+
+    {##}
+    {##}
+    {#    {% for dingdan in dingdans %}#}
+    {#            <div class="panel panel-default">#}
+    {##}
+    {#        {% if dingdan.chanpin.pinming == '隐形网' %}#}
+    {##}
+    {#                <div class="panel-heading">[ {{ dingdan.id }} ] 隐形网</div>#}
+    {#                <div class="post-body">#}
+    {#                    <blockquote>#}
+    {#                    <ul>#}
+    {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+    {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+    {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
+    {#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+    {#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+    {#                        <li>颜色: {{ dingdan.color }}</li>#}
+    {#                        <li>状态: {{ dingdan.status }}</li>#}
+    {#                    </ul>#}
+    {#                    </blockquote>#}
+    {#                </div>#}
+    {#                <div class="panel-footer">状态</div>#}
+    {##}
+    {#        {% elif dingdan.chanpin.pinming == '纱门' %}#}
+    {##}
+    {#                <div class="panel-heading">[ {{ dingdan.id }} ] 纱门</div>#}
+    {#                <div class="post-body">#}
+    {#                    <blockquote>#}
+    {#                    <ul>#}
+    {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+    {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+    {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
+    {#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+    {#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+    {#                        <li>颜色: {{ dingdan.color }}</li>#}
+    {##}
+    {#                        <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>#}
+    {#                        <li>扇数: {{ dingdan.shanshu }}</li>#}
+    {#                        <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+    {#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+    {#                        <li>装法: {{ dingdan.zhangfa }}</li>#}
+    {#                        <li>状态: {{ dingdan.status }}</li>#}
+    {#                    </ul>#}
+    {#                    </blockquote>#}
+    {#                </div>#}
+    {#                <div class="panel-footer">状态</div>#}
+    {##}
+    {#        {% elif dingdan.chanpin.pinming == '晾衣架' %}#}
+    {#                 <div class="panel-heading">[ {{ dingdan.id }} ] 晾衣架</div>#}
+    {#                <div class="post-body">#}
+    {#                    <blockquote>#}
+    {#                    <ul>#}
+    {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+    {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+    {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
+    {#                        <li>长(mm): {{ dingdan.kuan_chang }}</li>#}
+    {#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+    {#                        <li>颜色: {{ dingdan.color }}</li>#}
+    {#                        <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+    {#                        <li>状态: {{ dingdan.status }}</li>#}
+    {#                    </ul>#}
+    {#                    </blockquote>#}
+    {#                </div>#}
+    {#                <div class="panel-footer">状态</div>#}
+    {##}
+    {##}
+    {#        {% elif dingdan.chanpin.pinming == '纱窗' %}#}
+    {#                <div class="panel-heading">[ {{ dingdan.id }} ] 纱窗</div>#}
+    {#                <div class="post-body">#}
+    {#                    <blockquote>#}
+    {#                    <ul>#}
+    {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+    {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+    {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
+    {#                        <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+    {#                        <li>高(mm): {{ dingdan.gao }}</li>#}
+    {#                        <li>颜色: {{ dingdan.color }}</li>#}
+    {##}
+    {#                        <li>底高(mm): {{ dingdan.meikuan_digao }}</li>#}
+    {#                        <li>等分数: {{ dingdan.dengfenshu }}</li>#}
+    {#                        <li>有否横条: {{ dingdan.ishaveht }}</li>#}
+    {#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+    {#                        <li>状态: {{ dingdan.status }}</li>#}
+    {#                    </ul>#}
+    {#                    </blockquote>#}
+    {#                </div>#}
+    {#                <div class="panel-footer">状态</div>#}
+    {##}
+    {#        {% elif dingdan.chanpin.pinming == '指纹锁' %}#}
+    {#                <div class="panel-heading">[ {{ dingdan.id }} ] 指纹锁</div>#}
+    {#                <div class="post-body">#}
+    {#                    <blockquote><ul>#}
+    {#                        <li>位置: {{ dingdan.weizhi }}</li>#}
+    {#                        <li>数量: {{ dingdan.shuliang }}</li>#}
+    {#                        <li>型号: {{ dingdan.xinghao }}</li>#}
+    {#                        <li>颜色: {{ dingdan.color }}</li>#}
+    {##}
+    {#                        <li>锁位: {{ dingdan.shuowei }}</li>#}
+    {#                        <li>状态: {{ dingdan.status }}</li>#}
+    {#                    </ul></blockquote>#}
+    {#                </div>#}
+    {##}
+    {##}
+    {#        {% endif %}#}
+    {##}
+    {##}
+    {#                <div class="panel-footer">#}
+    {#                  <blockquote>#}
+    {##}
+    {#                        <p>地址: 「 {{ dingdan.kehu.xiaoqu.weizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.donghao }} 栋 {{ dingdan.kehu.fanghao }} 房</p>#}
+    {#                        <p>称呼: {{ dingdan.kehu.chenghu }}</p>#}
+    {#                        <p>电话: {{ dingdan.kehu.tel }}</p>#}
+    {##}
+    {#                  </blockquote>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#    {% endfor %}#}
+
+
+    {#<table class="table">#}
+    {#  <thead>#}
+    {#    <tr>#}
+    {#      <th>项目</th>#}
+    {#      <th>金额</th>#}
+    {#      <!--th>日期</th-->#}
+    {#      <th>经过</th>#}
+    {#    </tr>#}
+    {#  </thead>#}
+    {#  <tbody>#}
+    {##}
+    {#    {% for bujuan in bujuans %}#}
+    {#    <tr>#}
+    {#      <td>{{ bujuan.xiangmu.xiangmu }}</td>#}
+    {#      <td>{{ bujuan.jine }}</td>#}
+    {#      <!--td>{{ moment(bujuan.outtime).format('YY年M月D日') }}</td-->#}
+    {#      <td>{{ moment(bujuan.outtime).fromNow(refresh=True) }}{% if loop.first %}<!--span class="badge">新</span-->{% endif %}</td>#}
+    {##}
+    {#    </tr>#}
+    {##}
+    {#    {% endfor %}#}
+    {#  </tbody>#}
+    {#</table>#}
+
+{% endblock %}

@@ -24,6 +24,12 @@ def loginto(u,p):
         # 管理账号转到管理页
         if user.role == 'adm':
             return redirect(url_for('admin.index'))
+
+        # pass
+        elif user.role == '进度客服':
+            # 一般用户转转到首页..
+            return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
+
         # pass
         elif user.role == '业务员':
             # 一般用户转转到首页..
@@ -54,6 +60,12 @@ def login():
             #管理账号转到管理页
             if user.role == 'adm':
                 return redirect(url_for('admin.index'))
+
+            # pass
+            elif user.role == '进度客服':
+                # 一般用户转转到首页..
+                return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
+
             # pass
             elif user.role == '业务员':
                 # 一般用户转转到首页..

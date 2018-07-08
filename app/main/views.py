@@ -7,11 +7,12 @@ from datetime import datetime, timedelta
 
 from flask import redirect, url_for, render_template, flash, make_response, send_file, session, request
 from flask_login import current_user, login_required
-from sqlalchemy import func, engine, or_
+from sqlalchemy import func, engine, or_, and_
 
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
 from .. import db
-from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm
+from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
+    KFfindForm
 from . import main
 
 import tablib
@@ -30,17 +31,22 @@ def index():
         return redirect(url_for('admin.index'))
 
     # pass
+    elif current_user.role == '进度客服':
+        # 一般用户转转到首页..
+        return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
+
+    # pass
     elif current_user.role == '业务员':
         # 一般用户转转到首页..
-        return redirect(request.args.get('next') or url_for('main.kehulist'))
+        return redirect(url_for('main.kehulist'))
 
     elif current_user.role == '订货员':
         # 一般用户转转到首页..
-        return redirect(request.args.get('next') or url_for('main.dinghuolist'))
+        return redirect(url_for('main.dinghuolist'))
 
     elif current_user.role == '发货员':
         # 一般用户转转到首页..
-        return redirect(request.args.get('next') or url_for('main.fahuolist'))
+        return redirect(url_for('main.fahuolist'))
 
     else:
         # 一般用户转转到首页..
@@ -80,7 +86,7 @@ def kehulist():
 
     # form.infosing.data = '％'
     if session.get('infostring') != None:
-        infostring = '%'+session.get('infostring')+'%'
+        infostring = '%' + session.get('infostring') + '%'
     else:
         infostring = '%'
 
@@ -117,6 +123,80 @@ def dinghuolist():
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     return render_template('dinghuolist.html', dingdans=dingdans, done='待订货')  # form=form,
+
+
+@main.route('/kefucxlist', methods=['GET', 'POST'])
+@login_required
+def kefucxlist():
+    if current_user.role != '进度客服':
+        return redirect(url_for('main.index'))
+
+    form = KFfindForm()
+
+    if form.validate_on_submit():
+        # session['xiaoqu'] = form.xiaoqu.data
+        session['fangjian'] = form.fangjian.data
+        session['tel'] = form.tel.data
+        session['status'] = form.status.data
+        return redirect(url_for('main.kefucxlist'))
+
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+
+    xiaoquid = int(session.get('xiaoqu', 0))
+    fangjian = '%' + session.get('fangjian', '%') + '%'
+    tel = '%' + session.get('tel', '%') + '%'
+    status = int(session.get('status', 0))
+
+    prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)
+
+    # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
+    #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    # xiaoquO = Xiaoqu.query.get(xiaoquid)
+    #
+    # dingdans = Dingdan.query.filter(Kehu.xiaoqu_id == xiaoquid)
+
+
+    if prewhere =='房间：%%电话.：%%状态：0 ' : #小区：0
+        dingdans = Dingdan.query.filter(Kehu.tel.like('9999999999'))
+    else:
+        # if xiaoquid != 0:
+        #     if status != 0:
+        #         dingdans = Dingdan.query.filter(
+        #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid,
+        #                  Dingdan.status == status)).order_by(Dingdan.chanpin_id,
+        #                                                      Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        #     else:
+        #         dingdans = Dingdan.query.filter(
+        #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid)).order_by(
+        #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        # else:
+        if status != 0:
+            dingdans = Dingdan.query.filter(
+                and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Dingdan.status == status)).order_by(
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            dingdans = Dingdan.query.filter(
+                and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel))).order_by(
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+
+
+
+            # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
+    #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
+    #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+
+    return render_template('kefucxlist.html', dingdans=dingdans, form=form, prewhere=prewhere)  # form=form,
 
 
 @main.route('/dinghuoedlist', methods=['GET', 'POST'])
