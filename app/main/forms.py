@@ -67,7 +67,7 @@ class KFfindForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(KFfindForm, self).__init__(*args, **kwargs)
         # self.xiaoqu.choices =[(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
-        self.status.choices = [(1, '已量尺'), (2, '已下单'), (3, '已订货'), (4, '已入库'), (5, '已发货'), (6, '已收货'), (7, '安装中'), (8, '安装完成'), (9, '已清款')]
+        self.status.choices = [(0,''),(1, '已量尺'), (2, '已下单'), (3, '已订货'), (4, '已入库'), (5, '已发货'), (6, '已收货'), (7, '安装中'), (8, '安装完成'), (9, '已清款')]
 
 # 隐形网
 class YxwForm(FlaskForm):

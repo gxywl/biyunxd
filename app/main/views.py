@@ -151,12 +151,12 @@ def kefucxlist():
 
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
 
-    xiaoquid = int(session.get('xiaoqu', 0))
+    # xiaoquid = int(session.get('xiaoqu', 0))
     fangjian = '%' + session.get('fangjian', '%') + '%'
     tel = '%' + session.get('tel', '%') + '%'
     status = int(session.get('status', 0))
 
-    prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)
+    prewhere = '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status) #'小区：' + str(xiaoquid) +
 
     # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
     #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
@@ -166,7 +166,7 @@ def kefucxlist():
     # dingdans = Dingdan.query.filter(Kehu.xiaoqu_id == xiaoquid)
 
 
-    if prewhere =='房间：%%电话.：%%状态：0 ' : #小区：0
+    if prewhere =='房间：%%电话.：%%状态：0' : #小区：0
         dingdans = Dingdan.query.filter(Kehu.tel.like('9999999999'))
     else:
         # if xiaoquid != 0:
