@@ -5,7 +5,7 @@ import os
 import time
 from datetime import datetime, timedelta
 
-from flask import redirect, url_for, render_template, flash, make_response, send_file, session
+from flask import redirect, url_for, render_template, flash, make_response, send_file, session, request
 from flask_login import current_user, login_required
 from sqlalchemy import func, engine, or_
 
@@ -32,15 +32,15 @@ def index():
     # pass
     elif current_user.role == '业务员':
         # 一般用户转转到首页..
-        return redirect(url_for('main.kehulist'))
+        return redirect(request.args.get('next') or url_for('main.kehulist'))
 
     elif current_user.role == '订货员':
         # 一般用户转转到首页..
-        return redirect(url_for('main.dinghuolist'))
+        return redirect(request.args.get('next') or url_for('main.dinghuolist'))
 
     elif current_user.role == '发货员':
         # 一般用户转转到首页..
-        return redirect(url_for('main.fahuolist'))
+        return redirect(request.args.get('next') or url_for('main.fahuolist'))
 
     else:
         # 一般用户转转到首页..

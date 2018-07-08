@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %} 待订货 {% endblock %}
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
 
 {% block page_content %}
 {#    <div class="page-header">#}
@@ -13,9 +13,9 @@
                 <div class="panel-heading">
                 <h4>{{ done }}
                     {% if done=='已订货' %}
-                        <a class="btn btn-default" href="{{  url_for('main.dinghuolist') }}" >转－待订货</a>
+                        <a class="btn btn-success" href="{{  url_for('main.dinghuolist') }}" >转－待订货</a>
                     {% else %}
-                        <a class="btn btn-default " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>
+                        <a class="btn btn-primary " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>
                     {% endif %}</h4>
                 </div>
           </div>
@@ -60,7 +60,7 @@
                         </h4></div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -73,14 +73,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
@@ -113,7 +113,7 @@
                         </h4></div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -131,14 +131,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
@@ -171,7 +171,7 @@
                         </h4></div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -185,14 +185,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
@@ -224,7 +224,7 @@
                          </h4></div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -241,14 +241,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
@@ -280,7 +280,8 @@
                         {% endif %}
                          </h4></div>
                         <div class="post-body">
-                            <blockquote><ul>
+                            <blockquote>
+                                <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -292,14 +293,14 @@
                             </ul></blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
 
@@ -334,7 +335,7 @@
                         </h4></div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -348,14 +349,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
@@ -388,7 +389,7 @@
                          </h4> </div>
                         <div class="post-body">
                             <blockquote>
-                            <ul>
+                            <ul class="list-unstyled">
                                 <li>位置: {{ dingdan.weizhi }}</li>
                                 <li>数量: {{ dingdan.shuliang }}</li>
                                 <li>型号: {{ dingdan.xinghao }}</li>
@@ -405,14 +406,14 @@
                             </blockquote>
                         </div>
                         <div class="panel-footer">
-                          <blockquote>
-
+{#                          <blockquote>#}
+                                <p>客户ID: {{ dingdan.kehu.id }}</p>
                                 <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }} 小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                <p>称呼: {{ dingdan.kehu.chenghu }}</p>
-                                <p>电话: {{ dingdan.kehu.tel }}</p>
+                                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
                                 <p>备注: {{ dingdan.kehu.beizhu }}</p>
-
-                          </blockquote>
+                                <hr>
+                                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+{#                          </blockquote>#}
                         </div>
                     </div>
                 {% endif %}
