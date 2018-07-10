@@ -57,7 +57,7 @@ class FindkhForm(FlaskForm):
 
 # 客服的过滤
 class KFfindForm(FlaskForm):
-    # xiaoqu = SelectField('小区', coerce=int)
+    xiaoqu = SelectField('小区', coerce=int)
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     tel = StringField('电话.')
     status = SelectField('产品进度', coerce=int)
@@ -66,7 +66,7 @@ class KFfindForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(KFfindForm, self).__init__(*args, **kwargs)
-        # self.xiaoqu.choices =[(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
+        self.xiaoqu.choices =[(0,'')]+[(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0,''),(1, '已量尺'), (2, '已下单'), (3, '已订货'), (4, '已入库'), (5, '已发货'), (6, '已收货'), (7, '安装中'), (8, '安装完成'), (9, '已清款')]
 
 # 隐形网

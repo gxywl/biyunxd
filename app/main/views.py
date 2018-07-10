@@ -134,7 +134,7 @@ def kefucxlist():
     form = KFfindForm()
 
     if form.validate_on_submit():
-        # session['xiaoqu'] = form.xiaoqu.data
+        session['xiaoqu'] = form.xiaoqu.data
         session['fangjian'] = form.fangjian.data
         session['tel'] = form.tel.data
         session['status'] = form.status.data
@@ -151,52 +151,70 @@ def kefucxlist():
 
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
 
-    # xiaoquid = int(session.get('xiaoqu', 0))
+    xiaoquid = int(session.get('xiaoqu', 0))
     fangjian = '%' + session.get('fangjian', '%') + '%'
     tel = '%' + session.get('tel', '%') + '%'
     status = int(session.get('status', 0))
 
-    prewhere = '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status) #'小区：' + str(xiaoquid) +
+    prewhere = '小区：' + str(xiaoquid) +'房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
 
     # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
     #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     # xiaoquO = Xiaoqu.query.get(xiaoquid)
     #
-    # dingdans = Dingdan.query.filter(Kehu.xiaoqu_id == xiaoquid)
+    # kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel)))
 
+    # dingdans = Dingdan.query.filter(Dingdan.status == status)
 
-    if prewhere =='房间：%%电话.：%%状态：0' : #小区：0
-        dingdans = Dingdan.query.filter(Kehu.tel.like('9999999999'))
-    else:
-        # if xiaoquid != 0:
-        #     if status != 0:
-        #         dingdans = Dingdan.query.filter(
-        #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid,
-        #                  Dingdan.status == status)).order_by(Dingdan.chanpin_id,
-        #                                                      Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-        #     else:
-        #         dingdans = Dingdan.query.filter(
-        #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid)).order_by(
-        #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-        # else:
-        if status != 0:
-            dingdans = Dingdan.query.filter(
-                and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Dingdan.status == status)).order_by(
-                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-        else:
-            dingdans = Dingdan.query.filter(
-                and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel))).order_by(
-                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    # 有大问题！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    # Kehu.fangjian.like(fangjian), Kehu.tel.like(tel)
+    # 只要纪录集合中有一个符合即整个集合算是了
+    # 与Dingdan.status不同
 
+    xiaoqus = Xiaoqu.query.all()
 
+    # if prewhere =='房间：%%电话.：%%状态：0' : #小区：0
+    #     dingdans = Dingdan.query.filter(Kehu.tel.like('9999999999'))
+    # else:
+    #     # if xiaoquid != 0:
+    #     #     if status != 0:
+    #     #         dingdans = Dingdan.query.filter(
+    #     #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid,
+    #     #                  Dingdan.status == status)).order_by(Dingdan.chanpin_id,
+    #     #                                                      Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     #     else:
+    #     #         dingdans = Dingdan.query.filter(
+    #     #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Kehu.xiaoqu_id == xiaoquid)).order_by(
+    #     #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     # else:
+    #     if status != 0:
+    #         dingdans = Dingdan.query.filter(
+    #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel), Dingdan.status == status)).order_by(
+    #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     else:
+    #         dingdans = Dingdan.query.filter(
+    #             and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel))).order_by(
+    #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
+    # sql = """select b.user_id,b.user_name,b.icon,b.score,a.add_score from
+    #     (select user_id, sum(score_new - score_old) as add_score from user_score_log
+    #     where year(create_date)=year(now()) and month(create_date)=month(now())
+    #     group by user_id) a join users b on a.user_id=b.user_id
+    #     order by a.add_score desc limit 50"""
+    #
+    # dingdans = db.session.execute(sql).fetchall()
 
-            # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
+    # sql = """select * from dingdans"""
+    #
+    # dingdans = db.session.execute(sql).fetchall()
+
+    # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
     #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
     #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
 
-    return render_template('kefucxlist.html', dingdans=dingdans, form=form, prewhere=prewhere)  # form=form,
+    return render_template('kefucxlist.html', xiaoqus=xiaoqus, form=form, prewhere=prewhere, xiaoquid=xiaoquid,
+                           fangjian=fangjian, tel=tel, status=status)  # form=form,, dingdans=dingdans
 
 
 @main.route('/dinghuoedlist', methods=['GET', 'POST'])
@@ -302,6 +320,9 @@ def delkehu(id):
 
     kehu = Kehu.query.get(id)
     # 先删除
+
+    # 如果有订单禁止删除
+
     for dingdan in kehu.dingdans:
         db.session.delete(dingdan)
 

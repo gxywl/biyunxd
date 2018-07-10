@@ -52,7 +52,10 @@
                     {% endif %}
 
                     <li>备注: {{ kehu.beizhu }}</li>
-                    <li><a class="btn btn-danger glyphicon glyphicon-remove" href="{{  url_for('main.delkehu', id=kehu.id) }}" > 删</a>
+                    <li>
+{#                        <a class="btn btn-danger glyphicon glyphicon-remove" href="{{  url_for('main.delkehu', id=kehu.id) }}" > 删</a>#}
+
+
                <a class="btn btn-primary glyphicon glyphicon-pencil" href="{{  url_for('main.editkehu', id=kehu.id) }}" > 改</a></li>
 {#                    <li> {{ moment(kehu.xdtime).fromNow(refresh=True) }}{% if loop.first %}<span class="badge">新</span>{% endif %}</li>#}
                     </ul>
