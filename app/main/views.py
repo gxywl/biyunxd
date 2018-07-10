@@ -323,11 +323,16 @@ def delkehu(id):
 
     # 如果有订单禁止删除
 
-    for dingdan in kehu.dingdans:
-        db.session.delete(dingdan)
+    if kehu.dingdans.count>0:
+        flash('先删订单才可以删')
+    else:
 
-    db.session.delete(kehu)
-    flash('已成功删除客户')
+
+    # for dingdan in kehu.dingdans:
+    #     db.session.delete(dingdan)
+
+        db.session.delete(kehu)
+        flash('已成功删除客户')
 
     return redirect(url_for('main.kehulist'))
 
