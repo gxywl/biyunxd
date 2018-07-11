@@ -81,7 +81,8 @@ def kehulist():
 
     user = current_user._get_current_object()
     if form.validate_on_submit():
-        session['infostring'] = form.infosing.data
+        session['infostring'] = form.infostring.data
+        session['status'] = form.status.data
         return redirect(url_for('main.kehulist'))
 
     # form.infosing.data = '％'
@@ -92,14 +93,18 @@ def kehulist():
 
     prewhere = session.get('infostring')
 
+    status = session.get('status', 0)
+
     kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
         or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
             Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
 
     # kehus = Kehu.query.filter_by(user=current_user._get_current_object(),).order_by(
     #     Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+    form.infostring.data = session.get('infostring', '')
+    form.status.data = status
 
-    return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere)  # ,
+    return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
 
 
 @main.route('/dinghuolist', methods=['GET', 'POST'])
@@ -161,7 +166,7 @@ def kefucxlist():
     tel = session.get('tel', '')
     status = int(session.get('status', 0))
 
-    #prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
+    # prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
 
     # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
     #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
