@@ -151,12 +151,17 @@ def kefucxlist():
 
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
 
+    # xiaoquid = int(session.get('xiaoqu', 0))
+    # fangjian = '%' + session.get('fangjian', '%') + '%'
+    # tel = '%' + session.get('tel', '%') + '%'
+    # status = int(session.get('status', 0))
+
     xiaoquid = int(session.get('xiaoqu', 0))
-    fangjian = '%' + session.get('fangjian', '%') + '%'
-    tel = '%' + session.get('tel', '%') + '%'
+    fangjian = session.get('fangjian', '')
+    tel = session.get('tel', '')
     status = int(session.get('status', 0))
 
-    prewhere = '小区：' + str(xiaoquid) +'房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
+    #prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
 
     # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
     #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
@@ -213,8 +218,8 @@ def kefucxlist():
     #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
     #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
 
-    return render_template('kefucxlist.html', xiaoqus=xiaoqus, form=form, prewhere=prewhere, xiaoquid=xiaoquid,
-                           fangjian=fangjian, tel=tel, status=status)  # form=form,, dingdans=dingdans
+    return render_template('kefucxlist.html', xiaoqus=xiaoqus, form=form, xiaoquid=xiaoquid,
+                           fangjian=fangjian, tel=tel, status=status)  # prewhere=prewhere,, dingdans=dingdans
 
 
 @main.route('/dinghuoedlist', methods=['GET', 'POST'])
@@ -323,13 +328,12 @@ def delkehu(id):
 
     # 如果有订单禁止删除
 
-    if kehu.dingdans.count>0:
+    if kehu.dingdans.count() > 0:
         flash('先删订单才可以删')
     else:
 
-
-    # for dingdan in kehu.dingdans:
-    #     db.session.delete(dingdan)
+        # for dingdan in kehu.dingdans:
+        #     db.session.delete(dingdan)
 
         db.session.delete(kehu)
         flash('已成功删除客户')
