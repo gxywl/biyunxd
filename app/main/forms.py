@@ -44,6 +44,19 @@ class WilladdcpForm(FlaskForm):
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 
+# 入库员的过滤
+class FineddidForm(FlaskForm):
+    ddid = StringField('订单ID')
+    status = SelectField('进度状态', coerce=int)
+    submit = SubmitField('开始过滤')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(FineddidForm, self).__init__(*args, **kwargs)
+        self.status.choices = [(0, ''), (3, '已订货'), (4, '已入库')]
+    #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
+    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 # 业务员的过滤
 class FindkhForm(FlaskForm):
     infostring = StringField('客户查找 「房号」或「称呼」或「电话」. 部分文字)')

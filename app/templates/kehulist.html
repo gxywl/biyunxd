@@ -276,31 +276,35 @@
 
                     <h4>
                         订单号({{ dingdan.id }})
-                        {% if dingdan.status == 0 %}
-                            「所有进度」
-                        {% elif dingdan.status == 1 %}
-                            「已量尺」
-                        {% elif dingdan.status == 2 %}
-                            「已下单」
-                        {% elif dingdan.status == 3 %}
-                            「已订货」
-                        {% elif dingdan.status == 4 %}
-                            「已入库」
-                        {% elif dingdan.status == 5 %}
-                            「已发货」
-                        {% elif dingdan.status == 6 %}
-                            「已收货」
-                        {% elif dingdan.status == 7 %}
-                            「安装中」
-                        {% elif dingdan.status == 8 %}
-                            「完成安装」
-                        {% elif dingdan.status == 9 %}
-                            「已清款」
-                        {% else %}
-                            「状态有误」
-                        {% endif %}
+
+{#                        {% if dingdan.status == 0 %}#}
+{#                            「所有进度」#}
+{#                        {% elif dingdan.status == 1 %}#}
+{#                            「已量尺」#}
+{#                        {% elif dingdan.status == 2 %}#}
+{#                            「已下单」#}
+{#                        {% elif dingdan.status == 3 %}#}
+{#                            「已订货」#}
+{#                        {% elif dingdan.status == 4 %}#}
+{#                            「已入库」#}
+{#                        {% elif dingdan.status == 5 %}#}
+{#                            「已发货」#}
+{#                        {% elif dingdan.status == 6 %}#}
+{#                            「已收货」#}
+{#                        {% elif dingdan.status == 7 %}#}
+{#                            「安装中」#}
+{#                        {% elif dingdan.status == 8 %}#}
+{#                            「完成安装」#}
+{#                        {% elif dingdan.status == 9 %}#}
+{#                            「已清款」#}
+{#                        {% else %}#}
+{#                            「状态有误」#}
+{#                        {% endif %}#}
 
                         {{ dingdan.chanpin.pinming }}
+                        {% if dingdan.status == 3 %}
+                        [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
+                        {% endif %}
                         {{ dingdan.weizhi }}
                     </h4>
 
