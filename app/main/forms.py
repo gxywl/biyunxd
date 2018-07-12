@@ -165,7 +165,7 @@ class SmForm(FlaskForm):
 
 
 # 晾衣杆
-class LyjForm(FlaskForm):
+class LygForm(FlaskForm):
     # weizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('大阳台', '大阳台'), ('小阳台', '小阳台')])
     weizhi = SelectField('位置', validators=[DataRequired()])
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
@@ -174,7 +174,9 @@ class LyjForm(FlaskForm):
     xinghao = SelectField("型号", validators=[DataRequired()])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
+
+
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), (2, '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
@@ -187,7 +189,7 @@ class LyjForm(FlaskForm):
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
-        super(LyjForm, self).__init__(*args, **kwargs)
+        super(LygForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
             pinming=u'晾衣杆', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
@@ -206,7 +208,7 @@ class LyjForm(FlaskForm):
     xinghao = SelectField("型号", validators=[DataRequired()])
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('4', '4'), ('2', '2'), ('3', '3')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')

@@ -12,7 +12,7 @@ from sqlalchemy import func, engine, or_, and_
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
-    KFfindForm, FineddidForm
+    KFfindForm, FineddidForm, LygForm
 from . import main
 
 import tablib
@@ -474,8 +474,10 @@ def showkehudd(id):
             toview = 'addyxw'
         elif chanpin.pinming == '纱门':
             toview = 'addsm'
-        elif chanpin.pinming == '晾衣杆' or chanpin.pinming == '晾衣机':
-            toview = 'addlyg_j'
+        elif chanpin.pinming == '晾衣杆':
+            toview = 'addlyg'
+        elif chanpin.pinming == '晾衣机':
+            toview = 'addlyj'
         elif chanpin.pinming == '纱窗':
             toview = 'addsc'
         elif chanpin.pinming == '窗花':
@@ -593,10 +595,51 @@ def addsm(cpid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
 
 
-# 晾衣杆_机
+
+# 晾衣杆
+@main.route('/addlyg/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def addlyg(cpid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = LygForm()
+
+    chanpin = Chanpin.query.get(cpid)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    if form.validate_on_submit():
+        # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
+
+        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                          xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
+                          zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+
+        db.session.add(dingdan)
+
+        flash('已成功添加')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
+
+
+
+# 晾衣机
 @main.route('/addlyj/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def addlyg_j(cpid, khid):
+def addlyj(cpid, khid):
     if current_user.role != '业务员':
         return redirect(url_for('main.index'))
 
@@ -629,6 +672,7 @@ def addlyg_j(cpid, khid):
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
 
 
 # # 纱窗
@@ -786,8 +830,10 @@ def editdingdan(ddid, khid):
         toview = 'edityxw'
     elif pinming == '纱门':
         toview = 'editsm'
-    elif pinming == '晾衣杆' or pinming == '晾衣机':
-        toview = 'editlyg_j'
+    elif pinming == '晾衣杆':
+        toview = 'editlyg'
+    elif pinming == '晾衣机':
+        toview = 'editlyj'
     elif pinming == '纱窗':
         toview = 'editsc'
     elif pinming == '窗花':
@@ -916,10 +962,66 @@ def editsm(ddid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
-# # 晾衣架
+# # 晾衣杆
+@main.route('/editlyg/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editlyg(ddid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = LygForm()
+
+    if form.validate_on_submit():
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.chang.data
+        dingdan.gao = form.gao.data
+        dingdan.color = form.color.data
+        dingdan.zhonghengtiaoshu_gantiaoshu = form.gantiaoshu.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
+
+        db.session.add(dingdan)
+
+        flash('已成功修改')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = dingdan.shuliang
+    form.xinghao.data = dingdan.xinghao
+    form.chang.data = dingdan.kuan_chang
+    form.gao.data = dingdan.gao
+    form.color.data = dingdan.color
+
+    # 这里如果不做Str 则不能显示原来的数据！！
+    form.gantiaoshu.data = str(dingdan.zhonghengtiaoshu_gantiaoshu)
+
+    form.beizhu.data = dingdan.beizhu
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
+
+# # 晾衣机
 @main.route('/editlyj/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
-def editlyg_j(ddid, khid):
+def editlyj(ddid, khid):
     if current_user.role != '业务员':
         return redirect(url_for('main.index'))
 
@@ -963,7 +1065,10 @@ def editlyg_j(ddid, khid):
     form.chang.data = dingdan.kuan_chang
     form.gao.data = dingdan.gao
     form.color.data = dingdan.color
-    form.gantiaoshu.data = dingdan.zhonghengtiaoshu_gantiaoshu
+
+    # 这里如果不做Str 则不能显示原来的数据！！
+    form.gantiaoshu.data =str(dingdan.zhonghengtiaoshu_gantiaoshu)
+
     form.beizhu.data = dingdan.beizhu
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
