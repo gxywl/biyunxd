@@ -42,6 +42,10 @@ def loginto(u,p):
             # 一般用户转转到首页..
             return redirect(url_for('main.rukulist'))
 
+        # elif user.role == '出库员':
+        #     # 一般用户转转到首页..
+        #     return redirect(url_for('main.qukulist'))
+
         elif user.role == '发货员':
             # 一般用户转转到首页..
             return redirect(url_for('main.fahuolist'))
@@ -86,6 +90,10 @@ def login():
             elif user.role == '发货员':
                 # 一般用户转转到首页..
                 return redirect(url_for('main.fahuolist'))
+            #
+            # elif user.role == '发货员':
+            #     # 一般用户转转到首页..
+            #     return redirect(url_for('main.fahuolist'))
             else:
             #一般用户转转到首页..
                 # return redirect(request.args.get('next') or url_for('main.kehulist'))

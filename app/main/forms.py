@@ -47,13 +47,26 @@ class WilladdcpForm(FlaskForm):
 # 入库员的过滤
 class FineddidForm(FlaskForm):
     ddid = StringField('订单ID')
-    status = SelectField('进度状态', coerce=int)
+    status = SelectField('进度状态', coerce=int) #
     submit = SubmitField('开始过滤')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(FineddidForm, self).__init__(*args, **kwargs)
         self.status.choices = [(0, ''), (3, '已订货'), (4, '已入库')]
+    #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
+    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
+# 入库员的过滤
+class FinefhddidForm(FlaskForm):
+    ddid = StringField('订单ID')
+    status = SelectField('进度状态', coerce=int) #
+    submit = SubmitField('开始过滤')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(FinefhddidForm, self).__init__(*args, **kwargs)
+        self.status.choices = [(0, ''), (4, '已入库'), (5, '已发货')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
@@ -251,7 +264,7 @@ class ScForm(FlaskForm):
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
                              choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
-    ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
+    ishaveht = SelectField('横条数', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
 
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图')
