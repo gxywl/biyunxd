@@ -112,8 +112,10 @@ class Dingdan(db.Model):
     jiage = db.Column(db.Float)
     tushipic = db.Column(db.String(64))
     beizhu = db.Column(db.String(64))
-    status = db.Column(db.Integer, default=1)  # 1测尺、2业务下单、3工厂下单、4工厂入库、5工厂发货、6货到工地、7安装完成
-    fakaidi = db.Column(db.String(64))
+    status = db.Column(db.Integer, default=1)  # 1测尺、2业务下单、3工厂下单、4工厂入库、5工厂发货、6收货、7派工、8装完、9安清款
+    fakaidi = db.Column(db.String(64))  # -1
+
+
     time0 = db.Column(db.DateTime(), default=datetime.utcnow)
     user0_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time1 = db.Column(db.DateTime())
@@ -128,6 +130,13 @@ class Dingdan(db.Model):
     user5_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time6 = db.Column(db.DateTime())
     user6_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    time7 = db.Column(db.DateTime())
+    user7_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    time8 = db.Column(db.DateTime())
+    user8_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    time9 = db.Column(db.DateTime())
+    user9_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
 
     def __repr__(self):
         return '<Dingdan %r>' % self.id

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
+
+{% block page_content %}
+    {#    <div class="page-header">#}
+    {#    <h4>订货员：{{ current_user.username }}</h4>#}
+    {#        <p>订货列表</p>#}
+    {#    </div>#}
+
+    {#    <div class="panel panel-default">#}
+    {#        <div class="panel-heading">#}
+    {#            <h4>{{ done }}#}
+    {#                {% if done=='已入库' %}#}
+    {#                    <a class="btn btn-success" href="{{ url_for('main.rukulist') }}">转－待入库</a>#}
+    {#                {% else %}#}
+    {#                    <a class="btn btn-primary " href="{{ url_for('main.rukuedlist') }}">转－已入库</a>#}
+    {#                {% endif %}</h4>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+        </div>
+        <div class="post-body">
+            <blockquote>
+                {{ wtf.quick_form(form) }}
+            </blockquote>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+
+    .{{ ddid }}.
+
+    {% for dingdan in dingdans %}
+
+        {#        {% if ddid == 0 or (ddid == dingdan.id) %}#}
+        {{ dingdan.id }}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4> 订单号「 {{ dingdan.id }} 」{{ dingdan.chanpin.pinming }}
+                    {% if dingdan.status==8 %}
+                        ( {{ moment(dingdan.time7).fromNow(refresh=True) }} 装完)
+                        <a class="btn btn-primary  glyphicon glyphicon-lock"
+                           href="{{ url_for('main.qingkunone', ddid=dingdan.id) }}"> 清款</a>
+                    {% elif dingdan.status == 9 %}
+                        ( {{ moment(dingdan.time8).fromNow(refresh=True) }} 清款)
+                        <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                           href="{{ url_for('main.unqingkunone', ddid=dingdan.id) }}"> 撤清</a>
+{#                    {% elif dingdan.status == 10 %}#}
+{#                        【已清款 不可撤】#}
+                    {% endif %}
+                </h4>
+
+
+                <ul class="list-unstyled">
+                    <li>型号: {{ dingdan.xinghao }}</li>
+                    <li>状态: {{ dingdan.status }}</li>
+                </ul>
+
+            </div>
+
+
+            <div class="post-body">
+                <blockquote>
+
+                    {% for kehu in kehus %}
+                        {% if kehu.id == dingdan.kehu.id %}
+                            {#                            <p>同一客户{{ kehu.id }}的其他订单.</p>#}
+                            {% for fdingdan in kehu.dingdans %}
+                                {% if fdingdan.id != dingdan.id %}
+
+
+                                    {#                                    <p>{{ fdingdan.id }}</p>#}
+
+                                    <h4> 订单号「 {{ fdingdan.id }} 」{{ fdingdan.chanpin.pinming }}
+
+                                        {% if fdingdan.status==1 %}
+                                            ( {{ moment(fdingdan.time0).fromNow(refresh=True) }} 量尺)
+                                        {% elif fdingdan.status==2 %}
+                                            ( {{ moment(fdingdan.time1).fromNow(refresh=True) }} 下单)
+                                        {% elif fdingdan.status==3 %}
+                                            ( {{ moment(fdingdan.time2).fromNow(refresh=True) }} 订货)
+                                        {% elif fdingdan.status==4 %}
+                                            ( {{ moment(fdingdan.time3).fromNow(refresh=True) }} 入库)
+                                        {% elif fdingdan.status == 5 %}
+                                            ( {{ moment(fdingdan.time4).fromNow(refresh=True) }} 发货)
+                                        {% elif fdingdan.status==6 %}
+                                            ( {{ moment(fdingdan.time5).fromNow(refresh=True) }} 收货)
+                                        {% elif dingdan.status == 7 %}
+                                            ( {{ moment(fdingdan.time6).fromNow(refresh=True) }} 派工)
+                                        {% elif dingdan.status == 8 %}
+                                            ( {{ moment(fdingdan.time7).fromNow(refresh=True) }} 完成)
+                                            <a class="btn btn-primary  glyphicon glyphicon-lock"
+                                               href="{{ url_for('main.qingkunone', ddid=fdingdan.id) }}"> 清款</a>
+                                        {% elif dingdan.status == 9 %}
+                                            ( {{ moment(fdingdan.time8).fromNow(refresh=True) }} 清款)
+                                            <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                                               href="{{ url_for('main.unqingkunone', ddid=fdingdan.id) }}"> 撤清</a>
+                                        {% endif %}
+                                    </h4>
+
+
+                                    <ul class="list-unstyled">
+                                        <li>型号: {{ fdingdan.xinghao }}</li>
+                                        {#                                        <li>状态: {{ fdingdan.status }}</li>#}
+                                    </ul>
+
+                                    <hr>
+
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                    {#                #}
+                    {#                    <ul class="list-unstyled">#}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '隐形网' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {##}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '纱门' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>内空宽(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>扇数: {{ dingdan.shanshu }}</li>#}
+                    {#                            <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+                    {#                            <li>锁位: {{ dingdan.shuowei }}</li>#}
+                    {#                            <li>装法: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '晾衣杆' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>长(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '纱窗' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>把手底高(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>#}
+                    {#                            <li>锁位: {{ dingdan.shuowei }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>等分数: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
+                    {#                            <li>有否横条: {{ dingdan.ishaveht }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {##}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '指纹锁' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>锁位: {{ dingdan.shuowei }}</li>#}
+                    {#                            <li>开锁方式: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {##}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '晾衣机' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>长(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {#                        {% if dingdan.chanpin.pinming == '窗花' %}#}
+                    {##}
+                    {#                            <li>位置: {{ dingdan.weizhi }}</li>#}
+                    {#                            <li>数量: {{ dingdan.shuliang }}</li>#}
+                    {#                            <li>型号: {{ dingdan.xinghao }}</li>#}
+                    {#                            <li>宽(mm): {{ dingdan.kuan_chang }}</li>#}
+                    {#                            <li>高(mm): {{ dingdan.gao }}</li>#}
+                    {#                            <li>把手底高(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>#}
+                    {#                            <li>锁位: {{ dingdan.shuowei }}</li>#}
+                    {#                            <li>颜色: {{ dingdan.color }}</li>#}
+                    {#                            <li>等分数: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>#}
+                    {#                            <li>有否横条: {{ dingdan.ishaveht }}</li>#}
+                    {#                            <li>状态: {{ dingdan.status }}</li>#}
+                    {#                            <li>备注: {{ dingdan.beizhu }}</li>#}
+                    {##}
+                    {#                        {% endif %}#}
+                    {##}
+                    {#                    </ul>#}
+                    {#                #}
+                    {#                #}
+                </blockquote>
+            </div>
+            <div class="panel-footer">
+                {#                          <blockquote>#}
+                <p>客户ID: {{ dingdan.kehu.id }}</p>
+                <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }}
+                    小区 {{ dingdan.kehu.fangjian }} 房</p>
+                <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
+                <p>备注: {{ dingdan.kehu.beizhu }}</p>
+                <hr>
+                <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }} ）</h4>
+                {#                          </blockquote>#}
+            </div>
+        </div>
+        {#        {% endif %}#}
+    {% endfor %}
+    </div>
+
+
+{% endblock %}

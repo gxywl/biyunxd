@@ -12,7 +12,7 @@ from sqlalchemy import func, engine, or_, and_
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
-    KFfindForm, FineddidForm, LygForm, FinefhddidForm
+    KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm
 from . import main
 
 import tablib
@@ -48,14 +48,22 @@ def index():
         # 一般用户转转到首页..
         return redirect(url_for('main.rukulist'))
 
-    # elif current_user.role == '出库员':
-    #     # 一般用户转转到首页..
-    #     return redirect(url_for('main.qukulist'))
-
     elif current_user.role == '发货员':
         # 一般用户转转到首页..
         return redirect(url_for('main.fahuolist'))
 
+
+    elif current_user.role == '收货员':
+        # 一般用户转转到首页..
+        return redirect(url_for('main.shouhuolist'))
+
+    elif current_user.role == '派工员':
+            # 一般用户转转到首页..
+        return redirect(url_for('main.paigonglist'))
+
+    elif current_user.role == '清款员':
+        # 一般用户转转到首页..
+        return redirect(url_for('main.qingkuanlist'))
     else:
         # 一般用户转转到首页..
         # return redirect(request.args.get('next') or url_for('main.kehulist'))
@@ -183,16 +191,73 @@ def rukulist():
             form.ddid.data = ddid
             form.status.data = status
             dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
-                Dingdan.chanpin_id,Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
         else:
             form.ddid.data = ddid
             form.status.data = status
             ddid = 0
 
-            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     return render_template('rukulist.html', form=form, dingdans=dingdans, done='待入库', ddid=ddid, status=status)  #
 
+
+@main.route('/shouhuolist', methods=['GET', 'POST'])
+@login_required
+def shouhuolist():
+    if current_user.role != '收货员':
+        return redirect(url_for('main.index'))
+
+    form = FineshddidForm()
+
+    if form.validate_on_submit():
+        session['ddid'] = form.ddid.data
+        session['status'] = form.status.data
+        return redirect(url_for('main.shouhuolist'))
+
+    ddid = session.get('ddid', '')
+    status = session.get('status', 0)
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+    if status == 0:
+        if ddid != '':
+            form.ddid.data = ddid
+            form.status.data = status
+
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 5, Dingdan.status == 6)).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id,
+                Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            form.ddid.data = ddid
+            form.status.data = status
+            ddid = 0
+
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 5, Dingdan.status == 6)).order_by(Dingdan.chanpin_id,
+                                                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    else:
+        if ddid != '':
+            form.ddid.data = ddid
+            form.status.data = status
+            dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            form.ddid.data = ddid
+            form.status.data = status
+            ddid = 0
+
+            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    return render_template('shouhuolist.html', form=form, dingdans=dingdans, done='待收货', ddid=ddid, status=status)  #
 
 
 @main.route('/fahuolist', methods=['GET', 'POST'])
@@ -237,17 +302,131 @@ def fahuolist():
     else:
         if ddid != '':
             dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
-                Dingdan.chanpin_id,Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
         else:
             ddid = 0
 
-            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+    return render_template('fahuolist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
+                           status=status)  #
 
 
-    kehus=Kehu.query.all()
 
 
-    return render_template('fahuolist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid, status=status)  #
+@main.route('/paigonglist', methods=['GET', 'POST'])
+@login_required
+def paigonglist():
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    form = FinepgddidForm()
+
+    if form.validate_on_submit():
+        session['ddid'] = form.ddid.data
+        session['status'] = form.status.data
+        return redirect(url_for('main.paigonglist'))
+
+    ddid = session.get('ddid', '')
+    status = session.get('status', 0)
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+
+    form.ddid.data = ddid
+    form.status.data = status
+
+    if status == 0:
+        if ddid != '':
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 6, Dingdan.status == 7, Dingdan.status == 8)).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id,
+                Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            ddid = 0
+
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 6, Dingdan.status == 7, Dingdan.status == 8)).order_by(Dingdan.chanpin_id,
+                                                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    else:
+        if ddid != '':
+            dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            ddid = 0
+
+            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+    return render_template('paigonglist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
+                           status=status)  #
+
+
+
+
+@main.route('/qingkuanlist', methods=['GET', 'POST'])
+@login_required
+def qingkuanlist():
+    if current_user.role != '清款员':
+        return redirect(url_for('main.index'))
+
+    form = FineqkddidForm()
+
+    if form.validate_on_submit():
+        session['ddid'] = form.ddid.data
+        session['status'] = form.status.data
+        return redirect(url_for('main.qingkuanlist'))
+
+    ddid = session.get('ddid', '')
+    status = session.get('status', 0)
+    # 下单时间超过6小时的才在此显示
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+
+    # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+
+    form.ddid.data = ddid
+    form.status.data = status
+
+    if status == 0:
+        if ddid != '':
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 8, Dingdan.status == 9)).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id,
+                Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            ddid = 0
+
+            dingdans = Dingdan.query.filter(or_(Dingdan.status == 8, Dingdan.status == 9)).order_by(Dingdan.chanpin_id,
+                                                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    else:
+        if ddid != '':
+            dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
+                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+        else:
+            ddid = 0
+
+            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+    return render_template('qingkuanlist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
+                           status=status)  #
 
 
 @main.route('/kefucxlist', methods=['GET', 'POST'])
@@ -365,6 +544,9 @@ def dinghuoedlist():
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
 
     dingdans = Dingdan.query.filter_by(status=3).order_by(Dingdan.chanpin_id,
+                                                          Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    dingdans = Dingdan.query.filter_by(status=3).order_by(Dingdan.time2.desc(),
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     return render_template('dinghuolist.html', dingdans=dingdans, done='已订货')  # form=form,
@@ -655,7 +837,6 @@ def addsm(cpid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
 
 
-
 # 晾衣杆
 @main.route('/addlyg/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -694,8 +875,6 @@ def addlyg(cpid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 
-
-
 # 晾衣机
 @main.route('/addlyj/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -732,7 +911,6 @@ def addlyj(cpid, khid):
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
-
 
 
 # # 纱窗
@@ -1129,7 +1307,7 @@ def editlyj(ddid, khid):
     form.color.data = dingdan.color
 
     # 这里如果不做Str 则不能显示原来的数据！！
-    form.gantiaoshu.data =str(dingdan.zhonghengtiaoshu_gantiaoshu)
+    form.gantiaoshu.data = str(dingdan.zhonghengtiaoshu_gantiaoshu)
 
     form.beizhu.data = dingdan.beizhu
 
@@ -1497,7 +1675,6 @@ def unfahuoone(ddid):
     return redirect(url_for('main.fahuolist'))
 
 
-
 @main.route('/udinghuoone/<int:ddid>', methods=['GET'])
 @login_required
 def udinghuoone(ddid):
@@ -1520,6 +1697,178 @@ def udinghuoone(ddid):
     flash('已撤订')
 
     return redirect(url_for('main.dinghuoedlist'))
+
+
+@main.route('/shouhuoone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def shouhuoone(ddid):
+    if current_user.role != '收货员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 6
+    dingdan.time5 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已确认收货')
+
+    return redirect(url_for('main.shouhuolist'))
+
+
+@main.route('/unshouhuoone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def unshouhuoone(ddid):
+    if current_user.role != '收货员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 5
+    dingdan.time4 = None
+
+    db.session.add(dingdan)
+    flash('已撤收')
+
+    return redirect(url_for('main.shouhuolist'))
+
+
+
+@main.route('/paigongone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def paigongone(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 7
+    dingdan.time6 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已确认派工')
+
+    return redirect(url_for('main.paigonglist'))
+
+
+@main.route('/wanchengone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def wanchengone(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 8
+    dingdan.time7 = datetime.utcnow()
+    dingdan.user7_id = current_user.id
+
+    db.session.add(dingdan)
+    flash('已确认完成')
+
+    return redirect(url_for('main.paigonglist'))
+
+
+
+@main.route('/unwanchengone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def unwanchengone(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 7
+    dingdan.time7 = None
+
+    db.session.add(dingdan)
+    flash('已撤完')
+
+    return redirect(url_for('main.paigonglist'))
+
+
+
+@main.route('/qingkunone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def qingkunone(ddid):
+    if current_user.role != '清款员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 9
+    dingdan.time8 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已确认清款')
+
+    return redirect(url_for('main.qingkuanlist'))
+
+
+@main.route('/unqingkunone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def unqingkunone(ddid):
+    if current_user.role != '清款员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 8
+    dingdan.time8 = None
+
+    db.session.add(dingdan)
+    flash('已撤清款')
+
+    return redirect(url_for('main.qingkuanlist'))
 
 
 @main.route('/setkehuover/<int:khid>', methods=['GET', 'POST'])

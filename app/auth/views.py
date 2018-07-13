@@ -49,6 +49,19 @@ def loginto(u,p):
         elif user.role == '发货员':
             # 一般用户转转到首页..
             return redirect(url_for('main.fahuolist'))
+
+        elif user.role == '收货员':
+            # 一般用户转转到首页..
+            return redirect(url_for('main.shouhuolist'))
+
+        elif user.role == '派工员':
+            # 一般用户转转到首页..
+            return redirect(url_for('main.paigonglist'))
+
+        elif user.role == '清款员':
+            # 一般用户转转到首页..
+            return redirect(url_for('main.qingkuanlist'))
+
         else:
             # 一般用户转转到首页..
             # return redirect(request.args.get('next') or url_for('main.kehulist'))
@@ -90,10 +103,18 @@ def login():
             elif user.role == '发货员':
                 # 一般用户转转到首页..
                 return redirect(url_for('main.fahuolist'))
-            #
-            # elif user.role == '发货员':
-            #     # 一般用户转转到首页..
-            #     return redirect(url_for('main.fahuolist'))
+
+            elif user.role == '收货员':
+                # 一般用户转转到首页..
+                return redirect(url_for('main.shouhuolist'))
+
+            elif user.role == '派工员':
+                # 一般用户转转到首页..
+                return redirect(url_for('main.paigonglist'))
+
+            elif user.role == '清款员':
+                # 一般用户转转到首页..
+                return redirect(url_for('main.qingkuanlist'))
             else:
             #一般用户转转到首页..
                 # return redirect(request.args.get('next') or url_for('main.kehulist'))
