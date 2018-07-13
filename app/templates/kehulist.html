@@ -25,74 +25,90 @@
         </div>
         <div class="panel-footer"></div>
     </div>
-    <ul>
-        <li>过滤条件：{{ prewhere }}</li>
-        <li>产品状态： {% if status == 0 %}
-            「所有进度」
-        {% elif status == 1 %}
-            「已量尺」
-        {% elif status == 2 %}
-            「已下单」
-        {% elif status == 3 %}
-            「已订货」
-        {% elif status == 4 %}
-            「已入库」
-        {% elif status == 5 %}
-            「已发货」
-        {% elif status == 6 %}
-            「已收货」
-        {% elif status == 7 %}
-            「安装中」
-        {% elif status == 8 %}
-            「完成安装」
-        {% elif status == 9 %}
-            「已清款」
-        {% else %}
-            「状态有误」
-        {% endif %}
-        </li>
-    </ul>
-    <hr>
+{#    <ul>#}
+{#        <li>过滤条件：{{ prewhere }}</li>#}
+{#        <li>产品状态： {% if status == 0 %}#}
+{#            「所有进度」#}
+{#        {% elif status == 1 %}#}
+{#            「已量尺」#}
+{#        {% elif status == 2 %}#}
+{#            「已下单」#}
+{#        {% elif status == 3 %}#}
+{#            「已订货」#}
+{#        {% elif status == 4 %}#}
+{#            「已入库」#}
+{#        {% elif status == 5 %}#}
+{#            「已发货」#}
+{#        {% elif status == 6 %}#}
+{#            「已收货」#}
+{#        {% elif status == 7 %}#}
+{#            「安装中」#}
+{#        {% elif status == 8 %}#}
+{#            「完成安装」#}
+{#        {% elif status == 9 %}#}
+{#            「已清款」#}
+{#        {% else %}#}
+{#            「状态有误」#}
+{#        {% endif %}#}
+{#        </li>#}
+{#    </ul>#}
+{#    <hr>#}
     {% if status == 0 %}
 
         {% for kehu in kehus %}
 
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>客户: {{ kehu.id }}  </h4></div>
-                <div class="post-body">
+                <div class="panel-heading"><h4>客户: {{ kehu.id }}
+                    <span class="pull-right">
+                    <a class="btn btn-danger glyphicon glyphicon-remove btn-sm"
+                       href="{{ url_for('main.delkehu', id=kehu.id) }}"> 删</a>
+
+                    <a class="btn btn-primary glyphicon glyphicon-pencil btn-sm"
+                       href="{{ url_for('main.editkehu', id=kehu.id) }}"> 改</a>
+                    </span>
+                </h4>
                     <blockquote>
                         <ul class="list-unstyled">
-                            <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」</li>
-                            <li>房间: {{ kehu.fangjian }}</li>
-                            <li>称呼: {{ kehu.chenghu }}</li>
-                            <li>电话: {{ kehu.tel }}</li>
-                            {#                    <li>状态: {{ kehu.status }}</li>#}
-
-                            {% if kehu.status == 1 %}
-                                <li>状态: 已测尺</li>
-                            {% elif kehu.status == 2 %}
-                                <li>状态: 已下单</li>
-                            {% elif kehu.status == 3 %}
-                                <li>状态: 已安装</li>
-                            {% elif kehu.status == 4 %}
-                                <li>状态: 已清款</li>
-                            {% else %}
-                                <li>状态: 状态有误</li>
-                            {% endif %}
-
+                            {#                            <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」</li>#}
+                            {#                            <li>房间: {{ kehu.fangjian }}</li>#}
+                            {#                            <li>称呼: {{ kehu.chenghu }}</li>#}
+                            {#                            <li>电话: {{ kehu.tel }}</li>#}
+                            <li>房间: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.fangjian }}</li>
+                            <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）
+                                {% if kehu.status == 1 %}
+                                    已测尺
+                                {% elif kehu.status == 2 %}
+                                    已下单
+                                {% elif kehu.status == 3 %}
+                                    已安装
+                                {% elif kehu.status == 4 %}
+                                    已清款
+                                {% else %}
+                                    状态有误
+                                {% endif %}
+                            </li>
                             <li>备注: {{ kehu.beizhu }}</li>
-                            <li>
-                                <a class="btn btn-danger glyphicon glyphicon-remove"
-                                   href="{{ url_for('main.delkehu', id=kehu.id) }}"> 删</a>
-
-
-                                <a class="btn btn-primary glyphicon glyphicon-pencil"
-                                   href="{{ url_for('main.editkehu', id=kehu.id) }}"> 改</a></li>
+                            {#                            <li>#}
+                            {#                                <a class="btn btn-danger glyphicon glyphicon-remove"#}
+                            {#                                   href="{{ url_for('main.delkehu', id=kehu.id) }}"> 删</a>#}
+                            {##}
+                            {#                                <a class="btn btn-primary glyphicon glyphicon-pencil"#}
+                            {#                                   href="{{ url_for('main.editkehu', id=kehu.id) }}"> 改</a></li>#}
                             {#                    <li> {{ moment(kehu.xdtime).fromNow(refresh=True) }}{% if loop.first %}<span class="badge">新</span>{% endif %}</li>#}
                         </ul>
-                        <hr>
+                    </blockquote>
 
-                        <table class="table">
+                    <button type="button" class="btn btn-primary glyphicon glyphicon-th-list" data-toggle="collapse" data-target="#c{{ kehu.id }}">
+                        显订单概况
+                    </button>
+                        <a class="btn btn-success glyphicon glyphicon-th-large"
+                           href="{{ url_for('main.showkehudd', id=kehu.id) }}"> 转订单详细</a>
+
+                </div>
+                <div id="c{{ kehu.id }}" class="post-body collapse off">
+                    <blockquote>
+
+                        <table class="table table-striped table-condensed">
                             <thead>
                             <tr>
                                 <td>No</td>
@@ -139,8 +155,7 @@
                             {% endfor %}
                             </tbody>
                         </table>
-                        <a class="btn btn-primary glyphicon glyphicon-th-list"
-                           href="{{ url_for('main.showkehudd', id=kehu.id) }}"> 订单详细</a>
+
 
                         {#                  #}
                         {#                       <div class="panel panel-default">#}
@@ -277,33 +292,33 @@
                     <h4>
                         订单号({{ dingdan.id }})
 
-{#                        {% if dingdan.status == 0 %}#}
-{#                            「所有进度」#}
-{#                        {% elif dingdan.status == 1 %}#}
-{#                            「已量尺」#}
-{#                        {% elif dingdan.status == 2 %}#}
-{#                            「已下单」#}
-{#                        {% elif dingdan.status == 3 %}#}
-{#                            「已订货」#}
-{#                        {% elif dingdan.status == 4 %}#}
-{#                            「已入库」#}
-{#                        {% elif dingdan.status == 5 %}#}
-{#                            「已发货」#}
-{#                        {% elif dingdan.status == 6 %}#}
-{#                            「已收货」#}
-{#                        {% elif dingdan.status == 7 %}#}
-{#                            「安装中」#}
-{#                        {% elif dingdan.status == 8 %}#}
-{#                            「完成安装」#}
-{#                        {% elif dingdan.status == 9 %}#}
-{#                            「已清款」#}
-{#                        {% else %}#}
-{#                            「状态有误」#}
-{#                        {% endif %}#}
+                        {#                        {% if dingdan.status == 0 %}#}
+                        {#                            「所有进度」#}
+                        {#                        {% elif dingdan.status == 1 %}#}
+                        {#                            「已量尺」#}
+                        {#                        {% elif dingdan.status == 2 %}#}
+                        {#                            「已下单」#}
+                        {#                        {% elif dingdan.status == 3 %}#}
+                        {#                            「已订货」#}
+                        {#                        {% elif dingdan.status == 4 %}#}
+                        {#                            「已入库」#}
+                        {#                        {% elif dingdan.status == 5 %}#}
+                        {#                            「已发货」#}
+                        {#                        {% elif dingdan.status == 6 %}#}
+                        {#                            「已收货」#}
+                        {#                        {% elif dingdan.status == 7 %}#}
+                        {#                            「安装中」#}
+                        {#                        {% elif dingdan.status == 8 %}#}
+                        {#                            「完成安装」#}
+                        {#                        {% elif dingdan.status == 9 %}#}
+                        {#                            「已清款」#}
+                        {#                        {% else %}#}
+                        {#                            「状态有误」#}
+                        {#                        {% endif %}#}
 
                         {{ dingdan.chanpin.pinming }}
                         {% if dingdan.status == 3 %}
-                        [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
+                            [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
                         {% endif %}
                         {{ dingdan.weizhi }}
                     </h4>
