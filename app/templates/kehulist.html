@@ -23,7 +23,7 @@
                 {{ wtf.quick_form(form) }}
             </blockquote>
         </div>
-        <div class="panel-footer"></div>
+{#        <div class="panel-footer"></div>#}
     </div>
 {#    <ul>#}
 {#        <li>过滤条件：{{ prewhere }}</li>#}
@@ -99,10 +99,10 @@
                     </blockquote>
 
                     <button type="button" class="btn btn-primary glyphicon glyphicon-th-list" data-toggle="collapse" data-target="#c{{ kehu.id }}">
-                        显订单概况
+                        订单概况
                     </button>
                         <a class="btn btn-success glyphicon glyphicon-th-large"
-                           href="{{ url_for('main.showkehudd', id=kehu.id) }}"> 转订单详细</a>
+                           href="{{ url_for('main.showkehudd', id=kehu.id) }}"> 订单详细</a>
 
                 </div>
                 <div id="c{{ kehu.id }}" class="post-body collapse off">
@@ -111,10 +111,10 @@
                         <table class="table table-striped table-condensed">
                             <thead>
                             <tr>
-                                <td>No</td>
-                                <td>产品</td>
-                                <td>位置</td>
-                                <td>状态</td>
+                                <th>No</th>
+                                <th>产品</th>
+                                <th>位置</th>
+                                <th>状态</th>
                             </tr>
                             </thead>
                             <tbody>
