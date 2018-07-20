@@ -66,7 +66,7 @@ class FineshddidForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(FineshddidForm, self).__init__(*args, **kwargs)
-        self.status.choices = [(0, ''), (5, '待收货'), (6, '已收货')]
+        self.status.choices = [(0, ''), (3, '待收货'), (6, '已收货')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
