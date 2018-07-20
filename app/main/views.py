@@ -223,10 +223,10 @@ def shouhuolist():
     chenghu = session.get('chenghu', '')
     status = int(session.get('status', 0))
 
-    form.xiaoqu.data = session['xiaoqu']
-    form.fangjian.data = session['fangjian']
-    form.chenghu.data = session['chenghu']
-    form.status.data = session['status']
+    form.xiaoqu.data = xiaoquid
+    form.fangjian.data = fangjian
+    form.chenghu.data = chenghu
+    form.status.data = status
 
     # prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
 
