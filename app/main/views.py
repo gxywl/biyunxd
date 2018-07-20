@@ -212,12 +212,54 @@ def shouhuolist():
     form = FineshddidForm()
 
     if form.validate_on_submit():
-        session['ddid'] = form.ddid.data
+        session['xiaoqu'] = form.xiaoqu.data
+        session['fangjian'] = form.fangjian.data
+        session['chenghu'] = form.chenghu.data
         session['status'] = form.status.data
         return redirect(url_for('main.shouhuolist'))
 
-    ddid = session.get('ddid', '')
-    status = session.get('status', 0)
+    xiaoquid = int(session.get('xiaoqu', 0))
+    fangjian = session.get('fangjian', '')
+    chenghu = session.get('chenghu', '')
+    status = int(session.get('status', 0))
+
+    form.xiaoqu.data = session['xiaoqu']
+    form.fangjian.data = session['fangjian']
+    form.chenghu.data = session['chenghu']
+    form.status.data = session['status']
+
+    # prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
+
+    # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
+    #                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+
+    # xiaoquO = Xiaoqu.query.get(xiaoquid)
+    #
+    # kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.tel.like(tel)))
+
+    # dingdans = Dingdan.query.filter(Dingdan.status == status)
+
+    # 有大问题！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    # Kehu.fangjian.like(fangjian), Kehu.tel.like(tel)
+    # 只要纪录集合中有一个符合即整个集合算是了
+    # 与Dingdan.status不同
+
+    xiaoqus = Xiaoqu.query.all()
+
+    fangjian = '%'+fangjian+'%'
+    chenghu = '%'+chenghu+'%'
+
+    if status==0:
+        if xiaoquid ==0:
+            kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+        else:
+            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id==xiaoquid,Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+    else:
+        if xiaoquid ==0:
+            kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+        else:
+            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id==xiaoquid,Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+
     # 下单时间超过6小时的才在此显示
     # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
 
@@ -228,37 +270,39 @@ def shouhuolist():
     # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
 
     # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
-    if status == 0:
-        if ddid != '':
-            form.ddid.data = ddid
-            form.status.data = status
 
-            dingdans = Dingdan.query.filter(or_(Dingdan.status == 3, Dingdan.status == 6)).filter_by(id=ddid).order_by(
-                Dingdan.chanpin_id,
-                Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-        else:
-            form.ddid.data = ddid
-            form.status.data = status
-            ddid = 0
+    # if status == 0:
+    #     if ddid != '':
+    #         form.ddid.data = ddid
+    #         form.status.data = status
+    #
+    #         dingdans = Dingdan.query.filter(or_(Dingdan.status == 3, Dingdan.status == 6)).filter_by(id=ddid).order_by(
+    #             Dingdan.chanpin_id,
+    #             Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     else:
+    #         form.ddid.data = ddid
+    #         form.status.data = status
+    #         ddid = 0
+    #
+    #         dingdans = Dingdan.query.filter(or_(Dingdan.status == 3, Dingdan.status == 6)).order_by(Dingdan.chanpin_id,
+    #                                                                                                 Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    # else:
+    #     if ddid != '':
+    #         form.ddid.data = ddid
+    #         form.status.data = status
+    #         dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
+    #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     else:
+    #         form.ddid.data = ddid
+    #         form.status.data = status
+    #         ddid = 0
+    #
+    #         dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+    #                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
-            dingdans = Dingdan.query.filter(or_(Dingdan.status == 3, Dingdan.status == 6)).order_by(Dingdan.chanpin_id,
-                                                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-    else:
-        if ddid != '':
-            form.ddid.data = ddid
-            form.status.data = status
-            dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
-                Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-        else:
-            form.ddid.data = ddid
-            form.status.data = status
-            ddid = 0
-
-            dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
-                                                                       Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
-
-    return render_template('shouhuolist.html', form=form, dingdans=dingdans, done='待收货', ddid=ddid, status=status)  #
-
+    # return render_template('shouhuolist.html', form=form, dingdans=dingdans, done='待收货', ddid=ddid, status=status)  #
+    return render_template('shouhuolist.html', form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
+                           fangjian=fangjian, chenghu=chenghu, status=status,kehus = kehus)  # prewhere=prewhere,, dingdans=dingdans
 
 @main.route('/fahuolist', methods=['GET', 'POST'])
 @login_required

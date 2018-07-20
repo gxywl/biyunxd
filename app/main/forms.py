@@ -57,18 +57,37 @@ class FineddidForm(FlaskForm):
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+# # 收货员的过滤
+# class FineshddidForm(FlaskForm):
+#     ddid = StringField('订单ID')
+#     status = SelectField('进度状态', coerce=int) #
+#     submit = SubmitField('开始过滤')
+#
+#     # 在构造化Form实例时指定selectField的choices内容,
+#     def __init__(self, *args, **kwargs):
+#         super(FineshddidForm, self).__init__(*args, **kwargs)
+#         self.status.choices = [(0, ''), (3, '待收货'), (6, '已收货')]
+#     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
+#     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 # 收货员的过滤
 class FineshddidForm(FlaskForm):
-    ddid = StringField('订单ID')
-    status = SelectField('进度状态', coerce=int) #
+    xiaoqu = SelectField('小区', coerce=int)
+    fangjian = StringField('客户的房号 格式（x-x-xxxx）')
+    chenghu = StringField('称呼')
+    status = SelectField('产品进度', coerce=int)
     submit = SubmitField('开始过滤')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(FineshddidForm, self).__init__(*args, **kwargs)
+        self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
+                                           Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0, ''), (3, '待收货'), (6, '已收货')]
-    #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
-    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+        # self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (4, '已入库'), (5, '已发货'), (6, '已收货'),
+        #                        (7, '安装中'), (8, '安装完成'), (9, '已清款')]
+
+
 
 # 发货员的过滤
 class FinefhddidForm(FlaskForm):
