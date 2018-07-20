@@ -1767,8 +1767,8 @@ def doselshouhuo(selids):
 
     # flash('已确认收货')
 
-    return redirect(url_for('main.shouhuolist'))
-    # return 'done'
+    # return redirect(url_for('main.shouhuolist'))
+    return 'done'
 
 
 @main.route('/unshouhuoone/<int:ddid>', methods=['GET', 'POST'])
