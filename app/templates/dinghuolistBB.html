@@ -12,8 +12,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4>
-                <label class="checkbox-inline"><input name="checkboxMain" type="checkbox"
-                                                      onclick="CheckAll(this);"/> 全选 </label>
+
                 {{ done }}
                 {% if done=='已订货' %}
                     <a class="btn btn-success" href="{{ url_for('main.dinghuolist') }}">转－待订货</a>
@@ -37,6 +36,10 @@
     <br>
 
 
+
+
+
+
     <div class="tab-content">
 
         <div class="tab-pane active" id="A">
@@ -44,13 +47,14 @@
             {% if done=='待订货' %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <label class="checkbox-inline"><input name="checkboxMain" type="checkbox"
+                                                              onclick="CheckAll(this);"/> 全选 </label>
 
+                        <button id="outseltoxlsyxm" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
+                        <button id="taggetitselyxm" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
 
-                        <button id="outseltoxlsyxm" onclick="outseltoxls(this,'隐形网','A');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitselyxm" onclick="taggetitsel(this,'隐形网','A');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
+                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>
+                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>
                     </div>
                 </div>
             {% endif %}
@@ -111,13 +115,14 @@
             {% if done=='待订货' %}
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                        <label class="checkbox-inline"><input name="checkboxMain" type="checkbox"
+                                                              onclick="CheckAll(this);"/> 全选 </label>
 
+                        <button id="outseltoxlssm" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
+                        <button id="taggetitselsm" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
 
-                        <button id="outseltoxlssm" onclick="outseltoxls(this,'纱门','B');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitselsm" onclick="taggetitsel(this,'纱门','B');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
+                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>
+                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>
                     </div>
                 </div>
             {% endif %}
@@ -180,21 +185,6 @@
 
         <div class="tab-pane" id="C">
 
-            {% if done=='待订货' %}
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-
-                        <button id="outseltoxlslyg" onclick="outseltoxls(this,'晾衣杆','C');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitsellyg" onclick="taggetitsel(this,'晾衣杆','C');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
-                    </div>
-                </div>
-            {% endif %}
-
             {% for dingdan in dingdans %}
 
                 {% if dingdan.chanpin.pinming == '晾衣杆' %}
@@ -247,20 +237,6 @@
         </div>
 
         <div class="tab-pane" id="D">
-
-            {% if done=='待订货' %}
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-                        <button id="outseltoxlssc" onclick="outseltoxls(this,'纱窗','D');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitselsc" onclick="taggetitsel(this,'纱窗','D');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
-                    </div>
-                </div>
-            {% endif %}
 
             {% for dingdan in dingdans %}
 
@@ -318,20 +294,6 @@
 
         <div class="tab-pane" id="E">
 
-            {% if done=='待订货' %}
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-                        <button id="outseltoxlszws" onclick="outseltoxls(this,'指纹锁','E');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitselzws" onclick="taggetitsel(this,'指纹锁','E');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
-                    </div>
-                </div>
-            {% endif %}
-
             {% for dingdan in dingdans %}
 
 
@@ -387,18 +349,6 @@
 
         <div class="tab-pane" id="F">
 
-            {% if done=='待订货' %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-                        <button id="outseltoxlslyj" onclick="outseltoxls(this,'晾衣机','F');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitsellyj" onclick="taggetitsel(this,'晾衣机','F');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
-                    </div>
-                </div>
-            {% endif %}
 
             {% for dingdan in dingdans %}
 
@@ -453,19 +403,6 @@
 
 
         <div class="tab-pane" id="G">
-
-            {% if done=='待订货' %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-
-                        <button id="outseltoxlsch" onclick="outseltoxls(this,'窗花','G');" class="btn btn-primary glyphicon glyphicon-gift"> 对所选导出电子表格</button>
-                        <button id="taggetitselch" onclick="taggetitsel(this,'窗花','G');" class="btn btn-danger glyphicon glyphicon-gift"> 对所选标志已订货</button>
-
-                        {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
-                        {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
-                    </div>
-                </div>
-            {% endif %}
 
             {% for dingdan in dingdans %}
 
@@ -523,6 +460,7 @@
 
 
     </div>
+
 
 
     {##}
@@ -685,234 +623,51 @@
             }
         }
 
-        function outseltoxls(obj,pm,pl) {
+        $("#outseltoxlsyxm").click(function () {
+
             var selids = ''
-            $.each($('#'+pl+' input[name="willsel"]:checkbox:checked'), function () {
+            $.each($('#B input[name="willsel"]:checkbox:checked'), function () {
                 //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
                 selids = selids + $(this).val() + ','
             });
-            window.location.href = "outseltoxls/"+pm+"/" + selids;
-        }
+            window.location.href = "outseltoxls/隐形网/" + selids;
+        });
 
-        function taggetitsel(obj,pm,pl) {
+        $("#outseltoxlssm").click(function () {
+
             var selids = ''
-            $.each($('#'+pl+' input[name="willsel"]:checkbox:checked'), function () {
+            $.each($('#B input[name="willsel"]:checkbox:checked'), function () {
                 //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+                selids = selids + $(this).val() + ','
+            });
+            window.location.href = "outseltoxls/纱门/" + selids;
+        });
+
+
+
+        $("#taggetitselsm").click(function () {
+
+            var selids = ''
+            $.each($('#B input[name="willsel"]:checkbox:checked'), function () {
+                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+
                 selids = selids + $(this).val() + ','
             });
 
             $.ajax({
                 type: "get",
-                url: "taggetitsel/"+pm+"/" + selids,
+                url: "taggetitsel/纱门/" + selids,
                 {#data : "selids=" + selids,                #}
                 async: true,
                 success: function (data) {
                     window.location.reload()
+
                 }
             });
-        }
 
 
-        {#$("#outseltoxlsyxm").click(function () {#}
-        {##}
-        {#    var selids = ''#}
-        {#    $.each($('#A input[name="willsel"]:checkbox:checked'), function () {#}
-        {#        //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-        {#        selids = selids + $(this).val() + ','#}
-        {#    });#}
-        {#    window.location.href = "outseltoxls/隐形网/" + selids;#}
-        {# });#}
-{##}
-{#        $("#outseltoxlssm").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#B input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/纱门/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlslyg").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#C input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/晾衣杆/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlssc").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#D input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/纱窗/" + selids;#}
-{#        });#}
-{##}
-{##}
-{#        $("#outseltoxlszws").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#E input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/指纹锁/" + selids;#}
-{#        });#}
-{##}
-{##}
-{#        $("#outseltoxlslyj").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#F input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/晾衣机/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlsch").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#G input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/窗花/" + selids;#}
-{#        });#}
+        });
 
-        //----------------------
-    {##}
-    {#    $("#taggetitselyxw").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#A input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/隐形网/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselsm").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#B input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/纱门/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitsellyg").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#C input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/晾衣杆/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselsc").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#D input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/纱窗/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {##}
-    {#    $("#taggetitselzws").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#E input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/指纹锁/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitsellyj").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#F input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/晾衣机/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselch").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#G input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/窗花/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
     </script>
 
 {% endblock %}

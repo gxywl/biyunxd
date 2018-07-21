@@ -75,12 +75,15 @@ class FineshddidForm(FlaskForm):
     xiaoqu = SelectField('小区', coerce=int)
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     chenghu = StringField('称呼')
+    chanpin = SelectField('品类', coerce=int)
     status = SelectField('产品进度', coerce=int)
     submit = SubmitField('开始过滤')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(FineshddidForm, self).__init__(*args, **kwargs)
+        self.chanpin.choices = [(0, '')] + [(chanpin.id, chanpin.pinming) for chanpin in
+                                           Chanpin.query.order_by(Chanpin.beizhu).all()]
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0, ''), (3, '待收货'), (6, '已收货')]
