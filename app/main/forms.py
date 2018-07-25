@@ -160,8 +160,8 @@ class KFfindForm(FlaskForm):
         super(KFfindForm, self).__init__(*args, **kwargs)
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
-        self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (4, '已入库'), (5, '已发货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]
+        self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
+                               (7, '安装中'), (8, '安装完成'), (9, '已清款')] # (4, '已入库'), (5, '已发货'),
 
 
 # 隐形网
@@ -362,7 +362,7 @@ class ChForm(FlaskForm):
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
     bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('', ''), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])  # ( '中', '中'),
+                          choices=[('', ''), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下'),('左右锁', '左右锁')])  # ( '中', '中'),
     color = SelectField("颜色", validators=[DataRequired()])
 
     # dengfenshu = SelectField('等分数', validators=[DataRequired()],

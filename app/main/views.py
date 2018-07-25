@@ -249,19 +249,21 @@ def shouhuolist():
 
     xiaoqus = Xiaoqu.query.all()
 
-    fangjian = '%'+fangjian+'%'
-    chenghu = '%'+chenghu+'%'
+    fangjian = '%' + fangjian + '%'
+    chenghu = '%' + chenghu + '%'
 
-    if status==0:
-        if xiaoquid ==0:
+    if status == 0:
+        if xiaoquid == 0:
             kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
         else:
-            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id==xiaoquid,Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(
+                and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
     else:
-        if xiaoquid ==0:
+        if xiaoquid == 0:
             kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
         else:
-            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id==xiaoquid,Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(
+                and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
 
     # 下单时间超过6小时的才在此显示
     # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
@@ -305,7 +307,9 @@ def shouhuolist():
 
     # return render_template('shouhuolist.html', form=form, dingdans=dingdans, done='待收货', ddid=ddid, status=status)  #
     return render_template('shouhuolist.html', form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
-                           fangjian=fangjian, chenghu=chenghu, status=status,chanpin=chanpin, kehus = kehus)  # prewhere=prewhere,, dingdans=dingdans
+                           fangjian=fangjian, chenghu=chenghu, status=status, chanpin=chanpin,
+                           kehus=kehus)  # prewhere=prewhere,, dingdans=dingdans
+
 
 @main.route('/fahuolist', methods=['GET', 'POST'])
 @login_required
@@ -510,6 +514,11 @@ def kefucxlist():
     tel = session.get('tel', '')
     status = int(session.get('status', 0))
 
+    form.xiaoqu.data = xiaoquid
+    form.fangjian.data = fangjian
+    form.tel.data = tel
+    form.status.data = status
+
     # prewhere = '小区：' + str(xiaoquid) + '房间：' + fangjian + '电话.：' + tel + '状态：' + str(status)  #
 
     # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.chanpin_id,
@@ -594,7 +603,7 @@ def dinghuoedlist():
     dingdans = Dingdan.query.filter_by(status=3).order_by(Dingdan.time2.desc(),
                                                           Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
-    return render_template('dinghuolistBB.html', dingdans=dingdans, done='已订货')  # form=form,
+    return render_template('dinghuolist.html', dingdans=dingdans, done='已订货')  # form=form,
 
 
 #
@@ -1807,7 +1816,6 @@ def doselshouhuo(selids):
     #     dingdan.time5 = datetime.utcnow()
     #     db.session.add(dingdan)
 
-
     # dingdan.status = 6
     # dingdan.time5 = datetime.utcnow()
     # db.session.add(dingdan)
@@ -1981,10 +1989,9 @@ def setkehuover(khid):
 
 @main.route('/outseltoxls/<string:pm>/<string:selids>', methods=['GET', 'POST'])
 @login_required
-def outseltoxls(pm,selids):
+def outseltoxls(pm, selids):
     if current_user.role != '订货员':
         return redirect(url_for('main.index'))
-
 
     selids = selids.strip(',')
     selids = list(eval('[' + selids + ']'))
@@ -1995,12 +2002,13 @@ def outseltoxls(pm,selids):
     # pdingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).first();
     # pm = pdingdan.chanpin.pinming
 
-    #dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    # dingdans = Dingdan.query.filter_by(status=2).order_by(Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     # dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id).order_by(Dingdan.chanpin_id,
     #                                                                        Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
-    dingdans = Dingdan.query.filter(and_(Dingdan.id.in_(selids),Dingdan.chanpin_id==chanpin.id)).order_by(Dingdan.kehu_id)# .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter(and_(Dingdan.id.in_(selids), Dingdan.chanpin_id == chanpin.id)).order_by(
+        Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     # return dingdans
 
@@ -2092,9 +2100,10 @@ def outseltoxls(pm,selids):
 
     # return redirect(url_for('main.showkehudd', id=1))
 
+
 @main.route('/taggetitsel/<string:pm>/<string:selids>', methods=['GET', 'POST'])
 @login_required
-def taggetitsel(pm,selids):
+def taggetitsel(pm, selids):
     if current_user.role != '订货员':
         return redirect(url_for('main.index'))
 
@@ -2114,14 +2123,15 @@ def taggetitsel(pm,selids):
 
     chanpin = Chanpin.query.filter_by(pinming=pm).first()
 
-    dingdans = Dingdan.query.filter(and_(Dingdan.id.in_(selids),Dingdan.chanpin_id==chanpin.id))
+    dingdans = Dingdan.query.filter(and_(Dingdan.id.in_(selids), Dingdan.chanpin_id == chanpin.id))
     for dingdan in dingdans:
         dingdan.status = 3
         dingdan.time2 = datetime.utcnow()
         db.session.add(dingdan)
 
-    Dingdan.query.filter(and_(Dingdan.id.in_(selids),Dingdan.chanpin_id==chanpin.id)).update({'status': 3, 'time2': datetime.utcnow()},
-                                                                  synchronize_session=False)
+    Dingdan.query.filter(and_(Dingdan.id.in_(selids), Dingdan.chanpin_id == chanpin.id)).update(
+        {'status': 3, 'time2': datetime.utcnow()},
+        synchronize_session=False)
 
     # dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id)
     #

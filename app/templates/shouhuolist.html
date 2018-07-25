@@ -156,7 +156,8 @@
                                             「已订货」
                                         {% elif dingdan.status == 6 %}
                                             「已收货」
-                                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)
+{#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
+                            ({{ moment(dingdan.time5).format('YY年M月D日') }} 收货)
                                             <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                href="{{ url_for('main.unshouhuoone', ddid=dingdan.id) }}"> 撤收</a>
                                         {% endif %}
@@ -323,7 +324,8 @@
                             [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
 
                         {% elif dingdan.status == 6 %}
-                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)
+{#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
+                            ({{ moment(dingdan.time5).format('YY年M月D日') }} 收货)
                             <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                href="{{ url_for('main.unshouhuoone', ddid=dingdan.id) }}"> 撤收</a>
                         {% endif %}
@@ -349,6 +351,9 @@
 
                 {#                <button id="selall" class="btn btn-success glyphicon glyphicon-check">全选</button>#}
                 {#                <button id="allnotsel" class="btn btn-success glyphicon glyphicon-share">全否</button>#}
+
+{#                设置收货日期：<input id="indate" type="date">#}
+
                 <button id="doshouhou" class="btn btn-primary glyphicon glyphicon-gift"> 对所选收货</button>
 
                 {#                        <a class="btn btn-primary " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>#}
@@ -451,6 +456,18 @@
         {#  offLabel: '<span class="glyphicon glyphicon-remove">',#}
         {#  onLabel: '<span class="glyphicon glyphicon-ok">'#}
         {# }); #}
+
+        {#Date.prototype.toDateInputValue = (function() {#}
+        {#    var local = new Date(this);#}
+        {#    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());#}
+        {#    return local.toJSON().slice(0,10);#}
+        {# });#}
+        {##}
+        {#$(document).ready( function() {#}
+        {#    //$('#indate').val(new Date().toDateInputValue());#}
+        {#    document.getElementById('indate').value = new Date().toDateInputValue();#}
+        {# });​#}
+
 
 
         function CheckAll(obj) {

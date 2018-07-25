@@ -36,99 +36,193 @@
     {% if xiaoquid==0 and fangjian=='' and  tel=='' and  status==0 %}
         请至少设置一个条件
     {% else %}
+{##}
+{#        <h4>过滤条件：</h4>#}
+{#        <ul>#}
+{#            <li>小区： {% if xiaoquid==0 %} 所有小区 {% else %} {{ xiaoquid }} {% endif %}</li>#}
+{#            <li>房间： {{ fangjian }}</li>#}
+{#            <li>电话： {{ tel }}</li>#}
+{#            <li>进度：#}
+{#                {% if status == 0 %}#}
+{#                    「所有进度」#}
+{#                {% elif status == 1 %}#}
+{#                    「已测尺」#}
+{#                {% elif status == 2 %}#}
+{#                    「已下单」#}
+{#                {% elif status == 3 %}#}
+{#                    「已订货」#}
+{#                {% elif status == 4 %}#}
+{#                    「已入库」#}
+{#                {% elif status == 5 %}#}
+{#                    「已发货」#}
+{#                {% elif status == 6 %}#}
+{#                    「已收货」#}
+{#                {% elif status == 7 %}#}
+{#                    「安装中」#}
+{#                {% elif status == 8 %}#}
+{#                    「完成安装」#}
+{#                {% elif status == 9 %}#}
+{#                    「已清款」#}
+{#                {% else %}#}
+{#                    「状态有误」#}
+{#                {% endif %}#}
+{##}
+{#            </li>#}
+{#        </ul>#}
 
-        <h4>过滤条件：</h4>
-        <ul>
-            <li>小区： {% if xiaoquid==0 %} 所有小区 {% else %} {{ xiaoquid }} {% endif %}</li>
-            <li>房间： {{ fangjian }}</li>
-            <li>电话： {{ tel }}</li>
-            <li>进度：
-                {% if status == 0 %}
-                    「所有进度」
-                {% elif status == 1 %}
-                    「已测尺」
-                {% elif status == 2 %}
-                    「已下单」
-                {% elif status == 3 %}
-                    「已订货」
-                {% elif status == 4 %}
-                    「已入库」
-                {% elif status == 5 %}
-                    「已发货」
-                {% elif status == 6 %}
-                    「已收货」
-                {% elif status == 7 %}
-                    「安装中」
-                {% elif status == 8 %}
-                    「完成安装」
-                {% elif status == 9 %}
-                    「已清款」
-                {% else %}
-                    「状态有误」
-                {% endif %}
 
-            </li>
-        </ul>
         {% for xiaoqu in xiaoqus %}
 
             {% for kehu in xiaoqu.kehus %}
 
-                {% for dingdan in kehu.dingdans %}
+                {% if (xiaoqu.id == xiaoquid or  xiaoquid==0)  and (fangjian in kehu.fangjian)  and (tel in kehu.tel) %}
 
-                    {% if (xiaoqu.id == xiaoquid or  xiaoquid==0) and (dingdan.status == status or  status==0) and (fangjian in kehu.fangjian)  and (tel in kehu.tel) %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><h4> 订单号「 {{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
+                            <blockquote>
+                                <p>客户ID: {{ kehu.id }}</p>
+                                <p>地址: 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.xiaoqu.xiaoqu }}
+                                    小区 {{ kehu.fangjian }} 房</p>
+                                <p>称呼: {{ kehu.chenghu }}（电话: {{ kehu.tel }}）</p>
+                                <p>备注: {{ kehu.beizhu }}</p>
+                                <hr>
+                                <p style="color:orange">业务: {{ kehu.user.username }}
+                                    （ {{ kehu.user.tel }}
+                                    ）</p>
+                            </blockquote>
 
-                                {% if dingdan.status == 1 %}
-                                    「已测尺」
-                                {% elif dingdan.status == 2 %}
-                                    「已下单」
-                                {% elif dingdan.status == 3 %}
-                                    「已订货」
-                                {% elif dingdan.status == 4 %}
-                                    「已入库」
-                                {% elif dingdan.status == 5 %}
-                                    「已发货」
-                                {% elif dingdan.status == 6 %}
-                                    「已收货」
-                                {% elif dingdan.status == 7 %}
-                                    「安装中」
-                                {% elif dingdan.status == 8 %}
-                                    「完成安装」
-                                {% elif dingdan.status == 9 %}
-                                    「已清款」
-                                {% else %}
-                                    「状态有误」
-                                {% endif %}
-
-                            </h4></div>
-                            <div class="post-body">
-                                <blockquote>
-                                    <ul class="list-unstyled">
-                                        <li>位置: {{ dingdan.weizhi }}</li>
-                                        <li>型号: {{ dingdan.xinghao }}</li>
-                                        <li>状态: {{ dingdan.status }}</li>
-                                    </ul>
-                                </blockquote>
-                            </div>
-                            <div class="panel-footer">
-                                <blockquote>
-                                    <p>客户ID: {{ dingdan.kehu.id }}</p>
-                                    <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }}
-                                        小区 {{ dingdan.kehu.fangjian }} 房</p>
-                                    <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
-                                    <p>备注: {{ dingdan.kehu.beizhu }}</p>
-                                    <hr>
-                                    <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }}
-                                        （ {{ dingdan.kehu.user.tel }}
-                                        ）</h4>
-                                </blockquote>
-                            </div>
                         </div>
-                    {% endif %}
+                        <div class="post-body">
+                            <blockquote>
 
-                {% endfor %}
+                                {% for dingdan in kehu.dingdans %}
+
+
+                                    {% if dingdan.status == status or  status==0 %}
+                                        <hr>
+                                        <h4> 订单号「 {{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
+{##}
+{#                                            {% if dingdan.status == 1 %}#}
+{#                                                「已测尺」#}
+{#                                            {% elif dingdan.status == 2 %}#}
+{#                                                「已下单 {{ moment(dingdan.time1).format('YY年M月D日') }}」#}
+{#                                            {% elif dingdan.status == 3 %}#}
+{#                                                「已订货 {{ moment(dingdan.time2).format('YY年M月D日') }}」#}
+{#                                            {% elif dingdan.status == 4 %}#}
+{#                                                「已入库」#}
+{#                                            {% elif dingdan.status == 5 %}#}
+{#                                                「已发货」#}
+{#                                            {% elif dingdan.status == 6 %}#}
+{#                                                「已收货 {{ moment(dingdan.time5).format('YY年M月D日') }}」#}
+{#                                            {% elif dingdan.status == 7 %}#}
+{#                                                「安装中 {{ moment(dingdan.time6).format('YY年M月D日') }}」#}
+{#                                            {% elif dingdan.status == 8 %}#}
+{#                                                「完成安装 ({{ moment(dingdan.time7).format('YY年M月D日') }}」#}
+{#                                            {% elif dingdan.status == 9 %}#}
+{#                                                「已清款 {{ moment(dingdan.time8).format('YY年M月D日') }}」#}
+{#                                            {% else %}#}
+{#                                                「状态有误」#}
+{#                                            {% endif %}#}
+
+                                        </h4>
+                                        <ul class="list-unstyled">
+                                            <li>位置: {{ dingdan.weizhi }}</li>
+                                            <li>型号: {{ dingdan.xinghao }}</li>
+{#                                            <li>状态: {{ dingdan.status }}</li>#}
+                                            <li>状态:
+
+                                            {% if dingdan.status == 1 %}
+                                                「已测尺」
+                                            {% elif dingdan.status == 2 %}
+                                                「已下单」 {{ moment(dingdan.time1).format('YY年M月D日') }}
+                                            {% elif dingdan.status == 3 %}
+                                                「已订货」 {{ moment(dingdan.time2).format('YY年M月D日') }}
+                                            {% elif dingdan.status == 4 %}
+                                                「已入库」
+                                            {% elif dingdan.status == 5 %}
+                                                「已发货」
+                                            {% elif dingdan.status == 6 %}
+                                                「已收货 {{ moment(dingdan.time5).format('YY年M月D日') }}
+                                            {% elif dingdan.status == 7 %}
+                                                「安装中」 {{ moment(dingdan.time6).format('YY年M月D日') }}
+                                            {% elif dingdan.status == 8 %}
+                                                「完成安装」 ({{ moment(dingdan.time7).format('YY年M月D日') }}
+                                            {% elif dingdan.status == 9 %}
+                                                「已清款」 {{ moment(dingdan.time8).format('YY年M月D日') }}
+                                            {% else %}
+                                                「状态有误」
+                                            {% endif %}
+                                            </li>
+                                        </ul>
+
+                                    {% endif %}
+
+                                    {#                    #}
+                                    {#                    {% if (xiaoqu.id == xiaoquid or  xiaoquid==0) and (dingdan.status == status or  status==0) and (fangjian in kehu.fangjian)  and (tel in kehu.tel) %}#}
+                                    {##}
+                                    {#                        <div class="panel panel-default">#}
+                                    {#                            <div class="panel-heading"><h4> 订单号「 {{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}#}
+                                    {##}
+                                    {#                                {% if dingdan.status == 1 %}#}
+                                    {#                                    「已测尺」#}
+                                    {#                                {% elif dingdan.status == 2 %}#}
+                                    {#                                    「已下单 {{ moment(dingdan.time1).format('YY年M月D日') }}」#}
+                                    {#                                {% elif dingdan.status == 3 %}#}
+                                    {#                                    「已订货 {{ moment(dingdan.time2).format('YY年M月D日') }}」#}
+                                    {#                                {% elif dingdan.status == 4 %}#}
+                                    {#                                    「已入库」#}
+                                    {#                                {% elif dingdan.status == 5 %}#}
+                                    {#                                    「已发货」#}
+                                    {#                                {% elif dingdan.status == 6 %}#}
+                                    {#                                    「已收货 {{ moment(dingdan.time5).format('YY年M月D日') }}」#}
+                                    {#                                {% elif dingdan.status == 7 %}#}
+                                    {#                                    「安装中 {{ moment(dingdan.time6).format('YY年M月D日') }}」#}
+                                    {#                                {% elif dingdan.status == 8 %}#}
+                                    {#                                    「完成安装 ({{ moment(dingdan.time7).format('YY年M月D日') }}」#}
+                                    {#                                {% elif dingdan.status == 9 %}#}
+                                    {#                                    「已清款 {{ moment(dingdan.time8).format('YY年M月D日') }}」#}
+                                    {#                                {% else %}#}
+                                    {#                                    「状态有误」#}
+                                    {#                                {% endif %}#}
+                                    {##}
+                                    {#                            </h4></div>#}
+                                    {#                            <div class="post-body">#}
+                                    {#                                <blockquote>#}
+                                    {#                                    <ul class="list-unstyled">#}
+                                    {#                                        <li>位置: {{ dingdan.weizhi }}</li>#}
+                                    {#                                        <li>型号: {{ dingdan.xinghao }}</li>#}
+                                    {#                                        <li>状态: {{ dingdan.status }}</li>#}
+                                    {#                                    </ul>#}
+                                    {#                                </blockquote>#}
+                                    {#                            </div>#}
+                                    {#                            <div class="panel-footer">#}
+                                    {#                                <blockquote>#}
+                                    {#                                    <p>客户ID: {{ dingdan.kehu.id }}</p>#}
+                                    {#                                    <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }}#}
+                                    {#                                        小区 {{ dingdan.kehu.fangjian }} 房</p>#}
+                                    {#                                    <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>#}
+                                    {#                                    <p>备注: {{ dingdan.kehu.beizhu }}</p>#}
+                                    {#                                    <hr>#}
+                                    {#                                    <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }}#}
+                                    {#                                        （ {{ dingdan.kehu.user.tel }}#}
+                                    {#                                        ）</h4>#}
+                                    {#                                </blockquote>#}
+                                    {#                            </div>#}
+                                    {#                        </div>#}
+                                    {#                    {% endif %}#}
+
+
+
+                                {% endfor %}
+
+                            </blockquote>
+                        </div>
+                        <div class="panel-footer">
+
+                        </div>
+                    </div>
+                {% endif %}
 
             {% endfor %}
 
