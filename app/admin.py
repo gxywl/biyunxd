@@ -6,7 +6,7 @@ from flask_admin.contrib.sqla import ModelView
 from flask_login import current_user
 from werkzeug.utils import redirect
 
-from app.models import User, Xiaoqu, Kehu, Chanpin, Dingdan, Chanpinxx
+from app.models import User, Xiaoqu, Kehu, Chanpin, Dingdan, Chanpinxx,Gongren
 
 
 class MyModelView(ModelView):
@@ -142,7 +142,7 @@ class DingdanView(MyModelView):
 
     # 这里是为了自定义显示的column名字
     column_labels = dict(
-        shuliang=u'数量',     weizhi=u'位置',   xinghao=u'型号',
+        shuliang=u'数量',     weizhi=u'位置',   xinghao=u'型号', duizhang=u'队长',
     )
 #     #column_list = ('Email', 'Username')
 #     # column_labels = {
@@ -191,6 +191,36 @@ class ChanpinxxView(MyModelView):
 #
     def __init__(self, session, **kwargs):
         super(ChanpinxxView, self).__init__(Chanpinxx, session, **kwargs)
+
+class GongrenView(MyModelView):
+#    can_edit = False
+#     can_delete = False
+#     can_create = False
+    page_size = 8
+
+    # 这里是为了自定义显示的column名字
+    column_labels = dict(
+        duizhang=u'队长',     tuandui=u'团队',   beizhu=u'备注',
+    )
+
+#     #column_list = ('Email', 'Username')
+#     # column_labels = {
+#     #     'Email':u'邮件地址',
+#     #     'Username':u'用户名',
+#     # }
+
+#     #如果不想显示某些字段，可以重载这个变量
+#     column_exclude_list = (
+#         'password_hash',
+#     )
+#
+#     column_list = (
+#         'username','email',
+#     )
+#
+#
+    def __init__(self, session, **kwargs):
+        super(GongrenView, self).__init__(Gongren, session, **kwargs)
 
 class MyAdminIndexView(AdminIndexView):
     #增加这个必须要登录后才能访问，不然显示403错误

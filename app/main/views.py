@@ -9,7 +9,7 @@ from flask import redirect, url_for, render_template, flash, make_response, send
 from flask_login import current_user, login_required
 from sqlalchemy import func, engine, or_, and_
 
-from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu
+from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu, Gongren
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
     KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm
@@ -450,10 +450,11 @@ def paigonglist():
     # kehus = Kehu.query.all()
     xiaoqus = Xiaoqu.query.all()
 
+    gongrens = Gongren.query.all()
     # return render_template('paigonglist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
     #                        status=status)  #
 
-    return render_template('paigonglist.html', form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
+    return render_template('paigonglist.html', gongrens=gongrens,form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
                            fangjian=fangjian, chenghu=chenghu, status=status, kehus=kehus)  # prewhere=prewhere,, dingdans=dingdans
 
 
@@ -1904,6 +1905,53 @@ def paigongone(ddid):
 
     db.session.add(dingdan)
     flash('已确认派工')
+
+    return redirect(url_for('main.paigonglist'))
+
+
+@main.route('/dopaigong/<selids>/<sgd>', methods=['GET', 'POST'])
+@login_required
+def dopaigong(selids,sgd):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+
+    selids = selids.strip(',')
+    selids = list(eval('[' + selids + ']'))
+
+    # dingdan = Dingdan.query.filter(Dingdan.id in selids).update({Dingdan.status:6, Dingdan.time5:datetime.utcnow()})
+
+    # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 6, 'time5': datetime.utcnow()},
+    #                                                               synchronize_session=False)
+
+    # 这样
+    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'duizhang':sgd},
+                                                                  synchronize_session=False)
+
+    return 'done'
+
+
+@main.route('/unpaigongone/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def unpaigongone(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = 6
+    dingdan.time6 = None
+    dingdan.duizhang = None
+
+    db.session.add(dingdan)
+    flash('已派工')
 
     return redirect(url_for('main.paigonglist'))
 

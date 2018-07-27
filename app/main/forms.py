@@ -119,7 +119,7 @@ class FinepgddidForm(FlaskForm):
         super(FinepgddidForm, self).__init__(*args, **kwargs)
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
-        self.status.choices = [(0, ''), (6, '未派工'), (7, '已派工'), (7, '已装完')]
+        self.status.choices = [(0, ''), (6, '未派工'), (7, '已派工'), (8, '已装完')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 

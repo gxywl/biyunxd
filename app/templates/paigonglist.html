@@ -56,23 +56,33 @@
                                 <blockquote>
                                     <ul class="list-unstyled">
 
-                                    <li>
-                                        {% if dingdan.status == 6 %}
+                                        <li>
+                                            {% if dingdan.status == 6 %}
 
-                                    <label class="checkbox-inline"><input name="willsel" type="checkbox"
-                                                                          value="{{ dingdan.id }}"/>选择
-                                    「已收货」
-                                {% elif dingdan.status == 7 %}
-                                    「已派工」
-                                    {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
-                                    ({{ moment(dingdan.time6).format('YY年M月D日') }} )
-                                    <a class="btn btn-danger  glyphicon glyphicon-repeat"
-                                       href="{{ url_for('main.unshouhuoone', ddid=dingdan.id) }}"> 撤派工</a>
-                                {% endif %}
-                                [ {{ dingdan.id }} ] {{ dingdan.chanpin.pinming }}
-                                </label>
+                                                <label class="checkbox-inline"><input name="willsel" type="checkbox"
+                                                                                      value="{{ dingdan.id }}"/>选择
+                                                「已收货」
+                                            {% elif dingdan.status == 7 %}
+                                                「已派工」
+                                                {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
+                                                ({{ moment(dingdan.time6).format('YY年M月D日') }} {{ dingdan.duizhang }})
+                                                <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                                                   href="{{ url_for('main.unpaigongone', ddid=dingdan.id) }}"> 撤派工</a>
 
-                                    </li>
+
+                                                <a class="btn btn-primary  glyphicon glyphicon-flag"
+                                                   href="{{ url_for('main.wanchengone', ddid=dingdan.id) }}"> 完成安装</a>
+                                            {% elif dingdan.status == 8 %}
+                                                ( {{ moment(dingdan.time7).fromNow(refresh=True) }} 完成)
+                                                <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                                                   href="{{ url_for('main.unwanchengone', ddid=dingdan.id) }}"> 撤完成</a>
+                                            {% elif dingdan.status == 9 %}
+                                                【已清款 不可撤】
+                                            {% endif %}
+                                            [ {{ dingdan.id }} ] {{ dingdan.chanpin.pinming }}
+                                            </label>
+
+                                        </li>
 
                                         {% if dingdan.chanpin.pinming == '隐形网' %}
 
@@ -138,33 +148,33 @@
 
 
                                         {% endif %}
-<li>
-                                    {% if dingdan.status == 1 %}
-                                    「已量尺」
-                                {% elif dingdan.status == 2 %}
-                                    「已下单」
-                                {% elif dingdan.status == 3 %}
-                                    「已订货」
-                                {% elif dingdan.status == 4 %}
-                                    「已入库」
-                                {% elif dingdan.status == 5 %}
-                                    「已发货」
-                                {% elif dingdan.status == 6 %}
-                                    「已收货」
-                                {% elif dingdan.status == 7 %}
-                                    「安装中」
-                                {% elif dingdan.status == 8 %}
-                                    「完成安装」
-                                {% elif dingdan.status == 9 %}
-                                    「已清款」
-                                {% else %}
-                                    「状态有误」
-                                {% endif %}
-</li>
+                                        <li>
+                                            {% if dingdan.status == 1 %}
+                                                「已量尺」
+                                            {% elif dingdan.status == 2 %}
+                                                「已下单」
+                                            {% elif dingdan.status == 3 %}
+                                                「已订货」
+                                            {% elif dingdan.status == 4 %}
+                                                「已入库」
+                                            {% elif dingdan.status == 5 %}
+                                                「已发货」
+                                            {% elif dingdan.status == 6 %}
+                                                「已收货」
+                                            {% elif dingdan.status == 7 %}
+                                                「安装中」
+                                            {% elif dingdan.status == 8 %}
+                                                「完成安装」
+                                            {% elif dingdan.status == 9 %}
+                                                「已清款」
+                                            {% else %}
+                                                「状态有误」
+                                            {% endif %}
+                                        </li>
                                     </ul>
                                 </blockquote>
                             </div>
-    <hr>
+                            <hr>
 
                         {% endif %}
                     {% endfor %}
@@ -181,20 +191,68 @@
 
 
 
-    {% if status == 0 or status == 3 %}
+    {% if status == 0 or status == 6 %}
         <div class="panel panel-default">
             <div class="panel-heading">
 
-                <label class="checkbox-inline"><input name="checkboxMain" type="checkbox" onclick="CheckAll(this);"/> 全选
-                </label>
 
+
+
+
+
+
+
+
+
+
+
+
+<div class="form-group">
+          <label><input  class="form-control" name="checkboxMain" type="checkbox" onclick="CheckAll(this);"/>全选
+            </label>
+   <div class="input-group col-xs-12">
+
+
+
+
+       <div class="input-group-btn">
+                <select id="sgd" class="form-control">
+                    <option value="">选择工人</option>
+
+{#                    <option value="张三">张三</option>#}
+{#                    <option value="李四">李四</option>#}
+                    {% for gongren in gongrens %}
+                        <option value="{{ gongren.duizhang }}">{{ gongren.duizhang }}</option>
+                    {% endfor %}
+                </select>
+   </div>
+<div class="input-group-btn">
+            <button id="doshouhou" class="btn btn-primary glyphicon glyphicon-gift"> 做派工</button>
+</div>
+</div>
+</div>
+
+{#<div class="form-group">#}
+{#    <div class="input-group col-xs-12">#}
+{#        <div class="input-group-btn">#}
+{#            <select name="type" class="form-control" style="width: auto;">#}
+{#                <option value="1">全网</option>#}
+{#                <option value="2">本站</option>#}
+{#            </select>#}
+{#        </div>#}
+{#        <input type="text" name="keyword" id="keyword" class="form-control" placeholder="请您输入关键词">#}
+{#        <span class="input-group-btn">#}
+{#            <button class="btn btn-success" id="search_submit" type="submit">Go</button>#}
+{#        </span>#}
+{#    </div>#}
+{##}
+{#</div>#}
 
                 {#                <button id="selall" class="btn btn-success glyphicon glyphicon-check">全选</button>#}
                 {#                <button id="allnotsel" class="btn btn-success glyphicon glyphicon-share">全否</button>#}
 
                 {#                设置收货日期：<input id="indate" type="date">#}
 
-                <button id="doshouhou" class="btn btn-primary glyphicon glyphicon-gift"> 做派工</button>
 
                 {#                        <a class="btn btn-primary " href="{{  url_for('main.dinghuoedlist') }}" >转－已订货</a>#}
 
@@ -248,7 +306,12 @@
 
                 selids = selids + $(this).val() + ','
             });
-            //alert(selids);
+
+             if ($("#sgd").val()=='')
+             {
+                 alert('选择施工队');
+             }
+            else{
 
             $.ajax({
                 type: "get",
@@ -258,7 +321,7 @@
                 {#url : "doselshouhuo",#}
                 {#data : "selids=" + selids,#}
 
-                url: "doselshouhuo/" + selids,
+                url: "dopaigong/" + selids+'/'+$("#sgd").val(),
                 {#data : "selids=" + selids,                #}
                 async: true,
                 success: function (data) {
@@ -270,6 +333,7 @@
 
                 }
             });
+            }
 
         });
     </script>

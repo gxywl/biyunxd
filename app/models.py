@@ -6,6 +6,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 from . import db, login_manager
 
+class Gongren( db.Model):
+    __tablename__ = 'gongrens'
+    id = db.Column(db.Integer, primary_key=True)
+    duizhang = db.Column(db.String(64), unique=True, index=True)
+    tuandui = db.Column(db.String(64))
+    beizhu = db.Column(db.String(64))
+
+    def __repr__(self):
+        return '<Gongren %r>' % self.duizhang
 
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
@@ -137,6 +146,7 @@ class Dingdan(db.Model):
     time9 = db.Column(db.DateTime())
     user9_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
+    duizhang =db.Column(db.String(64))
 
     def __repr__(self):
         return '<Dingdan %r>' % self.id
