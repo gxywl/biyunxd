@@ -110,7 +110,7 @@ class FinepgddidForm(FlaskForm):
     # ddid = StringField('订单ID')
     xiaoqu = SelectField('小区', coerce=int)
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
-    chenghu = StringField('称呼')
+    # chenghu = StringField('称呼')
     status = SelectField('进度状态', coerce=int) #
     submit = SubmitField('开始过滤')
 

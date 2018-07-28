@@ -378,7 +378,7 @@ def paigonglist():
         # session['ddid'] = form.ddid.data
         session['xiaoqu'] = form.xiaoqu.data
         session['fangjian'] = form.fangjian.data
-        session['chenghu'] = form.chenghu.data
+        # session['chenghu'] = form.chenghu.data
         session['status'] = form.status.data
         return redirect(url_for('main.paigonglist'))
 
@@ -387,12 +387,12 @@ def paigonglist():
 
     xiaoquid = int(session.get('xiaoqu', 0))
     fangjian = session.get('fangjian', '')
-    chenghu = session.get('chenghu', '')
+    # chenghu = session.get('chenghu', '')
     status = int(session.get('status', 0))
 
     form.xiaoqu.data = xiaoquid
     form.fangjian.data = fangjian
-    form.chenghu.data = chenghu
+    # form.chenghu.data = chenghu
     form.status.data = status
 
     # 下单时间超过6小时的才在此显示
@@ -432,20 +432,32 @@ def paigonglist():
     #                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
 
     fangjian = '%' + fangjian + '%'
-    chenghu = '%' + chenghu + '%'
+    # chenghu = '%' + chenghu + '%'
+
+    # if status == 0:
+    #     if xiaoquid == 0:
+    #         kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+    #     else:
+    #         kehus = Kehu.query.filter(
+    #             and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+    # else:
+    #     if xiaoquid == 0:
+    #         kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+    #     else:
+    #         kehus = Kehu.query.filter(
+    #             and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
 
     if status == 0:
         if xiaoquid == 0:
-            kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(Kehu.fangjian.like(fangjian))
         else:
-            kehus = Kehu.query.filter(
-                and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian)))
     else:
         if xiaoquid == 0:
-            kehus = Kehu.query.filter(and_(Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(Kehu.fangjian.like(fangjian))
         else:
-            kehus = Kehu.query.filter(
-                and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian), Kehu.chenghu.like(chenghu)))
+            kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian)))
+
 
     # kehus = Kehu.query.all()
     xiaoqus = Xiaoqu.query.all()
@@ -455,7 +467,7 @@ def paigonglist():
     #                        status=status)  #
 
     return render_template('paigonglist.html', gongrens=gongrens,form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
-                           fangjian=fangjian, chenghu=chenghu, status=status, kehus=kehus)  # prewhere=prewhere,, dingdans=dingdans
+                           fangjian=fangjian, status=status, kehus=kehus)  # prewhere=prewhere,, dingdans=dingdans
 
 
 @main.route('/qingkuanlist', methods=['GET', 'POST'])
