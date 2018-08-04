@@ -22,6 +22,7 @@ login_manager.login_view = 'auth.login'
 babel = Babel()
 
 
+
 def create_app(config_name):
     app = Flask(__name__)
 

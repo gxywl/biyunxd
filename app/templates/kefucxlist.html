@@ -77,6 +77,20 @@
 
                 {% if (xiaoqu.id == xiaoquid or  xiaoquid==0)  and (fangjian in kehu.fangjian)  and (tel in kehu.tel) %}
 
+
+
+                    {{ set_var(0) }}
+                    {% for dingdant in kehu.dingdans %}
+{#                        {% set ishavedd='1' %}#}
+                        {% if  dingdant.status == status or  status==0  %}
+                            {{ set_var(1) }}
+{#                            {{ dingdant.xinghao }}#}
+                        {% endif %}
+                    {% endfor %}
+
+
+
+                    {%  if get_var() == 1 %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
 
@@ -143,11 +157,11 @@
                                             {% elif dingdan.status == 5 %}
                                                 「已发货」
                                             {% elif dingdan.status == 6 %}
-                                                「已收货 {{ moment(dingdan.time5).format('YY年M月D日') }}
+                                                「已收货」 {{ moment(dingdan.time5).format('YY年M月D日') }}
                                             {% elif dingdan.status == 7 %}
                                                 「安装中」 {{ moment(dingdan.time6).format('YY年M月D日') }}
                                             {% elif dingdan.status == 8 %}
-                                                「完成安装」 ({{ moment(dingdan.time7).format('YY年M月D日') }}
+                                                「完成安装」 {{ moment(dingdan.time7).format('YY年M月D日') }}
                                             {% elif dingdan.status == 9 %}
                                                 「已清款」 {{ moment(dingdan.time8).format('YY年M月D日') }}
                                             {% else %}
@@ -222,6 +236,9 @@
 
                         </div>
                     </div>
+
+                    {% endif %}
+
                 {% endif %}
 
             {% endfor %}

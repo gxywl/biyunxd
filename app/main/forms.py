@@ -255,7 +255,7 @@ class LygForm(FlaskForm):
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
 
 
-    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), (2, '2')])
+    gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')

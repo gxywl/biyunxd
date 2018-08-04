@@ -623,6 +623,7 @@ def kefucxlist():
     #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
     #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
 
+
     return render_template('kefucxlist.html', xiaoqus=xiaoqus, form=form, xiaoquid=xiaoquid,
                            fangjian=fangjian, tel=tel, status=status)  # prewhere=prewhere,, dingdans=dingdans
 
