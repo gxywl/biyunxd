@@ -114,6 +114,8 @@
                                 <th>No</th>
                                 <th>产品</th>
                                 <th>位置</th>
+                                <th>型号</th>
+                                <th>面积</th>
                                 <th>状态</th>
                             </tr>
                             </thead>
@@ -123,28 +125,39 @@
                                     <td>{{ loop.index }}</td>
                                     <td>{{ dingdan.chanpin.pinming }}</td>
                                     <td>{{ dingdan.weizhi }}</td>
+                                     <td>{{ dingdan.xinghao }}</td>
+
+                                    <td>
+
+                                        {% if dingdan.chanpin.pinming in ["隐形网","纱窗","纱门","窗花"] %}
+{#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.3f"|format(dingdan.gao * dingdan.kuan_chang/1000000) }}
+                                        {% endif %}
+
+                                    </td>
+
                                     <td>
 
                                         {#                            {{ dingdan.status }}#}
 
                                         {% if dingdan.status == 1 %}
-                                            「已量尺」
+                                            「已量尺{{ moment(dingdan.time0).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 2 %}
-                                            「已下单」
+                                            「已下单{{ moment(dingdan.time1).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 3 %}
-                                            「已订货」
+                                            「已订货{{ moment(dingdan.time2).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 4 %}
                                             「已入库」
                                         {% elif dingdan.status == 5 %}
                                             「已发货」
                                         {% elif dingdan.status == 6 %}
-                                            「已收货」
+                                            「已收货{{ moment(dingdan.time5).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 7 %}
-                                            「安装中」
+                                            「安装中{{ moment(dingdan.time6).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 8 %}
-                                            「完成安装」
+                                            「完成安装{{ moment(dingdan.time7).format('YY.MM.DD') }}」
                                         {% elif dingdan.status == 9 %}
-                                            「已清款」
+                                            「已清款{{ moment(dingdan.time8).format('YY.MM.DD') }}」
                                         {% else %}
                                             「状态有误」
                                         {% endif %}
@@ -318,7 +331,7 @@
 
                         {{ dingdan.chanpin.pinming }}
                         {% if dingdan.status == 3 %}
-                            [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
+                            [下订：{{ moment(dingdan.time2).format('YYYY.MM.DD') }}]
                         {% endif %}
                         {{ dingdan.weizhi }}
                     </h4>

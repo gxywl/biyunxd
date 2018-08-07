@@ -33,14 +33,18 @@
 
     {% for kehu in kehus %}
 
-        {% set haver=0 %}
-{#        {% for dingdan in kehu.dingdans %}#}
-{#            {% if (status == 0 and dingdan.status in [6,7,8]) or dingdan.status == status %}#}
-                {% set haver=1 %}
-{#            {% endif %}#}
-{#        {% endfor %}#}
+        {{ set_var(0) }}
+        {% for dingdant in kehu.dingdans %}
+{#                        {% set ishavedd='1' %}#}
+            {% if (status == 0 and dingdant.status in [6,7,8]) or dingdant.status == status %}
+                {{ set_var(1) }}
+{#                            {{ dingdant.xinghao }}#}
+            {% endif %}
+        {% endfor %}
 
-        {% if haver == 1 %}
+
+
+        {%  if get_var() == 1 %}
 
             <div class="panel panel-default">
                 <div class="panel-heading">
