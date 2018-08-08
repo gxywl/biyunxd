@@ -169,7 +169,17 @@
                                             {% endif %}
                                             </li>
                                         </ul>
+                                        <ul class="list-unstyled">
+                                        {% if dingdan.chanpin.pinming not in ['指纹锁'] %}
+                                            <li>宽长: {{ dingdan.kuan_chang }}</li>
+                                            <li>高度: {{ dingdan.gao }}</li>
+                                        {% endif %}
+                                            {% if dingdan.chanpin.pinming in ['窗花','纱门','纱窗'] %}
+                                            <li>开锁: {{ dingdan.shuowei }}</li>
+                                            {% endif %}
+                                            <li>备注: {{ dingdan.beizhu }}</li>
 
+                                        </ul>
                                     {% endif %}
 
                                     {#                    #}
