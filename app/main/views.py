@@ -2111,10 +2111,15 @@ def outseltoxls(pm, selids):
         headers = (
             u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
 
+    # elif pm == '纱门':
+    #     headers = (
+    #         u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
+    #         u"备注", u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
+
     elif pm == '纱门':
         headers = (
-            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
-            u"备注", u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
+            u"订单号", u"小区",u"地址",  u"房间", u"客户", u"电话",u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
+            u"备注",  u"业务员（电话）")
 
     elif pm == '晾衣杆' or pm == '晾衣机':
         headers = (
@@ -2123,13 +2128,23 @@ def outseltoxls(pm, selids):
 
     elif pm == '纱窗':
         headers = (
-            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
-            u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
+            u"订单号",u"小区", u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
+              u"业务员（电话）")
+
+    # elif pm == '纱窗':
+    #     headers = (
+    #         u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
+    #         u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
 
     elif pm == '窗花':
         headers = (
-            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"备注",
-            u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
+            u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话",  u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"备注",
+            u"业务员（电话）")
+
+    # elif pm == '窗花':
+    #     headers = (
+    #         u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"备注",
+    #         u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
 
     elif pm == '指纹锁':
         headers = (u"订单号", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间", u"业务员（电话）")
@@ -2147,11 +2162,10 @@ def outseltoxls(pm, selids):
 
         elif pm == '纱门':
             data.append(
-                [dingdan.id, u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel,u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.color, dingdan.shanshu, dingdan.zhonghengtiaoshu_gantiaoshu,
-                 dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu, dingdan.kehu.chenghu,
-                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
-
+                 dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,
+                   dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
 
         elif pm == '晾衣杆' or pm == '晾衣机':
             data.append(
@@ -2161,17 +2175,15 @@ def outseltoxls(pm, selids):
 
         elif pm == '纱窗':
             data.append(
-                [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel,pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
-                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu, dingdan.kehu.chenghu,
-                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
 
         elif pm == '窗花':
             data.append(
-                [dingdan.id, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
-                 dingdan.beizhu, dingdan.kehu.chenghu,
-                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
 
         elif pm == '指纹锁':
             data.append(
@@ -2259,6 +2271,7 @@ def outtoxls(pm):
         headers = (
             u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
             u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
+
 
     elif pm == '晾衣杆' or pm == '晾衣机':
         headers = (
