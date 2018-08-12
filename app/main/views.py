@@ -464,7 +464,7 @@ def paigonglist():
 
     # gongrens = Gongren.query.all()
 
-    gongrens = User.query.filter_by(role='安装队')
+    gongrens = User.query.filter_by(role=u'安装队')
 
     # return render_template('paigonglist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
     #                        status=status)  #
