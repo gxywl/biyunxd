@@ -58,19 +58,27 @@
 
                         {% for dingdan in kehu.dingdans %}
 
-                            {% if (status == 0 and dingdan.status in [6,7,8]) or dingdan.status == status %}
-
+{#                            {% if (status == 0 and dingdan.status in [6,7,8]) or dingdan.status == status %}#}
+                            {% if (status == 0 ) or dingdan.status == status %}
 
                                 <div class="post-body">
 {#                                    <blockquote>#}
                                         <ul class="list-unstyled">
 
                                             <li>
+
+                                                {% if dingdan.status == 3 %}
+                                                    「未收货」
+                                                {% endif %}
+
                                                 {% if dingdan.status == 6 %}
 
-                                                    <label class="checkbox-inline"><input name="willsel" type="checkbox"
-                                                                                          value="{{ dingdan.id }}"/>选择
-                                                    「已收货」
+                                                    <label class="checkbox-inline">
+
+                                                    <input name="willsel" type="checkbox"
+                                                                                          value="{{ dingdan.id }}"/>
+
+                                                    选择<span  style="background-color:greenyellow;">「已收货未派工」</span>
                                                 {% elif dingdan.status == 7 %}
                                                     「已派工」
                                                     {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
