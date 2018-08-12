@@ -59,7 +59,7 @@
                         {% for dingdan in kehu.dingdans %}
 
 {#                            {% if (status == 0 and dingdan.status in [6,7,8]) or dingdan.status == status %}#}
-                            {% if (status == 0 ) or dingdan.status == status %}
+                            {% if (status == 0 and dingdan.status in [3,6,7,8]) or dingdan.status == status %}
 
                                 <div class="post-body">
 {#                                    <blockquote>#}
@@ -80,10 +80,10 @@
 
                                                     选择<span  style="background-color:greenyellow;">「已收货未派工」</span>
                                                 {% elif dingdan.status == 7 %}
-                                                    「已派工」
+                                                    「已派工{{ moment(dingdan.time6).format('YYYY.M.D') }}」
                                                     {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
-                                                    ({{ moment(dingdan.time6).format('YY年M月D日') }}
-                                                    {{ dingdan.duizhang }})
+                                                    (
+                                                    {{ dingdan.dingdan_azd.username }})
                                                     <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                        href="{{ url_for('main.unpaigongone', ddid=dingdan.id) }}">
                                                         撤派工</a>
@@ -103,8 +103,8 @@
 
                                                 </label>
 
-                                            </li>
-                                                <li>[ {{ dingdan.id }} ] <span  style="font-weight:bold;background-color: beige ;color:blue;">{{ dingdan.chanpin.pinming }}</span> / {{ dingdan.weizhi }} / {{ dingdan.xinghao }}</li>
+{#                                            [ {{ dingdan.id }} ] #}
+                                                <span  style="font-weight:bold;background-color: beige ;color:blue;">{{ dingdan.chanpin.pinming }}</span> / {{ dingdan.weizhi }} / {{ dingdan.xinghao }}</li>
 
 {#                                        #}
 {#                                            {% if dingdan.chanpin.pinming == '隐形网' %}#}
@@ -229,7 +229,7 @@
                                 {#                    <option value="张三">张三</option>#}
                                 {#                    <option value="李四">李四</option>#}
                                 {% for gongren in gongrens %}
-                                    <option value="{{ gongren.duizhang }}">{{ gongren.duizhang }}</option>
+                                    <option value="{{ gongren.id }}">{{ gongren.username }}</option>
                                 {% endfor %}
                             </select>
                         </div>

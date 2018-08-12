@@ -179,6 +179,20 @@
                                                     <li>高(mm): {{ dingdan.gao }}</li>
                                                     <li>颜色: {{ dingdan.color }}</li>
 
+                                                {% elif dingdan.chanpin.pinming == '阳台窗' %}
+
+
+                                                    <li>位置: {{ dingdan.weizhi }}</li>
+                                                    {#                                                <li>数量: {{ dingdan.shuliang }}</li>#}
+                                                    <li>型号: {{ dingdan.xinghao }}</li>
+                                                    <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                                                    <li>高(mm): {{ dingdan.gao }}</li>
+
+                                                    <li>蹲高(mm): {{ dingdan.meikuan_digao }}</li>
+                                                    <li>栏高(mm): {{ dingdan.shanshu }}</li>
+                                                    <li>管位: {{ dingdan.shuowei }}</li>
+
+                                                    <li>颜色: {{ dingdan.color }}</li>
 
                                                 {% elif dingdan.chanpin.pinming == '纱门' %}
 

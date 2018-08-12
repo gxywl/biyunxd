@@ -36,7 +36,7 @@ def create_app(config_name):
     login_manager.init_app(app)
 
     # ----------------------
-    from app.admin import MyAdminIndexView, UserView, MyModelView,KehuView, ChanpinView, XiaoquView, DingdanView, ChanpinxxView,GongrenView
+    from app.admin import MyAdminIndexView, UserView, MyModelView,KehuView, ChanpinView, XiaoquView, DingdanView, ChanpinxxView #,GongrenView
     from app.models import Kehu, Dingdan, Chanpin, Xiaoqu
 
     babel.init_app(app)
@@ -53,7 +53,7 @@ def create_app(config_name):
     admin.add_view(XiaoquView(db.session, name='小区'))
     admin.add_view(DingdanView(db.session, name='订单'))
     admin.add_view(ChanpinxxView(db.session, name='选项设置'))
-    admin.add_view(GongrenView(db.session, name='施工队'))
+    # admin.add_view(GongrenView(db.session, name='施工队'))
     # models = [Kehu, Dingdan, Chanpin, Xiaoqu]
     # for model in models:
     #     admin.add_view(MyModelView(model, db.session, category='Models'))

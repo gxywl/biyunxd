@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
+
+{% block page_content %}
+
+    {#    <div class="panel panel-primary">#}
+    {#        <div class="panel-heading">#}
+    {#            {{ prewhere }}#}
+    {#        </div>#}
+    {#        <div class="post-body">#}
+    {#            <blockquote>#}
+    {#                {{ wtf.quick_form(form) }}#}
+    {#            </blockquote>#}
+    {#        </div>#}
+    {#        <div class="panel-footer"></div>#}
+    {#    </div>#}
+    {#     <h3>安装队: {{ current_user.username }}</h3>#}
+    <br>
+
+    <blockquote>
+
+        <ol>
+            {% for dingdan in dingdans %}
+                <li>
+                    {% if dingdan.status == 7 %}
+                        ( {{ moment(dingdan.time6).fromNow(refresh=True) }}
+                        <span style="font-weight:bold;background-color: beige ;color:red;">派工</span>)
+                    {% elif dingdan.status == 8 or dingdan.status == 9 %}
+                        ( {{ moment(dingdan.time7).fromNow(refresh=True) }}
+                        <span style="font-weight:bold;color:blue;">已完成</span>)
+                    {% endif %}
+                    <ul class="list-unstyled">
+                        <li>地址: {{ dingdan.kehu.xiaoqu.dizhi }}</li>
+                        <li>小区: {{ dingdan.kehu.xiaoqu.xiaoqu }}{{ dingdan.kehu.fangjian }}</li>
+                        <li>客户: {{ dingdan.kehu.chenghu }}（{{ dingdan.kehu.tel }}）</li>
+                        <li>产品: {{ dingdan.chanpin.pinming }}</li>
+                    </ul>
+
+                </li>
+                <hr>
+                {#                安装队: {{ dingdan.dingdan_azd.username }}#}
+
+
+                {#        <div class="panel panel-default">#}
+                {#            <div class="panel-heading"><h4>客户: {{ kehu.id }}#}
+                {#                <span class="pull-right">#}
+                {#                    <a class="btn btn-danger glyphicon glyphicon-remove btn-sm"#}
+                {#                       href="{{ url_for('main.delkehu', id=kehu.id) }}"> 删</a>#}
+                {##}
+                {#                    <a class="btn btn-primary glyphicon glyphicon-pencil btn-sm"#}
+                {#                       href="{{ url_for('main.editkehu', id=kehu.id) }}"> 改</a>#}
+                {#                    </span>#}
+                {#            </h4>#}
+                {#                <blockquote>#}
+                {#                    <ul class="list-unstyled">#}
+                {#                            <li>小区: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」</li>#}
+                {#                            <li>房间: {{ kehu.fangjian }}</li>#}
+                {#                            <li>称呼: {{ kehu.chenghu }}</li>#}
+                {#                            <li>电话: {{ kehu.tel }}</li>#}
+                {#                        <li>房间: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.fangjian }}</li>#}
+                {#                        <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）#}
+                {#                            {% if kehu.status == 1 %}#}
+                {#                                已测尺#}
+                {#                            {% elif kehu.status == 2 %}#}
+                {#                                已下单#}
+                {#                            {% elif kehu.status == 3 %}#}
+                {#                                已安装#}
+                {#                            {% elif kehu.status == 4 %}#}
+                {#                                已清款#}
+                {#                            {% else %}#}
+                {#                                状态有误#}
+                {#                            {% endif %}#}
+                {#                        </li>#}
+                {#                        <li>备注: {{ kehu.beizhu }}</li>#}
+                {##}
+                {#                    </ul>#}
+                {#                </blockquote>#}
+                {##}
+                {##}
+                {#            </div>#}
+                {#         #}
+                {#           <div class="panel-footer"></div>#}
+                {#        </div>#}
+
+            {% endfor %}
+        </ol>
+    </blockquote>
+
+{% endblock %}

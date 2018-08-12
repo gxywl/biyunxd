@@ -32,6 +32,7 @@
         <li><a href="#E" data-toggle="pill">指纹锁</a></li>
         <li><a href="#F" data-toggle="pill">晾衣机</a></li>
         <li><a href="#G" data-toggle="pill">窗花</a></li>
+        <li><a href="#H" data-toggle="pill">阳台窗</a></li>
 
     </ul>
     <br>
@@ -529,6 +530,76 @@
         </div>
 
 
+
+        <div class="tab-pane" id="H">
+
+            {% if done=='待订货' %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+
+                        <button id="outseltoxlsch" onclick="outseltoxls(this,'阳台窗','H');" class="btn btn-primary glyphicon glyphicon-gift"> 导出电子表格</button>
+                        <button id="taggetitselch" onclick="taggetitsel(this,'阳台窗','H');" class="btn btn-danger glyphicon glyphicon-gift"> 标志已订货</button>
+
+                    </div>
+                </div>
+            {% endif %}
+
+            {% for dingdan in dingdans %}
+
+                {% if dingdan.chanpin.pinming == '阳台窗' %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading"><h4><label class="checkbox-inline"><input name="willsel"
+                                                                                             type="checkbox"
+                                                                                             value="{{ dingdan.id }}"/>选择
+                            订单号「 {{ dingdan.id }} 」 阳台窗 </label>
+                            {% if done=='已订货' %}
+                                {% if dingdan.status == 3 %}
+{#                                    ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )#}
+                                    ({{ moment(dingdan.time2).format('YY年M月D日') }} 订货)
+                                    <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                                       href="{{ url_for('main.udinghuoone', ddid=dingdan.id) }}"> 撤订</a>
+                                {% elif dingdan.status == 4 %}
+                                    【已入库 不可撤单】
+                                {% endif %}
+                            {% endif %}
+                        </h4></div>
+                        <div class="post-body">
+                            <blockquote>
+                                <ul class="list-unstyled">
+                                    <li>位置: {{ dingdan.weizhi }}</li>
+                                    <li>数量: {{ dingdan.shuliang }}</li>
+                                    <li>型号: {{ dingdan.xinghao }}</li>
+                                    <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                                    <li>高(mm): {{ dingdan.gao }}</li>
+                                    <li>蹲高(mm): {{ dingdan.meikongkuan_bashoudigao }}</li>
+                                    <li>栏高(mm): {{ dingdan.shanshu }}</li>
+                                    <li>管位: {{ dingdan.shuowei }}</li>
+                                    <li>颜色: {{ dingdan.color }}</li>
+                                    <li>状态: {{ dingdan.status }}</li>
+                                    <li>备注: {{ dingdan.beizhu }}</li>
+                                </ul>
+                            </blockquote>
+                        </div>
+                        <div class="panel-footer">
+                            {#                          <blockquote>#}
+                            <p>客户ID: {{ dingdan.kehu.id }}</p>
+                            <p>地址: 「 {{ dingdan.kehu.xiaoqu.dizhi }} 」{{ dingdan.kehu.xiaoqu.xiaoqu }}
+                                小区 {{ dingdan.kehu.fangjian }} 房</p>
+                            <p>称呼: {{ dingdan.kehu.chenghu }}（电话: {{ dingdan.kehu.tel }}）</p>
+                            <p>备注: {{ dingdan.kehu.beizhu }}</p>
+                            <hr>
+                            <h4 style="color:orange">业务: {{ dingdan.kehu.user.username }} （ {{ dingdan.kehu.user.tel }}
+                                ）</h4>
+                            {#                          </blockquote>#}
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+
+
+
     </div>
 
 
@@ -698,7 +769,12 @@
                 //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
                 selids = selids + $(this).val() + ','
             });
-            window.location.href = "outseltoxls/"+pm+"/" + selids;
+            if(selids == '')
+            {
+                window.alert("请先选择一产品")
+            }else{
+                window.location.href = "outseltoxls/"+pm+"/" + selids;
+            }
         }
 
         function taggetitsel(obj,pm,pl) {
@@ -707,219 +783,24 @@
                 //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
                 selids = selids + $(this).val() + ','
             });
+            if(selids == '')
+            {
+                window.alert("请先选择一产品")
+            }else{
 
-            $.ajax({
-                type: "get",
-                url: "taggetitsel/"+pm+"/" + selids,
-                {#data : "selids=" + selids,                #}
-                async: true,
-                success: function (data) {
-                    window.location.reload()
-                }
-            });
+                $.ajax({
+                    type: "get",
+                    url: "taggetitsel/"+pm+"/" + selids,
+                    {#data : "selids=" + selids,                #}
+                    async: true,
+                    success: function (data) {
+                        window.location.reload()
+                    }
+                });
+            }
         }
 
 
-        {#$("#outseltoxlsyxm").click(function () {#}
-        {##}
-        {#    var selids = ''#}
-        {#    $.each($('#A input[name="willsel"]:checkbox:checked'), function () {#}
-        {#        //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-        {#        selids = selids + $(this).val() + ','#}
-        {#    });#}
-        {#    window.location.href = "outseltoxls/隐形网/" + selids;#}
-        {# });#}
-{##}
-{#        $("#outseltoxlssm").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#B input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/纱门/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlslyg").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#C input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/晾衣杆/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlssc").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#D input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/纱窗/" + selids;#}
-{#        });#}
-{##}
-{##}
-{#        $("#outseltoxlszws").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#E input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/指纹锁/" + selids;#}
-{#        });#}
-{##}
-{##}
-{#        $("#outseltoxlslyj").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#F input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/晾衣机/" + selids;#}
-{#        });#}
-{##}
-{#        $("#outseltoxlsch").click(function () {#}
-{##}
-{#            var selids = ''#}
-{#            $.each($('#G input[name="willsel"]:checkbox:checked'), function () {#}
-{#                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-{#                selids = selids + $(this).val() + ','#}
-{#            });#}
-{#            window.location.href = "outseltoxls/窗花/" + selids;#}
-{#        });#}
-
-        //----------------------
-    {##}
-    {#    $("#taggetitselyxw").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#A input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/隐形网/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselsm").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#B input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/纱门/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitsellyg").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#C input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/晾衣杆/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselsc").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#D input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/纱窗/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {##}
-    {#    $("#taggetitselzws").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#E input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/指纹锁/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitsellyj").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#F input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/晾衣机/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
-    {##}
-    {#    $("#taggetitselch").click(function () {#}
-    {#        var selids = ''#}
-    {#        $.each($('#G input[name="willsel"]:checkbox:checked'), function () {#}
-    {#            //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());#}
-    {#            selids = selids + $(this).val() + ','#}
-    {#        });#}
-    {##}
-    {#        $.ajax({#}
-    {#            type: "get",#}
-    {#            url: "taggetitsel/窗花/" + selids,#}
-                {#data : "selids=" + selids,                #}
-    {#            async: true,#}
-    {#            success: function (data) {#}
-    {#                window.location.reload()#}
-    {#            }#}
-    {#        });#}
-    {#    });#}
     </script>
 
 {% endblock %}
