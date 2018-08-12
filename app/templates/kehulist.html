@@ -129,9 +129,14 @@
 
                                     <td>
 
-                                        {% if dingdan.chanpin.pinming in ["隐形网","纱窗","纱门","窗花"] %}
+                                        {% if dingdan.chanpin.pinming in ["隐形网","纱窗","窗花"] %}
 {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
                                             {{ "%.2f"|format(dingdan.gao * dingdan.kuan_chang/1000000) }}
+                                        {% endif %}
+
+                                         {% if dingdan.chanpin.pinming in ["纱门"] %}
+{#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.2f"|format(dingdan.gao * meikongkuan_bashoudigao/1000000) }}
                                         {% endif %}
 
                                     </td>
