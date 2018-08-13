@@ -1,0 +1,41 @@
+    {% macro render_listcpvar(dingdan) %}
+        <ul class="list-unstyled">
+            <li>产品: {{ dingdan.chanpin.pinming }}</li>
+            <li>位置: {{ dingdan.weizhi }}</li>
+            <li>型号: {{ dingdan.xinghao }}</li>
+
+            {% if dingdan.chanpin.pinming == '隐形网' %}
+                <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+            {% elif dingdan.chanpin.pinming == '阳台窗' %}
+                <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+                <li>蹲高(mm): {{ dingdan.meikuan_digao }}</li>
+                <li>栏高: {{ dingdan.shanshu }}</li>
+                <li>管位: {{ dingdan.shuowei }}</li>
+            {% elif dingdan.chanpin.pinming == '纱门' %}
+                <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+                <li>内空宽(mm): {{ dingdan.meikuan_digao }}</li>
+                <li>扇数: {{ dingdan.shanshu }}</li>
+                <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
+                <li>锁位: {{ dingdan.shuowei }}</li>
+                <li>装法: {{ dingdan.zhangfa }}</li>
+            {% elif dingdan.chanpin.pinming == '晾衣杆' or dingdan.chanpin.pinming == '晾衣机' %}
+                <li>长(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+                <li>杆条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
+            {% elif dingdan.chanpin.pinming == '纱窗' or dingdan.chanpin.pinming == '窗花' %}
+                <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+                <li>底高(mm): {{ dingdan.meikuan_digao }}</li>
+                <li>等分数: {{ dingdan.dengfenshu }}</li>
+                <li>有否横条: {{ dingdan.ishaveht }}</li>
+                <li>锁位: {{ dingdan.shuowei }}</li>
+            {% elif dingdan.chanpin.pinming == '指纹锁' %}
+                <li>锁位: {{ dingdan.shuowei }}</li>
+            {% endif %}
+            <li>颜色: {{ dingdan.color }}</li>
+            <li>备注: {{ dingdan.beizhu }}</li>
+        </ul>
+    {% endmacro %}

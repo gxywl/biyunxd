@@ -1,5 +1,5 @@
 {% extends "bootstrap/base.html" %}
-
+{% import 'render_listcp.html' as macors %}
 {% block title %}下单排产{% endblock %}
 
 {% block head %}
@@ -15,10 +15,16 @@
 
 <style type="text/css">
 
-    {#ul {#}
-    {#    border-bottom-style: dashed;#}
-    {#    border-width: 1px#}
-    {#}#}
+    .panel-body ul {
+        {#border-bottom-style: dashed;#}
+        {#border-width: 1px#}
+        border-bottom: 1px solid  #cccccc;
+    }
+    .panel-body li {
+        min-height:25px;
+    }
+
+
 </style>
 
 {% endblock %}

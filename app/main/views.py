@@ -565,10 +565,14 @@ def anzhuanglist():
 
     dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == current_user._get_current_object()).order_by(Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
 
+    kehus = Kehu.query.all()
+
+    azdobj = current_user._get_current_object()
+
     # form.infostring.data = session.get('infostring', '')
     # form.status.data = status
 
-    return render_template('anzhuanglist.html', dingdans=dingdans)  # ,, form=form, prewhere=prewhere, status=status
+    return render_template('anzhuanglist.html', dingdans=dingdans, kehus=kehus,azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
 
 @main.route('/kefucxlist', methods=['GET', 'POST'])
 @login_required
