@@ -17,8 +17,6 @@
     {#        <div class="panel-footer"></div>#}
     {#    </div>#}
     {#     <h3>安装队: {{ current_user.username }}</h3>#}
-    <br>
-
 
     {% for kehu in kehus %}
 
@@ -31,7 +29,6 @@
 
         {% if get_var() == 1 %}
 
-
             <div class="panel panel-default panel-danger">
                 <div class="panel-heading">
                     <ul class="list-unstyled">
@@ -39,6 +36,7 @@
                         <li>小区: {{ kehu.xiaoqu.xiaoqu }}（{{ kehu.fangjian }}）</li>
                         <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）</li>
                     </ul>
+
                 </div>
                 <div class="panel-body">
 
@@ -52,11 +50,17 @@
                                     {% elif dingdan.status == 8 or dingdan.status == 9 %}
                                         「<span style="font-weight:bold;color:blue;">已完成</span>」
                                         ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
-
                                     {% else %}
                                         {#                                        {{ dingdan.status }}#}
                                     {% endif %}
-                                    {{ macors.render_listcpvar(dingdan) }}
+                                    {{ dingdan.chanpin.pinming }}/{{ dingdan.weizhi }}
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                                            data-toggle="collapse" data-target="#c{{ dingdan.id }}">
+                                        详细
+                                    </button>
+                                    <div id="c{{ dingdan.id }}">
+                                        {{ macors.render_listcpvar(dingdan) }}
+                                    </div>
                                 </li>
                             {% endif %}
 
@@ -88,7 +92,6 @@
 
         {% if get_var() == 1 %}
 
-
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <ul class="list-unstyled">
@@ -96,8 +99,12 @@
                         <li>小区: {{ kehu.xiaoqu.xiaoqu }}{{ kehu.fangjian }}</li>
                         <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）</li>
                     </ul>
+                    <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                            data-toggle="collapse" data-target="#k{{ kehu.id }}">
+                        参数
+                    </button>
                 </div>
-                <div class="panel-body">
+                <div id='k{{ kehu.id }}' class="panel-body collapse off">
 
                     <ol>
                         {% for dingdan in kehu.dingdans %}
@@ -112,7 +119,14 @@
                                 {% else %}
                                     {#                                        {{ dingdan.status }}#}
                                 {% endif %}
-                                {{ macors.render_listcpvar(dingdan) }}
+                                {{ dingdan.chanpin.pinming }}/{{ dingdan.weizhi }}
+                                <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                                        data-toggle="collapse" data-target="#c{{ dingdan.id }}">
+                                    详细
+                                </button>
+                                <div id="c{{ dingdan.id }}" class="collapse off">
+                                    {{ macors.render_listcpvar(dingdan) }}
+                                </div>
                             {% endif %}
 
                         {% endfor %}
@@ -124,34 +138,5 @@
         {% endif %}
 
     {% endfor %}
-
-
-    {##}
-    {##}
-    {#    <blockquote>#}
-    {##}
-    {#        <ol>#}
-    {#            {% for dingdan in dingdans %}#}
-    {#                <li>#}
-    {#                    {% if dingdan.status == 7 %}#}
-    {#                        ( {{ moment(dingdan.time6).fromNow(refresh=True) }}#}
-    {#                        <span style="font-weight:bold;background-color: beige ;color:red;">派工</span>)#}
-    {#                    {% elif dingdan.status == 8 or dingdan.status == 9 %}#}
-    {#                        ( {{ moment(dingdan.time7).fromNow(refresh=True) }}#}
-    {#                        <span style="font-weight:bold;color:blue;">已完成</span>)#}
-    {#                    {% endif %}#}
-    {#                    <ul class="list-unstyled">#}
-    {#                        <li>地址: {{ dingdan.kehu.xiaoqu.dizhi }}</li>#}
-    {#                        <li>小区: {{ dingdan.kehu.xiaoqu.xiaoqu }}{{ dingdan.kehu.fangjian }}</li>#}
-    {#                        <li>客户: {{ dingdan.kehu.chenghu }}（{{ dingdan.kehu.tel }}）</li>#}
-    {#                        <li>产品: {{ dingdan.chanpin.pinming }}</li>#}
-    {#                    </ul>#}
-    {##}
-    {#                </li>#}
-    {#                <hr>#}
-    {##}
-    {#            {% endfor %}#}
-    {#        </ol>#}
-    {#    </blockquote>#}
 
 {% endblock %}
