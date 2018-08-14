@@ -82,10 +82,10 @@
                                             ( {{ moment(fdingdan.time1).fromNow(refresh=True) }} 下单)
                                         {% elif fdingdan.status==3 %}
                                             ( {{ moment(fdingdan.time2).fromNow(refresh=True) }} 订货)
-                                        {% elif fdingdan.status==4 %}
-                                            ( {{ moment(fdingdan.time3).fromNow(refresh=True) }} 入库)
-                                        {% elif fdingdan.status == 5 %}
-                                            ( {{ moment(fdingdan.time4).fromNow(refresh=True) }} 发货)
+{#                                        {% elif fdingdan.status==4 %}#}
+{#                                            ( {{ moment(fdingdan.time3).fromNow(refresh=True) }} 入库)#}
+{#                                        {% elif fdingdan.status == 5 %}#}
+{#                                            ( {{ moment(fdingdan.time4).fromNow(refresh=True) }} 发货)#}
                                         {% elif fdingdan.status==6 %}
                                             ( {{ moment(fdingdan.time5).fromNow(refresh=True) }} 收货)
                                         {% elif dingdan.status == 7 %}

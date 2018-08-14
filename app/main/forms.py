@@ -169,6 +169,29 @@ class KFfindForm(FlaskForm):
                                (7, '安装中'), (8, '安装完成'), (9, '已清款')] # (4, '已入库'), (5, '已发货'),
 
 
+# 杂项
+class JxForm(FlaskForm):
+
+    weizhi = SelectField('位置', validators=[DataRequired()])
+    shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
+    beizhu = StringField('备注')
+    uploadfile = FileField('上传图片/草图')
+
+    submit = SubmitField('保存修改')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(JxForm, self).__init__(*args, **kwargs)
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming=u'杂项', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming=u'杂项', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+        #     pinming=u'隐形网', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+        # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
+
+
 # 隐形网
 class YxwForm(FlaskForm):
     # xiangmu = StringField("布放项目", validators=[DataRequired()])

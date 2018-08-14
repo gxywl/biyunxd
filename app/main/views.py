@@ -12,7 +12,7 @@ from sqlalchemy import func, engine, or_, and_
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu #, Gongren
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
-    KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm
+    KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm
 from . import main
 
 import tablib
@@ -881,6 +881,9 @@ def showkehudd(id):
             toview = 'addch'
         elif chanpin.pinming == '指纹锁':
             toview = 'addzws'
+        elif chanpin.pinming == '杂项':
+            toview = 'addjx'
+
         else:
             pass
 
@@ -1234,6 +1237,39 @@ def addzws(cpid, khid):
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
+# # 指纹锁
+@main.route('/addjx/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def addjx(cpid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = JxForm()
+
+    chanpin = Chanpin.query.get(cpid)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    if form.validate_on_submit():
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
+
+        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                          xinghao=form.xinghao.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+
+        db.session.add(dingdan)
+
+        flash('已成功添加')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
 @main.route('/deldingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -1275,6 +1311,8 @@ def editdingdan(ddid, khid):
         toview = 'editch'
     elif pinming == '指纹锁':
         toview = 'editzws'
+    elif pinming == '杂项':
+        toview = 'editjx'
     else:
         pass
 
@@ -1764,6 +1802,54 @@ def editzws(ddid, khid):
     form.color.data = dingdan.color
     form.shuowei.data = dingdan.shuowei
     form.kaishuofs.data = dingdan.zhangfa_dengfenshu_kaishuofangshi
+    form.beizhu.data = dingdan.beizhu
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
+
+# # 指纹锁
+@main.route('/editjx/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editjx(ddid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = JxForm()
+
+    if form.validate_on_submit():
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
+
+        db.session.add(dingdan)
+        db.session.commit()
+
+        flash('已成功修改')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = str(dingdan.shuliang)
+    form.xinghao.data = dingdan.xinghao
+
     form.beizhu.data = dingdan.beizhu
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
@@ -2297,6 +2383,9 @@ def outseltoxls(pm, selids):
     elif pm == '指纹锁':
         headers = (u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注",u"业务员（电话）")
 
+    elif pm == '杂项':
+        headers = (u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"备注",u"业务员（电话）")
+
     info = []
     data = tablib.Dataset(*info, headers=headers)  # headers 数量要与 data 致
 
@@ -2341,6 +2430,12 @@ def outseltoxls(pm, selids):
             data.append(
                 [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei,
                  dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+
+        elif pm == '杂项':
+            data.append(
+                [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+
 
     t = time.time()
     nowTime = lambda: int(round(t * 1000))

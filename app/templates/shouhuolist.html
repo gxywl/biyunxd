@@ -249,7 +249,13 @@
 
                                                     <li>锁位: {{ dingdan.shuowei }}</li>
 
+                                                {% elif dingdan.chanpin.pinming == '杂项' %}
 
+                                                    <li>位置: {{ dingdan.weizhi }}</li>
+                                                    <li>数量: {{ dingdan.shuliang }}</li>
+                                                    <li>型号: {{ dingdan.xinghao }}</li>
+
+                                                    <li>备注: {{ dingdan.beizhu }}</li>
 
                                                 {% endif %}
 
