@@ -77,6 +77,7 @@ class Chanpinxx(db.Model):
     pinming = db.Column(db.String(64))
     chanshux = db.Column(db.String(64))
     chanshuz = db.Column(db.String(128))
+    xuhao = db.Column(db.Integer)
 
     def __repr__(self):
         return '<Chanpinxx %r>' % self.pinming

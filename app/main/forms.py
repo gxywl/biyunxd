@@ -184,9 +184,9 @@ class JxForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(JxForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'杂项', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'杂项', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'杂项', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'杂项', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
         #     pinming=u'隐形网', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
@@ -219,11 +219,11 @@ class YxwForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(YxwForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'隐形网', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'隐形网', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'隐形网', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'隐形网', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'隐形网', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'隐形网', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 
@@ -260,11 +260,11 @@ class YtcForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(YtcForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'阳台窗', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'阳台窗', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'阳台窗', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'阳台窗', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'阳台窗', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'阳台窗', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
 # 纱门
@@ -298,11 +298,11 @@ class SmForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(SmForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱门', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'纱门', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱门', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'纱门', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱门', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'纱门', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('深灰', '深灰')]
 
 
@@ -333,11 +333,11 @@ class LygForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(LygForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣杆', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'晾衣杆', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣杆', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'晾衣杆', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣杆', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'晾衣杆', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('白', '白'), ('银色', '银色'), ('香槟金', '香槟金')]
 
 
@@ -365,11 +365,11 @@ class LyjForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣机', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'晾衣机', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣机', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'晾衣机', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'晾衣机', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'晾衣机', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('香槟金', '香槟金'), ('太空银', '太空银')]
 
 
@@ -407,11 +407,11 @@ class ScForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ScForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱窗', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'纱窗', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱窗', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'纱窗', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'纱窗', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'纱窗', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('深灰', '深灰')]
 
 
@@ -449,11 +449,11 @@ class ChForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ChForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'窗花', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'窗花', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'窗花', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'窗花', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'窗花', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'窗花', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('深灰', '深灰')]
 
 
@@ -484,11 +484,11 @@ class ZwsForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(ZwsForm, self).__init__(*args, **kwargs)
         self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'指纹锁', chanshux=u'位置').order_by(Chanpinxx.chanshuz).all()]  # and Chanpinxx.chanshux == '位置'
+            pinming=u'指纹锁', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'指纹锁', chanshux=u'型号').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'指纹锁', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
-            pinming=u'指纹锁', chanshux=u'颜色').order_by(Chanpinxx.chanshuz).all()]
+            pinming=u'指纹锁', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('古铜红', '古铜红'), ('香槟金', '香槟金')]
 
 
