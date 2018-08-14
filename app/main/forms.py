@@ -245,7 +245,7 @@ class YtcForm(FlaskForm):
     dungo = IntegerField("蹲高（毫米）", validators=[DataRequired()])
     lango = IntegerField("栏高（毫米）", validators=[DataRequired()])
     guanwei = SelectField("管位", validators=[DataRequired()],
-                          choices=[('', ''), ('左', '左'), ('右', '右')])
+                          choices=[('', ''),('无', '无'), ('左', '左'), ('右', '右')])
 
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
