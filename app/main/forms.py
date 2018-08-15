@@ -242,7 +242,7 @@ class YtcForm(FlaskForm):
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
 
-    dungo = IntegerField("蹲高（毫米）", validators=[DataRequired()])
+    dungo = IntegerField("窗台高（毫米）", validators=[DataRequired()])
     lango = IntegerField("栏高（毫米）", validators=[DataRequired()])
     guanwei = SelectField("管位", validators=[DataRequired()],
                           choices=[('', ''),('无', '无'), ('左', '左'), ('右', '右')])
