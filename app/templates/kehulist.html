@@ -30,11 +30,16 @@
     {% for kehu in kehus %}
 
         {{ set_var(0) }}
+
+        {% if status != 0 %}
         {% for dingdant in kehu.dingdans %}
             {% if dingdant.status == status or status == 0  %}
                 {{ set_var(1) }}
             {% endif %}
         {% endfor %}
+        {% else %}
+            {{ set_var(1) }}
+        {% endif %}
 
         {% if get_var() == 1 %}
 

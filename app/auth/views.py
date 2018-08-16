@@ -1,4 +1,6 @@
 # _*_ encoding: utf-8 _*_
+import sqlite3
+
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, login_required, logout_user, current_user
 
@@ -179,3 +181,20 @@ def change_pin():
             flash('原口令不对.')
     # form.pin.data = current_user.pin
     return render_template("auth/change_pin.html", form=form)
+
+
+def testBakSqlite():
+    conn = sqlite3.connect( "data-dev.sqlite")
+    with open('data-dev.sql.bak','w') as f:
+        for line in conn.iterdump():
+            data = line + '\n'
+            data = data.encode("utf-8")
+            f.write(data)
+
+@auth.route('/backup')
+@login_required
+def backup():
+    testBakSqlite()
+
+    flash('成功备份')
+    return redirect(url_for('main.index'))
