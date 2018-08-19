@@ -207,6 +207,8 @@ def testBakSqlite():
 def backup():
     testBakSqlite()
 
+    # time.sleep(10)
+
     flash('成功备份')
 
     # return redirect(url_for('main.index'))
