@@ -1,5 +1,6 @@
 # _*_ encoding: utf-8 _*_
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileAllowed
 from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField, FloatField
 from wtforms.validators import DataRequired, InputRequired
 from ..models import Chanpin, Xiaoqu, Chanpinxx
@@ -176,7 +177,7 @@ class JxForm(FlaskForm):
     shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
     xinghao = SelectField("型号", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     submit = SubmitField('保存修改')
 
@@ -208,7 +209,7 @@ class YxwForm(FlaskForm):
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -249,7 +250,7 @@ class YtcForm(FlaskForm):
 
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -287,7 +288,7 @@ class SmForm(FlaskForm):
     zhangfa = SelectField('装法', validators=[DataRequired()],
                           choices=[('', ''), ('内装', '内装'), ('外装', '外装')])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -322,7 +323,7 @@ class LygForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -354,7 +355,7 @@ class LyjForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -396,7 +397,7 @@ class ScForm(FlaskForm):
     ishaveht = SelectField('横条数', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -438,7 +439,7 @@ class ChForm(FlaskForm):
     # ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -473,7 +474,7 @@ class ZwsForm(FlaskForm):
     # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图')
+    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 

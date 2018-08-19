@@ -1,13 +1,17 @@
 # _*_ encoding: utf-8 _*_
+import os
 import sqlite3
+from datetime import time, datetime
 
-from flask import render_template, redirect, request, url_for, flash
+from flask import render_template, redirect, request, url_for, flash, make_response, send_file
 from flask_login import login_user, login_required, logout_user, current_user
 
 from app import db
 from app.models import User
 from .forms import LoginForm, ChangeUserNameForm, ChangePinForm
 from . import auth
+
+# from config import SQLALCHEMY_DATABASE_URI
 
 
 @auth.route('/loginto/<u>/<p>')
@@ -28,7 +32,7 @@ def loginto(u,p):
             return redirect(url_for('admin.index'))
 
         # pass
-        elif user.role == '进度客服':
+        elif user.role == '客服':
             # 一般用户转转到首页..
             return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
 
@@ -90,7 +94,7 @@ def login():
                 return redirect(url_for('admin.index'))
 
             # pass
-            elif user.role == '进度客服':
+            elif user.role == '客服':
                 # 一般用户转转到首页..
                 return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
 
@@ -184,8 +188,15 @@ def change_pin():
 
 
 def testBakSqlite():
-    conn = sqlite3.connect( "data-dev.sqlite")
-    with open('data-dev.sql.bak','w') as f:
+    # basedirA = os.path.abspath(os.path.dirname(__file__))
+    # basedir = os.path.abspath(os.path.join(os.getcwd(), "../.."))
+    # sqlitepath=os.path.join(basedir,'data-dev.sqlite')
+
+    sqlitepath='data-dev.sqlite'
+    bakpath='app/cxls/data-dev.sql.bak'
+
+    conn = sqlite3.connect( sqlitepath)
+    with open(bakpath,'wb+') as f:
         for line in conn.iterdump():
             data = line + '\n'
             data = data.encode("utf-8")
@@ -197,4 +208,8 @@ def backup():
     testBakSqlite()
 
     flash('成功备份')
-    return redirect(url_for('main.index'))
+
+    # return redirect(url_for('main.index'))
+    response = make_response(send_file("cxls\data-dev.sql.bak"))
+    response.headers["Content-Disposition"] = "attachment; filename=" + 'bak'+ str(datetime.now()) + ".txt;"
+    return response

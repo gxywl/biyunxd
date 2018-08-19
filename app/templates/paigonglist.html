@@ -104,7 +104,12 @@
                                                 </label>
 
 {#                                            [ {{ dingdan.id }} ] #}
-                                                <span  style="font-weight:bold;background-color: beige ;color:blue;">{{ dingdan.chanpin.pinming }}</span> / {{ dingdan.weizhi }} / {{ dingdan.xinghao }}</li>
+                                                <span  style="font-weight:bold;background-color: beige ;color:blue;">{{ dingdan.chanpin.pinming }}</span> / {{ dingdan.weizhi }} / {{ dingdan.xinghao }}
+
+                                            <br>图示:<br>
+                                            <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+
+                                            </li>
 
 {#                                        #}
 {#                                            {% if dingdan.chanpin.pinming == '隐形网' %}#}

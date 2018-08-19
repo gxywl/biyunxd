@@ -12,6 +12,9 @@ class Config:
 
     BABEL_DEFAULT_LOCALE = 'zh_CN'
 
+    #用于上传大小限制，引发异常 出错页
+    # MAX_CONTENT_LENGTH = 1 * 1024 * 1024
+
     @staticmethod
     def init_app(app):
         pass

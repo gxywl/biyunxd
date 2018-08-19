@@ -9,3 +9,4 @@ main=Blueprint('main',__name__)
 #     return  dict(Permission=Permission)
 
 from . import views
+from . import errors

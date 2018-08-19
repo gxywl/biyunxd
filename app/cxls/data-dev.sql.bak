@@ -221,6 +221,7 @@ CREATE TABLE kehus (
 INSERT INTO "kehus" VALUES(1,1,2,'7－3－2103','小区样板量房','136',0.0,'第一个客户',1,'2018-07-01 02:25:12.321011',NULL,NULL,NULL);
 INSERT INTO "kehus" VALUES(2,1,1,'125-96','梁生','189',0.0,'',1,'2018-07-07 15:38:59.260472',NULL,NULL,NULL);
 INSERT INTO "kehus" VALUES(3,1,1,'125','ww','123',0.0,'',1,'2018-08-09 17:23:05.038685',NULL,NULL,NULL);
+INSERT INTO "kehus" VALUES(4,1,1,'9999','abcd','156',0.0,'',1,'2018-08-16 07:34:59.928374',NULL,NULL,NULL);
 CREATE TABLE users (
 	id INTEGER NOT NULL, 
 	user VARCHAR(64), 
@@ -236,7 +237,7 @@ CREATE TABLE users (
 INSERT INTO "users" VALUES(1,'hhy','888','黄海勇','189','业务员',1,NULL);
 INSERT INTO "users" VALUES(2,'adm','888','数据管理','136','adm',1,NULL);
 INSERT INTO "users" VALUES(3,'dhy','888','李云',NULL,'订货员',1,NULL);
-INSERT INTO "users" VALUES(4,'jdkf','888','客服小妹',NULL,'进度客服',1,NULL);
+INSERT INTO "users" VALUES(4,'jdkf','888','客服小妹',NULL,'客服',1,NULL);
 INSERT INTO "users" VALUES(5,'rky','888','入库员',NULL,'入库员',1,NULL);
 INSERT INTO "users" VALUES(6,'fhy','888','李天',NULL,'发货员',1,NULL);
 INSERT INTO "users" VALUES(7,'shy','888','张来',NULL,'收货员',1,NULL);

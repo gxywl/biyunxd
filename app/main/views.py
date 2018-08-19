@@ -9,7 +9,7 @@ from flask import redirect, url_for, render_template, flash, make_response, send
 from flask_login import current_user, login_required
 from sqlalchemy import func, engine, or_, and_
 
-from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu #, Gongren
+from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu  # , Gongren
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
     KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm
@@ -31,7 +31,7 @@ def index():
         return redirect(url_for('admin.index'))
 
     # pass
-    elif current_user.role == '进度客服':
+    elif current_user.role == '客服':
         # 一般用户转转到首页..
         return redirect(url_for('main.kefucxlist'))  # request.args.get('next') or
 
@@ -458,7 +458,6 @@ def paigonglist():
         else:
             kehus = Kehu.query.filter(and_(Kehu.xiaoqu_id == xiaoquid, Kehu.fangjian.like(fangjian)))
 
-
     # kehus = Kehu.query.all()
     xiaoqus = Xiaoqu.query.all()
 
@@ -469,7 +468,7 @@ def paigonglist():
     # return render_template('paigonglist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
     #                        status=status)  #
 
-    return render_template('paigonglist.html', gongrens=gongrens,form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
+    return render_template('paigonglist.html', gongrens=gongrens, form=form, xiaoqus=xiaoqus, xiaoquid=xiaoquid,
                            fangjian=fangjian, status=status, kehus=kehus)  # prewhere=prewhere,, dingdans=dingdans
 
 
@@ -528,7 +527,6 @@ def qingkuanlist():
                            status=status)  #
 
 
-
 @main.route('/anzhuanglist', methods=['GET', 'POST'])
 @login_required
 def anzhuanglist():
@@ -563,7 +561,8 @@ def anzhuanglist():
     #
     # return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
 
-    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == current_user._get_current_object()).order_by(Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
+    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == current_user._get_current_object()).order_by(
+        Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
 
     kehus = Kehu.query.all()
 
@@ -572,12 +571,14 @@ def anzhuanglist():
     # form.infostring.data = session.get('infostring', '')
     # form.status.data = status
 
-    return render_template('anzhuanglist.html', dingdans=dingdans, kehus=kehus,azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+    return render_template('anzhuanglist.html', dingdans=dingdans, kehus=kehus,
+                           azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+
 
 @main.route('/kefucxlist', methods=['GET', 'POST'])
 @login_required
 def kefucxlist():
-    if current_user.role != '进度客服':
+    if current_user.role != '客服':
         return redirect(url_for('main.index'))
 
     form = KFfindForm()
@@ -671,7 +672,6 @@ def kefucxlist():
     # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
     #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
     #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
-
 
     return render_template('kefucxlist.html', xiaoqus=xiaoqus, form=form, xiaoquid=xiaoquid,
                            fangjian=fangjian, tel=tel, status=status)  # prewhere=prewhere,, dingdans=dingdans
@@ -930,12 +930,20 @@ def addyxw(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        # flash(str(size))
+        if size > 1048576: #219,420  214k
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         # savefilename
 
@@ -969,18 +977,25 @@ def addytc(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         # savefilename
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                          meikongkuan_bashoudigao=form.dungo.data, shanshu= form.lango.data, shuowei= form.guanwei.data,
+                          meikongkuan_bashoudigao=form.dungo.data, shanshu=form.lango.data, shuowei=form.guanwei.data,
                           color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
                           status=1)
 
@@ -1009,13 +1024,19 @@ def addsm(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
@@ -1051,13 +1072,19 @@ def addlyg(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
@@ -1089,13 +1116,19 @@ def addlyj(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
-        # xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
@@ -1127,12 +1160,19 @@ def addsc(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:  # 取不到
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         # if form.ishaveht.data == 0:
         #     ishaveht = False
@@ -1172,12 +1212,19 @@ def addch(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         # if form.ishaveht.data == 0:
         #     ishaveht = False
@@ -1217,12 +1264,19 @@ def addzws(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
@@ -1237,7 +1291,8 @@ def addzws(cpid, khid):
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
 
-# # 指纹锁
+
+# # 杂项
 @main.route('/addjx/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def addjx(cpid, khid):
@@ -1253,15 +1308,23 @@ def addjx(cpid, khid):
     # form.khid.data = kehu.id
 
     if form.validate_on_submit():
+
         uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
+        # 获取文件的大小了，单位是字节
+        size = len(uploaded_file.read())
+        if size > 1048576:
+            flash('文件超过1M，不能上传')
             fullsavefilename = ''
+        else:
+            if uploaded_file:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+                          xinghao=form.xinghao.data, beizhu=form.beizhu.data,
+                          tushipic=os.path.basename(fullsavefilename), status=1)
 
         db.session.add(dingdan)
 
@@ -1270,6 +1333,7 @@ def addjx(cpid, khid):
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
+
 
 @main.route('/deldingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
@@ -1433,6 +1497,7 @@ def editytc(ddid, khid):
     # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
 
 # # 纱门
 @main.route('/editsm/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
@@ -2167,10 +2232,9 @@ def paigongone(ddid):
 
 @main.route('/dopaigong/<selids>/<sgd>', methods=['GET', 'POST'])
 @login_required
-def dopaigong(selids,sgd):
+def dopaigong(selids, sgd):
     if current_user.role != '派工员':
         return redirect(url_for('main.index'))
-
 
     selids = selids.strip(',')
     selids = list(eval('[' + selids + ']'))
@@ -2183,8 +2247,9 @@ def dopaigong(selids,sgd):
     # 这样
     # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'duizhang':sgd},
     #                                                               synchronize_session=False)
-    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'azd_id':sgd},
-                                                                  synchronize_session=False)
+    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update(
+        {'status': 7, 'time8': datetime.utcnow(), 'azd_id': sgd},
+        synchronize_session=False)
     return 'done'
 
 
@@ -2354,37 +2419,45 @@ def outseltoxls(pm, selids):
 
     if pm == '隐形网':
         headers = (
-            u"订单号", u"小区",u"地址",  u"房间", u"客户",u"电话",u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注",  u"业务员（电话）")
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注",
+            u"业务员（电话）")
 
     elif pm == '阳台窗':
         headers = (
-            u"订单号", u"小区",u"地址",  u"房间", u"客户",u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"窗台高（毫米）", u'栏高（毫米）', u'管位', u"颜色",
-            u"备注",   u"业务员（电话）")
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"窗台高（毫米）",
+            u'栏高（毫米）', u'管位', u"颜色",
+            u"备注", u"业务员（电话）")
 
     elif pm == '纱门':
         headers = (
-            u"订单号", u"小区",u"地址",  u"房间", u"客户", u"电话",u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
-            u"备注",  u"业务员（电话）")
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）",
+            u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
+            u"备注", u"业务员（电话）")
 
     elif pm == '晾衣杆' or pm == '晾衣机':
         headers = (
-            u"订单号", u"小区",u"地址",  u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色", u"备注", u"业务员（电话）")
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色",
+            u"备注", u"业务员（电话）")
 
     elif pm == '纱窗':
         headers = (
-            u"订单号",u"小区", u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
-              u"业务员（电话）")
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）",
+            u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
+            u"业务员（电话）")
 
     elif pm == '窗花':
         headers = (
-            u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话",  u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）", u"锁位", u"颜色", u"备注",
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）",
+            u"锁位", u"颜色", u"备注",
             u"业务员（电话）")
 
     elif pm == '指纹锁':
-        headers = (u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注",u"业务员（电话）")
+        headers = (
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注",
+            u"业务员（电话）")
 
     elif pm == '杂项':
-        headers = (u"订单号",u"小区",  u"地址", u"房间",u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"备注",u"业务员（电话）")
+        headers = (u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"备注", u"业务员（电话）")
 
     info = []
     data = tablib.Dataset(*info, headers=headers)  # headers 数量要与 data 致
@@ -2393,49 +2466,66 @@ def outseltoxls(pm, selids):
 
         if pm == '隐形网':
             data.append(
-                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel,u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-                 dingdan.color, dingdan.beizhu, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
+                 dingdan.color, dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '阳台窗':
             data.append(
-                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, u'阳台窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, u'阳台窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shanshu, dingdan.shuowei, dingdan.color,
-                 dingdan.beizhu, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '纱门':
             data.append(
-                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel,u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.color, dingdan.shanshu, dingdan.zhonghengtiaoshu_gantiaoshu,
                  dingdan.shuowei, dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,
-                   dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '晾衣杆' or pm == '晾衣机':
             data.append(
-                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
-                 dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
+                 dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu,
+                 dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '纱窗':
             data.append(
-                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel,pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
-                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu, dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.ishaveht, dingdan.beizhu,
+                 dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '窗花':
             data.append(
-                [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
-                 dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                 dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '指纹锁':
             data.append(
-                [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.color, dingdan.shuowei,
-                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.color, dingdan.shuowei,
+                 dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,
+                 dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '杂项':
             data.append(
-                [dingdan.id,dingdan.kehu.xiaoqu.xiaoqu,dingdan.kehu.xiaoqu.dizhi,  dingdan.kehu.fangjian,dingdan.kehu.chenghu,dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
-                 dingdan.beizhu,dingdan.kehu.user.username+'('+dingdan.kehu.user.tel+')'])
-
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
     t = time.time()
     nowTime = lambda: int(round(t * 1000))
