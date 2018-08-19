@@ -1,0 +1,263 @@
+BEGIN TRANSACTION;
+CREATE TABLE alembic_version (
+	version_num VARCHAR(32) NOT NULL, 
+	CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+);
+INSERT INTO "alembic_version" VALUES('8782364a6401');
+CREATE TABLE chanpins (
+	id INTEGER NOT NULL, 
+	pinming VARCHAR(64), 
+	jiage FLOAT, 
+	beizhu VARCHAR(64), 
+	PRIMARY KEY (id)
+);
+INSERT INTO "chanpins" VALUES(1,'隐形网',NULL,'3');
+INSERT INTO "chanpins" VALUES(2,'晾衣杆',NULL,'2');
+INSERT INTO "chanpins" VALUES(3,'纱窗',NULL,'1');
+INSERT INTO "chanpins" VALUES(4,'晾衣机',NULL,'4');
+INSERT INTO "chanpins" VALUES(5,'纱门',NULL,'5');
+INSERT INTO "chanpins" VALUES(6,'窗花',NULL,'6');
+INSERT INTO "chanpins" VALUES(7,'指纹锁',NULL,'7');
+INSERT INTO "chanpins" VALUES(8,'阳台窗',NULL,'8');
+INSERT INTO "chanpins" VALUES(9,'杂项',NULL,'9');
+CREATE TABLE "chanpinxxs" (
+	`id`	INTEGER NOT NULL,
+	`pinming`	VARCHAR ( 64 ),
+	`chanshux`	VARCHAR ( 64 ),
+	`chanshuz`	VARCHAR ( 128 ),
+	`xuhao`	INTEGER,
+	PRIMARY KEY(`id`)
+);
+INSERT INTO "chanpinxxs" VALUES(1,'隐形网','位置','大阳台',1);
+INSERT INTO "chanpinxxs" VALUES(2,'隐形网','位置','小阳台',2);
+INSERT INTO "chanpinxxs" VALUES(3,'隐形网','位置','',0);
+INSERT INTO "chanpinxxs" VALUES(4,'隐形网','型号','恒大标配',3);
+INSERT INTO "chanpinxxs" VALUES(5,'隐形网','型号','标准型',2);
+INSERT INTO "chanpinxxs" VALUES(6,'隐形网','型号','普及型',1);
+INSERT INTO "chanpinxxs" VALUES(7,'隐形网','型号','',0);
+INSERT INTO "chanpinxxs" VALUES(8,'隐形网','颜色','银色',NULL);
+INSERT INTO "chanpinxxs" VALUES(9,'隐形网','颜色','香槟色',NULL);
+INSERT INTO "chanpinxxs" VALUES(10,'隐形网','颜色','白色',NULL);
+INSERT INTO "chanpinxxs" VALUES(11,'隐形网','颜色','',NULL);
+INSERT INTO "chanpinxxs" VALUES(12,'纱门','位置','大阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(13,'纱门','位置','小阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(14,'纱门','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(15,'纱门','型号','普及型',NULL);
+INSERT INTO "chanpinxxs" VALUES(16,'纱门','型号','基本型',NULL);
+INSERT INTO "chanpinxxs" VALUES(17,'纱门','型号','碧云801',NULL);
+INSERT INTO "chanpinxxs" VALUES(18,'纱门','型号','碧云804E',NULL);
+INSERT INTO "chanpinxxs" VALUES(19,'纱门','型号','碧云805E',NULL);
+INSERT INTO "chanpinxxs" VALUES(20,'纱门','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(21,'纱门','颜色','深灰',NULL);
+INSERT INTO "chanpinxxs" VALUES(22,'纱门','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(23,'晾衣杆','位置','大阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(24,'晾衣杆','位置','小阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(25,'晾衣杆','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(26,'晾衣杆','型号','G1-25',NULL);
+INSERT INTO "chanpinxxs" VALUES(27,'晾衣杆','型号','G2-32',NULL);
+INSERT INTO "chanpinxxs" VALUES(28,'晾衣杆','型号','G3-32',NULL);
+INSERT INTO "chanpinxxs" VALUES(29,'晾衣杆','型号','手摇型',NULL);
+INSERT INTO "chanpinxxs" VALUES(30,'晾衣杆','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(31,'晾衣杆','颜色','白',NULL);
+INSERT INTO "chanpinxxs" VALUES(32,'晾衣杆','颜色','银色',NULL);
+INSERT INTO "chanpinxxs" VALUES(33,'晾衣杆','颜色','香槟金',NULL);
+INSERT INTO "chanpinxxs" VALUES(34,'晾衣杆','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(35,'晾衣机','位置','大阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(36,'晾衣机','位置','小阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(37,'晾衣机','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(38,'晾衣机','型号','BY-02',NULL);
+INSERT INTO "chanpinxxs" VALUES(39,'晾衣机','型号','BY-06',NULL);
+INSERT INTO "chanpinxxs" VALUES(40,'晾衣机','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(41,'晾衣机','颜色','香槟金',NULL);
+INSERT INTO "chanpinxxs" VALUES(42,'晾衣机','颜色','太空银',NULL);
+INSERT INTO "chanpinxxs" VALUES(43,'晾衣机','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(44,'纱窗','位置','主卧',1);
+INSERT INTO "chanpinxxs" VALUES(45,'纱窗','位置','次卧',2);
+INSERT INTO "chanpinxxs" VALUES(46,'纱窗','位置','客房',3);
+INSERT INTO "chanpinxxs" VALUES(47,'纱窗','位置','书房',4);
+INSERT INTO "chanpinxxs" VALUES(48,'纱窗','位置','衣帽间',5);
+INSERT INTO "chanpinxxs" VALUES(49,'纱窗','位置','厨房',8);
+INSERT INTO "chanpinxxs" VALUES(50,'纱窗','位置','主卫',7);
+INSERT INTO "chanpinxxs" VALUES(51,'纱窗','位置','公卫',6);
+INSERT INTO "chanpinxxs" VALUES(52,'纱窗','位置','其他',9);
+INSERT INTO "chanpinxxs" VALUES(53,'纱窗','位置',NULL,0);
+INSERT INTO "chanpinxxs" VALUES(54,'纱窗','型号','ST613',NULL);
+INSERT INTO "chanpinxxs" VALUES(55,'纱窗','型号','不可拆左右趟',NULL);
+INSERT INTO "chanpinxxs" VALUES(56,'纱窗','型号','可拆左右趟',NULL);
+INSERT INTO "chanpinxxs" VALUES(57,'纱窗','型号','普及上下趟',NULL);
+INSERT INTO "chanpinxxs" VALUES(58,'纱窗','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(59,'纱窗','颜色','深灰',NULL);
+INSERT INTO "chanpinxxs" VALUES(60,'纱窗','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(61,'窗花','位置','主卧',NULL);
+INSERT INTO "chanpinxxs" VALUES(62,'窗花','位置','次卧',NULL);
+INSERT INTO "chanpinxxs" VALUES(63,'窗花','位置','客房',NULL);
+INSERT INTO "chanpinxxs" VALUES(64,'窗花','位置','书房',NULL);
+INSERT INTO "chanpinxxs" VALUES(65,'窗花','位置','衣帽间',NULL);
+INSERT INTO "chanpinxxs" VALUES(66,'窗花','位置','厨房',NULL);
+INSERT INTO "chanpinxxs" VALUES(67,'窗花','位置','主卫',NULL);
+INSERT INTO "chanpinxxs" VALUES(68,'窗花','位置','公卫',NULL);
+INSERT INTO "chanpinxxs" VALUES(69,'窗花','位置','其他',NULL);
+INSERT INTO "chanpinxxs" VALUES(70,'窗花','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(71,'窗花','型号','一帆风顺-带纱',NULL);
+INSERT INTO "chanpinxxs" VALUES(72,'窗花','型号','双喜临门-带纱',NULL);
+INSERT INTO "chanpinxxs" VALUES(73,'窗花','型号','心心相印-带纱',NULL);
+INSERT INTO "chanpinxxs" VALUES(74,'窗花','型号','招财进宝-带纱',NULL);
+INSERT INTO "chanpinxxs" VALUES(75,'窗花','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(76,'窗花','颜色','深灰',NULL);
+INSERT INTO "chanpinxxs" VALUES(77,'窗花','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(78,'指纹锁','位置','客厅',NULL);
+INSERT INTO "chanpinxxs" VALUES(79,'指纹锁','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(80,'指纹锁','型号','9001',NULL);
+INSERT INTO "chanpinxxs" VALUES(81,'指纹锁','型号','935',NULL);
+INSERT INTO "chanpinxxs" VALUES(82,'指纹锁','型号','938',NULL);
+INSERT INTO "chanpinxxs" VALUES(83,'指纹锁','型号','普及型',NULL);
+INSERT INTO "chanpinxxs" VALUES(84,'指纹锁','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(85,'指纹锁','颜色','古铜红',NULL);
+INSERT INTO "chanpinxxs" VALUES(86,'指纹锁','颜色','香槟金',NULL);
+INSERT INTO "chanpinxxs" VALUES(87,'指纹锁','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(88,'阳台窗','位置','大阳台',NULL);
+INSERT INTO "chanpinxxs" VALUES(89,'阳台窗','位置',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(90,'阳台窗','型号','18式',NULL);
+INSERT INTO "chanpinxxs" VALUES(91,'阳台窗','型号',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(92,'阳台窗','颜色','灰',NULL);
+INSERT INTO "chanpinxxs" VALUES(93,'阳台窗','颜色',NULL,NULL);
+INSERT INTO "chanpinxxs" VALUES(94,'杂项','位置',NULL,0);
+INSERT INTO "chanpinxxs" VALUES(95,'杂项','位置','大阳台',1);
+INSERT INTO "chanpinxxs" VALUES(96,'杂项','型号',NULL,0);
+INSERT INTO "chanpinxxs" VALUES(97,'杂项','型号','2018式',1);
+CREATE TABLE "dingdans" (
+	`id`	INTEGER NOT NULL,
+	`kehu_id`	INTEGER,
+	`chanpin_id`	INTEGER,
+	`shuliang`	INTEGER,
+	`weizhi`	VARCHAR ( 64 ),
+	`xinghao`	VARCHAR ( 64 ),
+	`kuan_chang`	INTEGER,
+	`gao`	INTEGER,
+	`meikongkuan_bashoudigao`	INTEGER,
+	`color`	VARCHAR ( 64 ),
+	`shanshu`	INTEGER,
+	`zhonghengtiaoshu_gantiaoshu`	INTEGER,
+	`shuowei`	VARCHAR ( 64 ),
+	`ishaveht`	VARCHAR ( 64 ),
+	`zhangfa_dengfenshu_kaishuofangshi`	VARCHAR ( 64 ),
+	`jiage`	FLOAT,
+	`tushipic`	VARCHAR ( 64 ),
+	`beizhu`	VARCHAR ( 64 ),
+	`status`	INTEGER,
+	`fakaidi`	VARCHAR ( 64 ),
+	`time0`	DATETIME,
+	`user0_id`	INTEGER,
+	`time1`	DATETIME,
+	`user1_id`	INTEGER,
+	`time2`	DATETIME,
+	`user2_id`	INTEGER,
+	`time3`	DATETIME,
+	`user3_id`	INTEGER,
+	`time4`	DATETIME,
+	`user4_id`	INTEGER,
+	`time5`	DATETIME,
+	`user5_id`	INTEGER,
+	`time6`	DATETIME,
+	`user6_id`	INTEGER,
+	`time7`	DATETIME,
+	`user7_id`	INTEGER,
+	`time8`	DATETIME,
+	`user8_id`	INTEGER,
+	`time9`	DATETIME,
+	`user9_id`	INTEGER,
+	`stringfieldn`	VARCHAR ( 64 ),
+	`azd_id`	INTEGER,
+	FOREIGN KEY(`user1_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user6_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user4_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user0_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user9_id`) REFERENCES `users`(`id`),
+	PRIMARY KEY(`id`),
+	FOREIGN KEY(`user5_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user8_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user2_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`user3_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`chanpin_id`) REFERENCES `chanpins`(`id`),
+	FOREIGN KEY(`user7_id`) REFERENCES `users`(`id`),
+	FOREIGN KEY(`kehu_id`) REFERENCES `kehus`(`id`)
+);
+INSERT INTO "dingdans" VALUES(14,1,1,1,'大阳台','恒大标配',7852,640,NULL,'香槟色',NULL,NULL,NULL,NULL,NULL,NULL,'','',9,NULL,'2018-07-01 02:25:42.209366',NULL,'2018-07-01 14:31:41.735284',NULL,'2018-07-07 14:29:38.183545',NULL,'2018-07-12 03:16:24.832000',NULL,NULL,NULL,'2018-07-13 05:25:03.234678',NULL,'2018-07-13 09:26:38.381316',NULL,'2018-07-13 09:38:14.863368',8,'2018-07-13 10:12:06.743463',NULL,NULL,NULL,NULL,10);
+INSERT INTO "dingdans" VALUES(15,1,6,1,'主卧','一帆风顺-带纱',346,45,67,'深灰',NULL,NULL,'右',NULL,NULL,NULL,'','',1,NULL,'2018-07-01 02:45:42.110437',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,10);
+INSERT INTO "dingdans" VALUES(16,1,3,1,'公卫','不可拆左右趟',567,890,123,'深灰',NULL,NULL,'左','无横条','平均3等分',NULL,'','',4,NULL,'2018-07-02 13:50:50.532132',NULL,'2018-07-06 15:43:05.396700',NULL,'2018-07-13 04:15:56.702101',NULL,'2018-07-13 04:17:34.757708',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(17,1,5,1,'大阳台','基本型',12,23,56,'深灰',1,2,'左',NULL,'外装',NULL,'','',1,NULL,'2018-07-02 14:53:31.227307',NULL,'2018-07-06 15:17:50.096347',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,11);
+INSERT INTO "dingdans" VALUES(18,2,2,2,'大阳台','G3-32',123,456,NULL,'银色',NULL,1,NULL,NULL,NULL,NULL,'','',6,NULL,'2018-07-12 04:57:28.347000',NULL,'2018-07-17 15:29:19.695567',NULL,'2018-07-21 10:52:17.316597',NULL,NULL,NULL,NULL,NULL,'2018-07-24 15:10:46.212249',NULL,NULL,NULL,NULL,8,'2018-07-28 12:57:03.146284',NULL,NULL,NULL,NULL,11);
+INSERT INTO "dingdans" VALUES(19,2,4,1,'大阳台','BY-06',222,333,NULL,'太空银',NULL,3,NULL,NULL,NULL,NULL,'','',7,NULL,'2018-07-12 05:01:34.646000',NULL,'2018-07-21 10:17:26.931702',NULL,'2018-07-21 10:52:26.784226',NULL,NULL,NULL,NULL,NULL,'2018-07-24 15:10:46.212249',NULL,NULL,NULL,NULL,8,'2018-08-12 14:04:55.751040',NULL,NULL,NULL,NULL,10);
+INSERT INTO "dingdans" VALUES(20,2,3,1,'厨房','不可拆左右趟',123,456,789,'深灰',NULL,NULL,'右','2','2等分',NULL,'','',3,NULL,'2018-07-12 13:42:58.320873',NULL,'2018-07-17 15:29:24.290039',NULL,'2018-07-21 10:52:33.825455',NULL,NULL,NULL,NULL,NULL,'2018-07-21 07:39:37.413559',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(21,2,1,1,'小阳台','标准型',123,456,NULL,'香槟色',NULL,NULL,NULL,NULL,NULL,NULL,'','',2,NULL,'2018-07-12 13:43:57.255862',NULL,'2018-07-21 10:17:19.878664',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(22,2,5,1,'小阳台','碧云804E',123,456,789,'深灰',2,2,'左',NULL,'外装',NULL,'','',3,NULL,'2018-07-12 13:44:44.297498',NULL,'2018-07-17 15:29:29.144008',NULL,'2018-07-21 10:53:11.824093',NULL,NULL,NULL,NULL,NULL,'2018-07-20 15:06:26.986352',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(23,2,6,1,'主卧','双喜临门-带纱',123,456,789,'深灰',NULL,NULL,'右',NULL,NULL,NULL,'','',3,NULL,'2018-07-12 13:47:50.436175',NULL,'2018-07-17 15:29:42.749920',NULL,'2018-07-21 10:52:29.263935',NULL,NULL,NULL,NULL,NULL,'2018-07-20 15:06:26.986352',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(24,2,7,4,'客厅','938',NULL,NULL,NULL,'古铜红',NULL,NULL,'右',NULL,'外开',NULL,'','',3,NULL,'2018-07-12 13:48:24.025378',NULL,'2018-07-21 10:17:37.468469',NULL,'2018-07-21 10:52:20.419845',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(25,2,1,1,'大阳台','恒大标配',12,34,NULL,'白色',NULL,NULL,NULL,NULL,NULL,NULL,'','',3,NULL,'2018-07-21 10:17:05.201767',NULL,'2018-07-21 10:17:43.104577',NULL,'2018-07-21 10:51:57.112694',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(26,1,2,1,'大阳台','G1-25',12,34,NULL,'白',NULL,1,NULL,NULL,NULL,NULL,'','',1,NULL,'2018-08-03 15:56:01.365977',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(27,3,3,1,'主卧','不可拆左右趟',123,456,788,'深灰',NULL,NULL,'左右锁','0','2等分',NULL,'','',2,NULL,'2018-08-09 17:23:57.632693',NULL,'2018-08-09 17:24:30.682583',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(28,3,8,3,'大阳台','18式',123,456,789,'灰',123,NULL,'左',NULL,NULL,NULL,'','',6,NULL,'2018-08-12 12:00:52.255297',NULL,'2018-08-12 12:16:48.131970',NULL,'2018-08-12 13:32:33.487949',NULL,NULL,NULL,NULL,NULL,'2018-08-12 13:38:52.604634',NULL,NULL,NULL,NULL,NULL,'2018-08-12 13:41:21.239135',NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(29,3,9,1,'大阳台','2018式',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','',7,NULL,'2018-08-14 13:13:50.805427',NULL,'2018-08-14 13:23:59.267229',NULL,'2018-08-14 13:37:34.674867',NULL,NULL,NULL,NULL,NULL,'2018-08-14 13:41:31.240398',NULL,NULL,NULL,NULL,NULL,'2018-08-14 13:42:47.447757',NULL,NULL,NULL,NULL,10);
+INSERT INTO "dingdans" VALUES(30,3,9,1,'大阳台','2018式',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','',1,NULL,'2018-08-14 16:04:38.977589',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(31,3,9,1,'大阳台','2018式',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','',1,NULL,'2018-08-14 16:05:23.352127',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(32,4,3,1,'主卧','不可拆左右趟',123,456,788,'深灰',NULL,NULL,'左右锁','0','2等分',NULL,'99e23d8565696b9.jpg','',1,NULL,'2018-08-16 15:46:29.082057',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(33,4,1,1,'大阳台','普及型',123,456,NULL,'银色',NULL,NULL,NULL,NULL,NULL,NULL,'9dff476c83504bc.jpg','',1,NULL,'2018-08-19 11:41:59.948092',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(34,4,1,1,'大阳台','普及型',123,456,NULL,'银色',NULL,NULL,NULL,NULL,NULL,NULL,'','',1,NULL,'2018-08-19 11:45:35.052395',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO "dingdans" VALUES(35,4,2,1,'大阳台','G1-25',222,333,NULL,'白',NULL,1,NULL,NULL,NULL,NULL,'','',1,NULL,'2018-08-19 11:55:58.585059',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+CREATE TABLE kehus (
+	id INTEGER NOT NULL, 
+	user_id INTEGER, 
+	xiaoqu_id INTEGER, 
+	fangjian VARCHAR(64), 
+	chenghu VARCHAR(64), 
+	tel VARCHAR(64), 
+	zje FLOAT, 
+	beizhu VARCHAR(64), 
+	status INTEGER, 
+	time0 DATETIME, 
+	time1 DATETIME, 
+	time2 DATETIME, 
+	time3 DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES users (id), 
+	FOREIGN KEY(xiaoqu_id) REFERENCES xiaoqus (id)
+);
+INSERT INTO "kehus" VALUES(1,1,2,'7－3－2103','小区样板量房','136',0.0,'第一个客户',1,'2018-07-01 02:25:12.321011',NULL,NULL,NULL);
+INSERT INTO "kehus" VALUES(2,1,1,'125-96','梁生','189',0.0,'',1,'2018-07-07 15:38:59.260472',NULL,NULL,NULL);
+INSERT INTO "kehus" VALUES(3,1,1,'125','ww','123',0.0,'',1,'2018-08-09 17:23:05.038685',NULL,NULL,NULL);
+INSERT INTO "kehus" VALUES(4,1,1,'9999','abcd','156',0.0,'',1,'2018-08-16 07:34:59.928374',NULL,NULL,NULL);
+CREATE TABLE users (
+	id INTEGER NOT NULL, 
+	user VARCHAR(64), 
+	pin VARCHAR(64), 
+	username VARCHAR(64), 
+	tel VARCHAR(32), 
+	role VARCHAR(64), 
+	isuse BOOLEAN, 
+	beizhu VARCHAR(64), 
+	PRIMARY KEY (id), 
+	CHECK (isuse IN (0, 1))
+);
+INSERT INTO "users" VALUES(1,'hhy','888','黄海勇','189','业务员',1,NULL);
+INSERT INTO "users" VALUES(2,'adm','888','数据管理','136','adm',1,NULL);
+INSERT INTO "users" VALUES(3,'dhy','888','李云',NULL,'订货员',1,NULL);
+INSERT INTO "users" VALUES(4,'kf','888','客服小妹',NULL,'客服',1,NULL);
+INSERT INTO "users" VALUES(5,'rky','888','入库员',NULL,'入库员',1,NULL);
+INSERT INTO "users" VALUES(6,'fhy','888','李天',NULL,'发货员',1,NULL);
+INSERT INTO "users" VALUES(7,'shy','888','张来',NULL,'收货员',1,NULL);
+INSERT INTO "users" VALUES(8,'pgy','888','王一',NULL,'派工员',1,NULL);
+INSERT INTO "users" VALUES(9,'qky','888','赵实',NULL,'清款员',1,NULL);
+INSERT INTO "users" VALUES(10,'gcd1','888','1队 阿龙，雄飞','','安装队',1,NULL);
+INSERT INTO "users" VALUES(11,'gcd2','888','2队 大壮，山鸡',NULL,'安装队',1,NULL);
+CREATE TABLE xiaoqus (
+	id INTEGER NOT NULL, 
+	xiaoqu VARCHAR(64), 
+	dizhi VARCHAR(100), 
+	beizhu VARCHAR(128), 
+	PRIMARY KEY (id)
+);
+INSERT INTO "xiaoqus" VALUES(1,'恒大绿洲','新阳路',NULL);
+INSERT INTO "xiaoqus" VALUES(2,'恒大新城','青秀路',NULL);
+CREATE UNIQUE INDEX ix_users_user ON users (user);
+CREATE UNIQUE INDEX ix_xiaoqus_xiaoqu ON xiaoqus (xiaoqu);
+COMMIT;
