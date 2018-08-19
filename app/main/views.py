@@ -932,18 +932,17 @@ def addyxw(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        # flash(str(size))
-        if size > 1048576: #219,420  214k
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         # savefilename
 
@@ -979,17 +978,17 @@ def addytc(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         # savefilename
 
@@ -1026,17 +1025,17 @@ def addsm(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
@@ -1074,17 +1073,17 @@ def addlyg(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
@@ -1118,17 +1117,17 @@ def addlyj(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
@@ -1162,18 +1161,17 @@ def addsc(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:  # 取不到
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
-
+            fullsavefilename = ''
         # if form.ishaveht.data == 0:
         #     ishaveht = False
         # else:
@@ -1214,17 +1212,17 @@ def addch(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         # if form.ishaveht.data == 0:
         #     ishaveht = False
@@ -1266,17 +1264,17 @@ def addzws(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
@@ -1310,17 +1308,17 @@ def addjx(cpid, khid):
     if form.validate_on_submit():
 
         uploaded_file = form.uploadfile.data
-        # 获取文件的大小了，单位是字节
-        size = len(uploaded_file.read())
-        if size > 1048576:
-            flash('文件超过1M，不能上传')
-            fullsavefilename = ''
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
         else:
-            if uploaded_file:
-                fullsavefilename = getnewfilename(uploaded_file.filename)
-                uploaded_file.save(fullsavefilename)
-            else:
-                fullsavefilename = ''
+            fullsavefilename = ''
 
         dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                           xinghao=form.xinghao.data, beizhu=form.beizhu.data,
@@ -1405,9 +1403,20 @@ def edityxw(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
+
+
 
         db.session.add(dingdan)
 
@@ -1463,9 +1472,18 @@ def editytc(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
 
@@ -1528,9 +1546,18 @@ def editsm(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
 
@@ -1587,9 +1614,18 @@ def editlyg(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
 
@@ -1643,9 +1679,18 @@ def editlyj(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
 
@@ -1709,9 +1754,18 @@ def editsc(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
         db.session.commit()
@@ -1781,9 +1835,18 @@ def editch(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
         db.session.commit()
@@ -1842,9 +1905,18 @@ def editzws(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
         db.session.commit()
@@ -1872,7 +1944,7 @@ def editzws(ddid, khid):
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
 
 
-# # 指纹锁
+# # 杂项
 @main.route('/editjx/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
 @login_required
 def editjx(ddid, khid):
@@ -1892,9 +1964,18 @@ def editjx(ddid, khid):
 
         uploaded_file = form.uploadfile.data
         if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
             fullsavefilename = getnewfilename(uploaded_file.filename)
             uploaded_file.save(fullsavefilename)
             dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
 
         db.session.add(dingdan)
         db.session.commit()
