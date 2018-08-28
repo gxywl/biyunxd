@@ -96,23 +96,23 @@
 
                                 <li>No：{{ loop.index }}
                                     {% if dingdan.status == 1 %}
-                                        「已量尺{{ moment(dingdan.time0).format('YY.MM.DD') }}」
+                                        「已量尺{{ moment(dingdan.time1).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 2 %}
-                                        「已下单{{ moment(dingdan.time1).format('YY.MM.DD') }}」
+                                        「已下单{{ moment(dingdan.time2).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 3 %}
-                                        「已订货{{ moment(dingdan.time2).format('YY.MM.DD') }}」
+                                        「已订货{{ moment(dingdan.time3).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 4 %}
                                         「已入库」
                                     {% elif dingdan.status == 5 %}
                                         「已发货」
                                     {% elif dingdan.status == 6 %}
-                                        「已收货{{ moment(dingdan.time5).format('YY.MM.DD') }}」
+                                        「已收货{{ moment(dingdan.time6).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 7 %}
-                                        「安装中{{ moment(dingdan.time6).format('YY.MM.DD') }}」
+                                        「安装中{{ moment(dingdan.time7).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 8 %}
-                                        「完成安装{{ moment(dingdan.time7).format('YY.MM.DD') }}」
+                                        「完成安装{{ moment(dingdan.time8).format('YY.MM.DD') }}」
                                     {% elif dingdan.status == 9 %}
-                                        「已清款{{ moment(dingdan.time8).format('YY.MM.DD') }}」
+                                        「已清款{{ moment(dingdan.time9).format('YY.MM.DD') }}」
                                     {% else %}
                                         「状态有误」
                                     {% endif %}

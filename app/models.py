@@ -128,6 +128,9 @@ class Dingdan(db.Model):
     status = db.Column(db.Integer, default=1)  # 1测尺、2业务下单、3工厂下单、4工厂入库、5工厂发货、6收货、7派工、8装完、9安清款
     fakaidi = db.Column(db.String(64))  # -1
 
+    time_1 = db.Column(db.DateTime())
+    user_1_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    beizhue = db.Column(db.String(64))
 
     time0 = db.Column(db.DateTime(), default=datetime.utcnow)
     user0_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -151,6 +154,18 @@ class Dingdan(db.Model):
     user9_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     # duizhang =db.Column(db.String(64))
+
+    time_1 = db.Column(db.DateTime())
+    user_1_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    beizhue = db.Column(db.String(64))
+
+    az_status = db.Column(db.Integer)
+    az_beizhue = db.Column(db.String(64))
+
+    az_time_1 = db.Column(db.DateTime())
+    az_time1 = db.Column(db.DateTime())
+    az_time2 = db.Column(db.DateTime())
+    az_time3 = db.Column(db.DateTime())
 
     azd_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     dingdan_azd = db.relationship("User", foreign_keys=[azd_id])

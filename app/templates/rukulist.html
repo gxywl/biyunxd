@@ -41,11 +41,11 @@
             <div class="panel-heading">
                 <h4> 订单号「 {{ dingdan.id }} 」{{ dingdan.chanpin.pinming }}
                 {% if dingdan.status==3 %}
-                    ( {{ moment(dingdan.time2).fromNow(refresh=True) }} 订货)
+                    ( {{ moment(dingdan.time3).fromNow(refresh=True) }} 订货)
                     <a class="btn btn-primary  glyphicon glyphicon-repeat"
                        href="{{ url_for('main.rukuone', ddid=dingdan.id) }}"> 入库</a>
                 {% elif dingdan.status == 4 %}
-                    ( {{ moment(dingdan.time3).fromNow(refresh=True) }} 入库)
+                    ( {{ moment(dingdan.time4).fromNow(refresh=True) }} 入库)
                     <a class="btn btn-danger  glyphicon glyphicon-repeat"
                        href="{{ url_for('main.unrukuone', ddid=dingdan.id) }}"> 撤入</a>
                 {% elif dingdan.status == 5 %}

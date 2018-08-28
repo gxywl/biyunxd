@@ -149,21 +149,21 @@
                                             {% if dingdan.status == 1 %}
                                                 「已测尺」
                                             {% elif dingdan.status == 2 %}
-                                                「已下单」 {{ moment(dingdan.time1).format('YY年M月D日') }}
+                                                「已下单」 {{ moment(dingdan.time2).format('YY年M月D日') }}
                                             {% elif dingdan.status == 3 %}
-                                                「已订货」 {{ moment(dingdan.time2).format('YY年M月D日') }}
+                                                「已订货」 {{ moment(dingdan.time3).format('YY年M月D日') }}
                                             {% elif dingdan.status == 4 %}
                                                 「已入库」
                                             {% elif dingdan.status == 5 %}
                                                 「已发货」
                                             {% elif dingdan.status == 6 %}
-                                                「已收货」 {{ moment(dingdan.time5).format('YY年M月D日') }}
+                                                「已收货」 {{ moment(dingdan.time6).format('YY年M月D日') }}
                                             {% elif dingdan.status == 7 %}
-                                                「安装中」 {{ moment(dingdan.time6).format('YY年M月D日') }}
+                                                「安装中」 {{ moment(dingdan.time7).format('YY年M月D日') }}
                                             {% elif dingdan.status == 8 %}
-                                                「完成安装」 {{ moment(dingdan.time7).format('YY年M月D日') }}
+                                                「完成安装」 {{ moment(dingdan.time8).format('YY年M月D日') }}
                                             {% elif dingdan.status == 9 %}
-                                                「已清款」 {{ moment(dingdan.time8).format('YY年M月D日') }}
+                                                「已清款」 {{ moment(dingdan.time9.format('YY年M月D日') }}
                                             {% else %}
                                                 「状态有误」
                                             {% endif %}

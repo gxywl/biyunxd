@@ -41,11 +41,11 @@
             <div class="panel-heading">
                 <h4> 订单号「 {{ dingdan.id }} 」{{ dingdan.chanpin.pinming }}
                     {% if dingdan.status==4 %}
-                        ( {{ moment(dingdan.time3).fromNow(refresh=True) }} 入库)
+                        ( {{ moment(dingdan.time4).fromNow(refresh=True) }} 入库)
                         <a class="btn btn-primary  glyphicon glyphicon-road"
                            href="{{ url_for('main.fahuoone', ddid=dingdan.id) }}"> 发货</a>
                     {% elif dingdan.status == 5 %}
-                        ( {{ moment(dingdan.time4).fromNow(refresh=True) }} 发货)
+                        ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 发货)
                         <a class="btn btn-danger  glyphicon glyphicon-repeat"
                            href="{{ url_for('main.unfahuoone', ddid=dingdan.id) }}"> 撤发</a>
                     {% elif dingdan.status == 6 %}
@@ -77,18 +77,18 @@
                                     <h4> 订单号「 {{ fdingdan.id }} 」{{ fdingdan.chanpin.pinming }}
 
                                          {% if fdingdan.status==1 %}
-                                            ( {{ moment(fdingdan.time0).fromNow(refresh=True) }} 量尺)
+                                            ( {{ moment(fdingdan.time1).fromNow(refresh=True) }} 量尺)
                                          {% elif fdingdan.status==2 %}
-                                            ( {{ moment(fdingdan.time1).fromNow(refresh=True) }} 下单)
+                                            ( {{ moment(fdingdan.time2).fromNow(refresh=True) }} 下单)
                                         {% elif fdingdan.status==3 %}
-                                            ( {{ moment(fdingdan.time2).fromNow(refresh=True) }} 订货)
+                                            ( {{ moment(fdingdan.time3).fromNow(refresh=True) }} 订货)
 
                                         {% elif fdingdan.status==4 %}
-                                            ( {{ moment(fdingdan.time3).fromNow(refresh=True) }} 入库)
+                                            ( {{ moment(fdingdan.time4).fromNow(refresh=True) }} 入库)
                                             <a class="btn btn-primary  glyphicon glyphicon-road"
                                                href="{{ url_for('main.fahuoone', ddid=fdingdan.id) }}"> 发货</a>
                                         {% elif fdingdan.status == 5 %}
-                                            ( {{ moment(fdingdan.time4).fromNow(refresh=True) }} 发货)
+                                            ( {{ moment(fdingdan.time5).fromNow(refresh=True) }} 发货)
                                             <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                href="{{ url_for('main.unfahuoone', ddid=fdingdan.id) }}"> 撤发</a>
                                         {% elif fdingdan.status == 6 %}

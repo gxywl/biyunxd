@@ -157,7 +157,7 @@
                                         {% elif dingdan.status == 6 %}
                                             「已收货」
 {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
-                            ({{ moment(dingdan.time5).format('YY年M月D日') }} 收货)
+                            ({{ moment(dingdan.time6).format('YY年M月D日') }} 收货)
                                             <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                href="{{ url_for('main.unshouhuoone', ddid=dingdan.id) }}"> 撤收</a>
                                         {% endif %}
@@ -341,11 +341,11 @@
                         {{ dingdan.chanpin.pinming }}
                     </label>
                         {% if dingdan.status == 3 %}
-                            [下订：{{ moment(dingdan.time2).format('YYYY.MM.D') }}]
+                            [下订：{{ moment(dingdan.time3).format('YYYY.MM.D') }}]
 
                         {% elif dingdan.status == 6 %}
 {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
-                            ({{ moment(dingdan.time5).format('YY年M月D日') }} 收货)
+                            ({{ moment(dingdan.time6).format('YY年M月D日') }} 收货)
                             <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                href="{{ url_for('main.unshouhuoone', ddid=dingdan.id) }}"> 撤收</a>
                         {% endif %}

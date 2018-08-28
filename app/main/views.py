@@ -2014,7 +2014,7 @@ def doxiadan(khid):
     for dingdan in kehu.dingdans:
         if dingdan.status == 1:
             dingdan.status = 2
-            dingdan.time1 = datetime.utcnow()
+            dingdan.time2 = datetime.utcnow()
 
     db.session.add(kehu)
     flash('已确认下单')
@@ -2038,7 +2038,7 @@ def doxiadanone(khid, ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 2
-    dingdan.time1 = datetime.utcnow()
+    dingdan.time2 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认下单')
@@ -2062,7 +2062,7 @@ def undoxiadanone(khid, ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 1
-    dingdan.time1 = None
+    dingdan.time2 = None
 
     db.session.add(dingdan)
     flash('已撤单')
@@ -2086,7 +2086,7 @@ def rukuone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 4
-    dingdan.time3 = datetime.utcnow()
+    dingdan.time4 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认入库')
@@ -2110,7 +2110,7 @@ def unrukuone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 3
-    dingdan.time3 = None
+    dingdan.time4 = None
 
     db.session.add(dingdan)
     flash('已撤入')
@@ -2134,7 +2134,7 @@ def fahuoone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 5
-    dingdan.time4 = datetime.utcnow()
+    dingdan.time5 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认发货')
@@ -2158,7 +2158,7 @@ def unfahuoone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 4
-    dingdan.time4 = None
+    dingdan.time5 = None
 
     db.session.add(dingdan)
     flash('已撤发')
@@ -2182,7 +2182,7 @@ def udinghuoone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 2
-    dingdan.time2 = None
+    dingdan.time3= None
 
     db.session.add(dingdan)
     flash('已撤订')
@@ -2206,7 +2206,7 @@ def shouhuoone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 6
-    dingdan.time5 = datetime.utcnow()
+    dingdan.time6 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认收货')
@@ -2243,7 +2243,7 @@ def doselshouhuo(selids):
     #                                                               synchronize_session=False)
 
     # 这样
-    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 6, 'time5': datetime.utcnow()},
+    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 6, 'time6': datetime.utcnow()},
                                                                   synchronize_session=False)
     #
     # dingdans = Dingdan.query.filter(Dingdan.id.in_(selids)).all()
@@ -2303,7 +2303,7 @@ def paigongone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 7
-    dingdan.time6 = datetime.utcnow()
+    dingdan.time7 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认派工')
@@ -2329,7 +2329,7 @@ def dopaigong(selids, sgd):
     # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'duizhang':sgd},
     #                                                               synchronize_session=False)
     dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update(
-        {'status': 7, 'time8': datetime.utcnow(), 'azd_id': sgd},
+        {'status': 7, 'time7': datetime.utcnow(), 'azd_id': sgd},
         synchronize_session=False)
     return 'done'
 
@@ -2350,7 +2350,7 @@ def unpaigongone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 6
-    dingdan.time6 = None
+    dingdan.time7 = None
     dingdan.azd_id = None
     # dingdan.duizhang = None
 
@@ -2376,8 +2376,9 @@ def wanchengone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 8
-    dingdan.time7 = datetime.utcnow()
-    dingdan.user7_id = current_user.id
+    dingdan.time8 = datetime.utcnow()
+
+    dingdan.user8_id = current_user.id
 
     db.session.add(dingdan)
     flash('已确认完成')
@@ -2401,7 +2402,7 @@ def unwanchengone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 7
-    dingdan.time7 = None
+    dingdan.time8 = None
 
     db.session.add(dingdan)
     flash('已撤完')
@@ -2425,7 +2426,7 @@ def qingkunone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 9
-    dingdan.time8 = datetime.utcnow()
+    dingdan.time9 = datetime.utcnow()
 
     db.session.add(dingdan)
     flash('已确认清款')
@@ -2449,7 +2450,7 @@ def unqingkunone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 8
-    dingdan.time8 = None
+    dingdan.time9 = None
 
     db.session.add(dingdan)
     flash('已撤清款')
@@ -2650,11 +2651,11 @@ def taggetitsel(pm, selids):
     dingdans = Dingdan.query.filter(and_(Dingdan.id.in_(selids), Dingdan.chanpin_id == chanpin.id))
     for dingdan in dingdans:
         dingdan.status = 3
-        dingdan.time2 = datetime.utcnow()
+        dingdan.time3 = datetime.utcnow()
         db.session.add(dingdan)
 
     Dingdan.query.filter(and_(Dingdan.id.in_(selids), Dingdan.chanpin_id == chanpin.id)).update(
-        {'status': 3, 'time2': datetime.utcnow()},
+        {'status': 3, 'time3': datetime.utcnow()},
         synchronize_session=False)
 
     # dingdans = Dingdan.query.filter_by(status=2, chanpin_id=chanpin.id)
@@ -2804,7 +2805,7 @@ def taggetit(pm):
 
     for dingdan in dingdans:
         dingdan.status = 3
-        dingdan.time2 = datetime.utcnow()
+        dingdan.time3 = datetime.utcnow()
         db.session.add(dingdan)
 
     return redirect(url_for('main.dinghuolist'))

@@ -105,7 +105,7 @@
 
                                                 选择<span style="background-color:greenyellow;">「已收货未派工」</span>
                                             {% elif dingdan.status == 7 %}
-                                                「已派工{{ moment(dingdan.time6).format('YYYY.M.D') }}」
+                                                「已派工{{ moment(dingdan.time7).format('YYYY.M.D') }}」
                                                 {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
                                                 (
                                                 {{ dingdan.dingdan_azd.username }})
@@ -118,7 +118,7 @@
                                                    href="{{ url_for('main.wanchengone', ddid=dingdan.id) }}">
                                                     完成安装</a>
                                             {% elif dingdan.status == 8 %}
-                                                ( {{ moment(dingdan.time7).fromNow(refresh=True) }} 完成)
+                                                ( {{ moment(dingdan.time8).fromNow(refresh=True) }} 完成)
                                                 <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                    href="{{ url_for('main.unwanchengone', ddid=dingdan.id) }}">
                                                     撤完成</a>

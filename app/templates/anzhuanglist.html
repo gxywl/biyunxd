@@ -46,10 +46,10 @@
                                 <li>
                                     {% if dingdan.status == 7 %}
                                         【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>】
-                                        ( {{ moment(dingdan.time6).fromNow(refresh=True) }})
+                                        ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
                                     {% elif dingdan.status == 8 or dingdan.status == 9 %}
                                         「<span style="font-weight:bold;color:blue;">已完成</span>」
-                                        ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
+                                        ( {{ moment(dingdan.time8).fromNow(refresh=True) }})
                                     {% else %}
                                         {#                                        {{ dingdan.status }}#}
                                     {% endif %}
@@ -112,10 +112,10 @@
                                 <li>
                                 {% if dingdan.status == 7 %}
                                     【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>】
-                                    ( {{ moment(dingdan.time6).fromNow(refresh=True) }})
+                                    ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
                                 {% elif dingdan.status == 8 or dingdan.status == 9 %}
                                     「<span style="font-weight:bold;color:blue;">已完成</span>」
-                                    ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
+                                    ( {{ moment(dingdan.time8).fromNow(refresh=True) }})
                                 {% else %}
                                     {#                                        {{ dingdan.status }}#}
                                 {% endif %}

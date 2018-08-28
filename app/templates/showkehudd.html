@@ -452,7 +452,7 @@
                     {% endif %}
                 {% elif dingdan.status== 2 %}
                     {#  and (datetime.utcnow – dingdan.time1)hours dingdan.time1 datetime.utcnow #}
-                    ( {{ moment(dingdan.time1).fromNow(refresh=True) }} )
+                    ( {{ moment(dingdan.time2).fromNow(refresh=True) }} )
                     <a class="btn btn-primary  glyphicon glyphicon-repeat"
                        href="{{ url_for('main.undoxiadanone', khid=kehu.id, ddid=dingdan.id) }}"> 撤单</a>
                 {% elif dingdan.status == 3 %}
