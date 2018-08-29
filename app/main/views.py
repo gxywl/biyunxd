@@ -12,7 +12,8 @@ from sqlalchemy import func, engine, or_, and_
 from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu  # , Gongren
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
-    KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm
+    KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm, \
+    stoplcddidForm, azstopddidForm
 from . import main
 
 import tablib
@@ -2359,6 +2360,121 @@ def unpaigongone(ddid):
 
     return redirect(url_for('main.paigonglist'))
 
+
+@main.route('/stoplc/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def stoplc(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+    form = stoplcddidForm()
+
+    if form.validate_on_submit():
+
+        dingdan = Dingdan.query.get(ddid)
+        dingdan.status = -1
+        dingdan.time_1 = datetime.utcnow()
+        dingdan.user_1_id = current_user.id
+
+        dingdan.beizhue = form.beizhue.data #"终止流程"
+
+        # dingdan.duizhang = None
+
+        db.session.add(dingdan)
+        flash('已终止流程')
+
+        return redirect(url_for('main.paigonglist'))
+
+
+    dingdan = Dingdan.query.get(ddid)
+
+
+    form.beizhue.data = dingdan.beizhue
+
+    # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
+
+    return render_template('stoplc.html', form=form, dingdan=dingdan)
+
+
+@main.route('/azstop/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def azstop(ddid):
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    form = azstopddidForm()
+
+    if form.validate_on_submit():
+
+        dingdan = Dingdan.query.get(ddid)
+        dingdan.az_status = -1
+        dingdan.az_time_1 = datetime.utcnow()
+        # dingdan.az_user_1_id = current_user.id
+
+        dingdan.az_beizhue = form.az_beizhue.data #"终止流程"
+
+        # dingdan.duizhang = None
+
+        db.session.add(dingdan)
+        flash('已终止安装')
+
+        return redirect(url_for('main.anzhuanglist'))
+
+
+    dingdan = Dingdan.query.get(ddid)
+
+
+    form.az_beizhue.data = dingdan.az_beizhue
+
+    # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
+
+    return render_template('azstop.html', form=form, dingdan=dingdan)
+
+@main.route('/getrenwu/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def getrenwu(ddid):
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.az_status = 1
+    dingdan.az_time1 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已确认接单')
+
+    return redirect(url_for('main.anzhuanglist'))
+
+@main.route('/azwancheng/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def azwancheng(ddid):
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    # kehu = Kehu.query.get(khid)
+    # kehu.status = 2
+    # kehu.time1 = datetime.utcnow()
+
+    # for dingdan in kehu.dingdans:
+    #     dingdan.status = 2
+    #     dingdan.time1 = datetime.utcnow()
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.az_status = 3
+    dingdan.az_time3 = datetime.utcnow()
+
+    db.session.add(dingdan)
+    flash('已申请完成')
+
+    return redirect(url_for('main.anzhuanglist'))
 
 @main.route('/wanchengone/<int:ddid>', methods=['GET', 'POST'])
 @login_required

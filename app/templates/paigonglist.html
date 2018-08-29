@@ -84,13 +84,17 @@
                         {% for dingdan in kehu.dingdans %}
 
                             {#                            {% if (status == 0 and dingdan.status in [6,7,8]) or dingdan.status == status %}#}
-                            {% if (status == 99 and dingdan.status in [6,7,8]) or (status == 0 and dingdan.status in [3,6,7,8]) or ( status == 6 and dingdan.status in [3,6]) or dingdan.status == status %}
+                            {% if (status == 99 and dingdan.status in [6,7,8]) or (status == 0 and dingdan.status in [-1,3,6,7,8]) or ( status == 6 and dingdan.status in [3,6]) or dingdan.status == status %}
 
                                 <div class="post-body">
                                     {#                                    <blockquote>#}
                                     <ul class="list-unstyled">
 
                                         <li>
+
+                                            {% if dingdan.status == -1 %}
+                                                <span style="font-weight:bold;background-color: beige ;color:orangered;">「异常终止」({{ dingdan.beizhue }})</span>
+                                            {% endif %}
 
                                             {% if dingdan.status == 3 %}
                                                 「未收货」
@@ -104,11 +108,26 @@
                                                        value="{{ dingdan.id }}"/>
 
                                                 选择<span style="background-color:greenyellow;">「已收货未派工」</span>
+                                                <a class="btn btn-danger  glyphicon glyphicon-stop"
+                                                   href="{{ url_for('main.stoplc', ddid=dingdan.id) }}">
+                                                    终止</a>
                                             {% elif dingdan.status == 7 %}
                                                 「已派工{{ moment(dingdan.time7).format('YYYY.M.D') }}」
                                                 {#                            ( {{ moment(dingdan.time5).fromNow(refresh=True) }} 收货)#}
-                                                (
-                                                {{ dingdan.dingdan_azd.username }})
+                                                ({{ dingdan.dingdan_azd.username }})
+
+                                                {% if dingdan.az_status == -1 %}
+                                                申请停止[{{ dingdan.az_beizhue }}]
+                                                {% endif %}
+
+                                                {% if dingdan.az_status == 1 %}
+                                                已接单[{{ moment(dingdan.az_time1).format('YYYY.M.D') }}]
+                                                {% endif %}
+
+                                                {% if dingdan.az_status == 3 %}
+                                                申请完成[{{ moment(dingdan.az_time3).fromNow(refresh=True) }}]
+                                                {% endif %}
+
                                                 <a class="btn btn-danger  glyphicon glyphicon-repeat"
                                                    href="{{ url_for('main.unpaigongone', ddid=dingdan.id) }}">
                                                     撤派工</a>
