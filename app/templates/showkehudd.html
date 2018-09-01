@@ -419,6 +419,14 @@
 
                 {% if dingdan.status == 1 %}
                     已量尺
+                {% elif dingdan.status == -1 %}
+                    <span style="font-weight:bold;color:red;">该单异常，已终止({{ dingdan.beizhue }}){{ moment(dingdan.time_1).fromNow(refresh=True) }}</span>
+
+                        <a class="btn btn-success  glyphicon glyphicon-tags"
+                           href="{{ url_for('main.readddingdan', khid=kehu.id, ddid=dingdan.id) }}">重订同品类单</a>
+
+{#                    (url_for('main.' + toview, cpid=chanpinid, khid=kehu.id)#}
+
                 {% elif dingdan.status == 2 %}
                     已下单
                 {% elif dingdan.status == 3 %}

@@ -1342,9 +1342,69 @@ def deldingdan(ddid, khid):
 
     dingdan = Dingdan.query.get(ddid)
     db.session.delete(dingdan)
-    flash('已成功删除客户')
+    flash('已成功删除订单')
 
     return redirect(url_for('main.showkehudd', id=khid))
+
+
+
+
+@main.route('/readddingdan/<int:khid>/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def readddingdan(khid,ddid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+# 复制  添加 跳转到编辑
+
+    dingdano = Dingdan.query.get(ddid)
+    # chanpin = Chanpin.query.get(dingdano)
+    kehu = Kehu.query.get(khid)
+
+    dingdan = Dingdan(chanpin=dingdano.chanpin, kehu=dingdano.kehu, weizhi=dingdano.weizhi, shuliang=dingdano.shuliang,
+                      xinghao=dingdano.xinghao, kuan_chang=dingdano.kuan_chang, gao=dingdano.gao,shuowei=dingdano.shuowei,
+                      zhonghengtiaoshu_gantiaoshu=dingdano.zhonghengtiaoshu_gantiaoshu, color=dingdano.color,meikongkuan_bashoudigao=dingdano.meikongkuan_bashoudigao,
+                      shanshu=dingdano.shanshu, zhangfa_dengfenshu_kaishuofangshi=dingdano.zhangfa_dengfenshu_kaishuofangshi,
+                      ishaveht=dingdano.ishaveht,beizhu='重订（'+str(ddid)+'）'+dingdano.beizhu, status=1)
+
+    db.session.add(dingdan)
+    db.session.commit()
+    ddid = dingdan.id
+
+    dingdano.beizhu='已重订（'+str(ddid)+'）'+dingdano.beizhu
+    db.session.add(dingdano)
+
+
+    user = current_user._get_current_object()
+
+
+    toview = ''
+    pinming = dingdano.chanpin.pinming
+
+    flash('重订同品类：'+pinming)
+
+    if pinming == '隐形网':
+        toview = 'edityxw'
+    elif pinming == '阳台窗':
+        toview = 'editytc'
+    elif pinming == '纱门':
+        toview = 'editsm'
+    elif pinming == '晾衣杆':
+        toview = 'editlyg'
+    elif pinming == '晾衣机':
+        toview = 'editlyj'
+    elif pinming == '纱窗':
+        toview = 'editsc'
+    elif pinming == '窗花':
+        toview = 'editch'
+    elif pinming == '指纹锁':
+        toview = 'editzws'
+    elif pinming == '杂项':
+        toview = 'editjx'
+    else:
+        pass
+
+    return redirect(url_for('main.' + toview, ddid=ddid, khid=khid))
 
 
 @main.route('/editdingdan/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
@@ -2352,7 +2412,14 @@ def unpaigongone(ddid):
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 6
     dingdan.time7 = None
+
     dingdan.azd_id = None
+
+    dingdan.az_status = None
+    dingdan.az_time_1 = None
+    dingdan.az_time1 = None
+    dingdan.az_time3 = None
+
     # dingdan.duizhang = None
 
     db.session.add(dingdan)
