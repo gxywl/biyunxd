@@ -117,15 +117,18 @@
                                                 ({{ dingdan.dingdan_azd.username }})
 
                                                 {% if dingdan.az_status == -1 %}
-                                                申请停止[{{ dingdan.az_beizhue }}]
+                                                    <span style="font-weight:bold;color:red;">申请停止[{{ dingdan.az_beizhue }}]</span>
+                                                     {{ moment(dingdan.az_time_1).format('YYYY.M.D') }}]
+
+
                                                 {% endif %}
 
                                                 {% if dingdan.az_status == 1 %}
-                                                已接单[{{ moment(dingdan.az_time1).format('YYYY.M.D') }}]
+                                                    <span style="font-weight:bold;color:blue;">已接单[{{ moment(dingdan.az_time1).format('YYYY.M.D') }}]</span>
                                                 {% endif %}
 
                                                 {% if dingdan.az_status == 3 %}
-                                                申请完成[{{ moment(dingdan.az_time3).fromNow(refresh=True) }}]
+                                                    <span style="font-weight:bold;color:green;">申请完成[{{ moment(dingdan.az_time3).fromNow(refresh=True) }}]</span>
                                                 {% endif %}
 
                                                 <a class="btn btn-danger  glyphicon glyphicon-repeat"
