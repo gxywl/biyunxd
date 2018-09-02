@@ -129,7 +129,7 @@ class stoplcddidForm(FlaskForm):
     # beizhue =  SelectField('终止原因描述', coerce=int) #StringField('终止原因描述')
     beizhue = SelectField("终止原因描述", validators=[DataRequired()],
                           choices=[('', ''),('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'),('物流破损', '物流破损'), ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
-    submit = SubmitField('终止产品流程')
+    submit = SubmitField('终止产品安装')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -140,7 +140,7 @@ class azstopddidForm(FlaskForm):
     # az_beizhue = StringField('终止安装原因描述')
     az_beizhue = SelectField("终止原因描述", validators=[DataRequired()],
                           choices=[('', ''),('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'),('物流破损', '物流破损'), ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
-    submit = SubmitField('终止产品流程')
+    submit = SubmitField('终止产品安装')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
