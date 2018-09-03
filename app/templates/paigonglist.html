@@ -107,7 +107,7 @@
                                                 <input name="willsel" type="checkbox"
                                                        value="{{ dingdan.id }}"/>
 
-                                                选择<span style="background-color:greenyellow;">「已收货未派工」</span>
+                                                选择<span style="background-color:greenyellow;">「已收货未派工」[{{ moment(dingdan.time6).format('MM-DD') }}]</span>
                                                 <a class="btn btn-danger  glyphicon glyphicon-stop"
                                                    href="{{ url_for('main.stoplc', ddid=dingdan.id) }}">
                                                     终止</a>
