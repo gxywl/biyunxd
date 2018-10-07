@@ -2538,6 +2538,11 @@ def azwancheng(ddid):
     dingdan.az_status = 3
     dingdan.az_time3 = datetime.utcnow()
 
+    dingdan.status = 8
+    dingdan.time8 = datetime.utcnow()
+
+    dingdan.user8_id = current_user.id
+
     db.session.add(dingdan)
     flash('已申请完成')
 
