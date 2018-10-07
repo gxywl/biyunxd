@@ -415,7 +415,7 @@ class ScForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
-                             choices=[('', ''), ('无', '无'), ('2等分', '2等分'), ('平均3等分', '平均3等分'), ('非平均3等分', '非平均3等分')])
+                             choices=[('', ''), ('无', '无'), ('平均', '平均'), ('非平均', '非平均'), ('按图', '按图')])
     ishaveht = SelectField('横条数', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
 
     beizhu = StringField('备注')
