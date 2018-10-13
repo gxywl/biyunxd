@@ -140,8 +140,8 @@
                                                    href="{{ url_for('main.wanchengone', ddid=dingdan.id) }}">
                                                     完成安装</a>
                                             {% elif dingdan.status == 8 %}
-                                                ( {{ moment(dingdan.time8).fromNow(refresh=True) }} 完成)
-                                                <a class="btn btn-danger  glyphicon glyphicon-repeat"
+                                                ( {{ moment(dingdan.time8).fromNow(refresh=True) }} 完成 - {{ dingdan.dingdan_azd.username }})
+                                                <a class="btn btn-danger  glyphicon glyphicon-repeat"{{ dingdan.dingdan_azd.username }}
                                                    href="{{ url_for('main.unwanchengone', ddid=dingdan.id) }}">
                                                     撤完成</a>
                                             {% elif dingdan.status == 9 %}
