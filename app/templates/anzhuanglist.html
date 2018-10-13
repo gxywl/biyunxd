@@ -54,9 +54,9 @@
                                         【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>( {{ moment(dingdan.time7).fromNow(refresh=True) }})】
 
                                         {% if not dingdan.az_status %}
-                                                <a class="btn btn-success  glyphicon glyphicon-send"
-                                                   href="{{ url_for('main.getrenwu', ddid=dingdan.id) }}">
-                                                    接单</a>
+{#                                                <a class="btn btn-success  glyphicon glyphicon-send"#}
+{#                                                   href="{{ url_for('main.getrenwu', ddid=dingdan.id) }}">#}
+{#                                                    接单</a>#}
                                         {% endif %}
 
                                         {% if dingdan.az_status == -1 %}
@@ -73,9 +73,9 @@
                                                    href="{{ url_for('main.azstop', ddid=dingdan.id) }}">
                                                     终止</a>
 
-                                                <a class="btn btn-primary  glyphicon glyphicon-send"
-                                                   href="{{ url_for('main.azwancheng', ddid=dingdan.id) }}">
-                                                    完成</a>
+{#                                                <a class="btn btn-primary  glyphicon glyphicon-send"#}
+{#                                                   href="{{ url_for('main.azwancheng', ddid=dingdan.id) }}">#}
+{#                                                    完成</a>#}
                                         {% endif %}
 
                                         </label>
