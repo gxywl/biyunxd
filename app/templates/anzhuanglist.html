@@ -45,6 +45,12 @@
                             {% if  dingdan.dingdan_azd == azdobj and dingdan.status  in [7,8,9] %}
                                 <li>
                                     {% if dingdan.status == 7 %}
+
+                                        <label class="checkbox-inline">
+
+                                                <input name="willsel" type="checkbox"
+                                                       value="{{ dingdan.id }}"/>
+
                                         【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>( {{ moment(dingdan.time7).fromNow(refresh=True) }})】
 
                                         {% if not dingdan.az_status %}
@@ -71,6 +77,8 @@
                                                    href="{{ url_for('main.azwancheng', ddid=dingdan.id) }}">
                                                     完成</a>
                                         {% endif %}
+
+                                        </label>
 
                                         {% if dingdan.az_status == 3 %}
                                             已请求完成( {{ moment(dingdan.az_time3).fromNow(refresh=True) }})
@@ -101,6 +109,28 @@
         {% endif %}
 
     {% endfor %}
+
+
+
+  <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="form-group">
+                    <div class="input-group col-xs-12">
+                        <div class="input-group-btn">
+                            <button id="azjiedansel" class="btn btn-success  glyphicon glyphicon-send"> 接单</button>
+
+
+                        </div>
+                        <div class="input-group-btn">
+                            <button id="azwangongsel" class="btn btn-primary glyphicon glyphicon-gift"> 完工</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+  </div>
+
     {#----------^^待接单、安装    ..已完成安装----------#}
     <hr>
     {% for kehu in kehus %}
@@ -166,5 +196,87 @@
         {% endif %}
 
     {% endfor %}
+
+{% endblock %}
+
+
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+
+
+        $("#azjiedansel").click(function () {
+
+            var selids = ''
+            $.each($('input[name="willsel"]:checkbox:checked'), function () {
+                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+
+                selids = selids + $(this).val() + ','
+            });
+
+
+
+                $.ajax({
+                    type: "get",
+                    {#url : "{{ url_for('main.doselshouhuo',selids) }}",#}
+                    {#data : "",#}
+
+                    {#url : "doselshouhuo",#}
+                    {#data : "selids=" + selids,#}
+
+                    url: "azjiedansel/" + selids ,
+                    {#data : "selids=" + selids,                #}
+                    async: true,
+                    success: function (data) {
+                        //sdata = eval("(" + data + ")");
+                        //aDataSet = data;
+                        //alert(data);
+                        //opener.location.reload()
+                        window.location.reload()
+
+                    }
+                });
+
+
+        });
+
+
+
+        $("#azwangongsel").click(function () {
+
+            var selids = ''
+            $.each($('input[name="willsel"]:checkbox:checked'), function () {
+                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+
+                selids = selids + $(this).val() + ','
+            });
+
+
+
+                $.ajax({
+                    type: "get",
+                    {#url : "{{ url_for('main.doselshouhuo',selids) }}",#}
+                    {#data : "",#}
+
+                    {#url : "doselshouhuo",#}
+                    {#data : "selids=" + selids,#}
+
+                    url: "azwangongsel/" + selids ,
+                    {#data : "selids=" + selids,                #}
+                    async: true,
+                    success: function (data) {
+                        //sdata = eval("(" + data + ")");
+                        //aDataSet = data;
+                        //alert(data);
+                        //opener.location.reload()
+                        window.location.reload()
+
+                    }
+                });
+
+
+        });
+    </script>
 
 {% endblock %}

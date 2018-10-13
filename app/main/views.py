@@ -2520,6 +2520,34 @@ def getrenwu(ddid):
 
     return redirect(url_for('main.anzhuanglist'))
 
+
+@main.route('/azjiedansel/<selids>', methods=['GET', 'POST'])
+@login_required
+def azjiedansel(selids):
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    selids = selids.strip(',')
+    selids = list(eval('[' + selids + ']'))
+
+    # dingdan = Dingdan.query.filter(Dingdan.id in selids).update({Dingdan.status:6, Dingdan.time5:datetime.utcnow()})
+
+    # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 6, 'time5': datetime.utcnow()},
+    #                                                               synchronize_session=False)
+
+    # 这样
+    # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'duizhang':sgd},
+    #
+    #                                                            synchronize_session=False)
+    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update(
+        {'az_status': 1, 'az_time1': datetime.utcnow()},
+        synchronize_session=False)
+
+    flash('已确认接单')
+
+    return redirect(url_for('main.anzhuanglist'))
+
+
 @main.route('/azwancheng/<int:ddid>', methods=['GET', 'POST'])
 @login_required
 def azwancheng(ddid):
@@ -2547,6 +2575,35 @@ def azwancheng(ddid):
     flash('已申请完成')
 
     return redirect(url_for('main.anzhuanglist'))
+
+
+
+@main.route('/azwangongsel/<selids>', methods=['GET', 'POST'])
+@login_required
+def azwangongsel(selids):
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    selids = selids.strip(',')
+    selids = list(eval('[' + selids + ']'))
+
+    # dingdan = Dingdan.query.filter(Dingdan.id in selids).update({Dingdan.status:6, Dingdan.time5:datetime.utcnow()})
+
+    # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 6, 'time5': datetime.utcnow()},
+    #                                                               synchronize_session=False)
+
+    # 这样
+    # dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update({'status': 7, 'time8': datetime.utcnow(),'duizhang':sgd},
+    #
+    #                                                            synchronize_session=False)
+    dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update(
+        {'az_status': 3, 'az_time3': datetime.utcnow(),'status':8,'time8':datetime.utcnow(),'user8_id':current_user.id},
+        synchronize_session=False)
+
+    flash('已申请完成')
+
+    return redirect(url_for('main.anzhuanglist'))
+
 
 @main.route('/wanchengone/<int:ddid>', methods=['GET', 'POST'])
 @login_required
