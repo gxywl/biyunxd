@@ -203,6 +203,8 @@ class JxForm(FlaskForm):
 
     submit = SubmitField('保存修改')
 
+    submita = SubmitField('按追加单处理')
+
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(JxForm, self).__init__(*args, **kwargs)
@@ -237,6 +239,8 @@ class YxwForm(FlaskForm):
 
     # jine = IntegerField("金额", validators=[DataRequired()])
     submit = SubmitField('保存修改')
+
+    submita = SubmitField('按追加单处理')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -352,6 +356,8 @@ class LygForm(FlaskForm):
     # jine = IntegerField("金额", validators=[DataRequired()])
     submit = SubmitField('保存修改')
 
+    submita = SubmitField('按追加单处理')
+
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(LygForm, self).__init__(*args, **kwargs)
@@ -384,6 +390,8 @@ class LyjForm(FlaskForm):
     # jine = IntegerField("金额", validators=[DataRequired()])
     submit = SubmitField('保存修改')
 
+    submita = SubmitField('按追加单处理')
+
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(LyjForm, self).__init__(*args, **kwargs)
@@ -415,7 +423,7 @@ class ScForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
-                             choices=[('', ''), ('无', '无'), ('平均', '平均'), ('非平均', '非平均'), ('按图', '按图')])
+                             choices=[('', ''),  ('平均', '平均'), ('非平均', '非平均'), ('按图', '按图')])
     ishaveht = SelectField('横条数', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
 
     beizhu = StringField('备注')
@@ -502,6 +510,8 @@ class ZwsForm(FlaskForm):
 
     # jine = IntegerField("金额", validators=[DataRequired()])
     submit = SubmitField('保存修改')
+
+    submita = SubmitField('按追加单处理')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):

@@ -932,29 +932,60 @@ def addyxw(cpid, khid):
 
     if form.validate_on_submit():
 
-        uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            # # 获取文件的大小了，单位是字节
-            # size = len(uploaded_file.read())
-            # if size > 1048576:  # 取不到
-            #     flash('文件超过1M，不能上传')
-            #     fullsavefilename = ''
-            # else:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
-            fullsavefilename = ''
+        if form.submit.data:
 
-        # savefilename
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
-        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                          color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
-                          status=1)
+            # savefilename
 
-        db.session.add(dingdan)
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
+                              color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                              status=1)
 
-        flash('已成功添加')
+            db.session.add(dingdan)
+
+            flash('已成功添加')
+
+            # return redirect(url_for('main.showkehudd', id=khid))
+
+
+        elif form.submita.data:
+
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
+
+            # savefilename
+
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
+                              color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                              status=6)
+
+            db.session.add(dingdan)
+
+            flash('已成功追加, 状态转已收货')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -1073,27 +1104,53 @@ def addlyg(cpid, khid):
 
     if form.validate_on_submit():
 
-        uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            # # 获取文件的大小了，单位是字节
-            # size = len(uploaded_file.read())
-            # if size > 1048576:  # 取不到
-            #     flash('文件超过1M，不能上传')
-            #     fullsavefilename = ''
-            # else:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
-            fullsavefilename = ''
+        if form.submit.data:
 
-        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
-                          zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
-        db.session.add(dingdan)
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
+                              zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
 
-        flash('已成功添加')
+            db.session.add(dingdan)
+
+            flash('已成功添加')
+
+        if form.submita.data:
+
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
+
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
+                              zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=6)
+
+            db.session.add(dingdan)
+
+            flash('已成功追加, 状态转已收货')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -1117,27 +1174,54 @@ def addlyj(cpid, khid):
 
     if form.validate_on_submit():
 
-        uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            # # 获取文件的大小了，单位是字节
-            # size = len(uploaded_file.read())
-            # if size > 1048576:  # 取不到
-            #     flash('文件超过1M，不能上传')
-            #     fullsavefilename = ''
-            # else:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
-            fullsavefilename = ''
+        if form.submit.data:
 
-        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
-                          zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
-        db.session.add(dingdan)
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
+                              zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
 
-        flash('已成功添加')
+            db.session.add(dingdan)
+
+            flash('已成功添加')
+
+        if form.submita.data:
+
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
+
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, kuan_chang=form.chang.data, gao=form.gao.data,
+                              zhonghengtiaoshu_gantiaoshu=form.gantiaoshu.data, color=form.color.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=6)
+
+            db.session.add(dingdan)
+
+            flash('已成功追加, 状态转已收货')
+
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -1264,27 +1348,55 @@ def addzws(cpid, khid):
 
     if form.validate_on_submit():
 
-        uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            # # 获取文件的大小了，单位是字节
-            # size = len(uploaded_file.read())
-            # if size > 1048576:  # 取不到
-            #     flash('文件超过1M，不能上传')
-            #     fullsavefilename = ''
-            # else:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
-            fullsavefilename = ''
 
-        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
-                          zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
-                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+        if form.submit.data:
 
-        db.session.add(dingdan)
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
-        flash('已成功添加')
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
+                              zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=1)
+
+            db.session.add(dingdan)
+
+            flash('已成功添加')
+
+        if form.submita.data:
+
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
+
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, color=form.color.data, shuowei=form.shuowei.data,
+                              zhangfa_dengfenshu_kaishuofangshi=form.kaishuofs.data,
+                              beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename), status=6)
+
+            db.session.add(dingdan)
+
+            flash('已成功追加, 状态转已收货')
+
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -1308,26 +1420,51 @@ def addjx(cpid, khid):
 
     if form.validate_on_submit():
 
-        uploaded_file = form.uploadfile.data
-        if uploaded_file:
-            # # 获取文件的大小了，单位是字节
-            # size = len(uploaded_file.read())
-            # if size > 1048576:  # 取不到
-            #     flash('文件超过1M，不能上传')
-            #     fullsavefilename = ''
-            # else:
-            fullsavefilename = getnewfilename(uploaded_file.filename)
-            uploaded_file.save(fullsavefilename)
-        else:
-            fullsavefilename = ''
+        if form.submit.data:
 
-        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
-                          xinghao=form.xinghao.data, beizhu=form.beizhu.data,
-                          tushipic=os.path.basename(fullsavefilename), status=1)
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
 
-        db.session.add(dingdan)
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, beizhu=form.beizhu.data,
+                              tushipic=os.path.basename(fullsavefilename), status=1)
 
-        flash('已成功添加')
+            db.session.add(dingdan)
+
+            flash('已成功添加')
+
+        if form.submita.data:
+
+            uploaded_file = form.uploadfile.data
+            if uploaded_file:
+                # # 获取文件的大小了，单位是字节
+                # size = len(uploaded_file.read())
+                # if size > 1048576:  # 取不到
+                #     flash('文件超过1M，不能上传')
+                #     fullsavefilename = ''
+                # else:
+                fullsavefilename = getnewfilename(uploaded_file.filename)
+                uploaded_file.save(fullsavefilename)
+            else:
+                fullsavefilename = ''
+
+            dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                              xinghao=form.xinghao.data, beizhu=form.beizhu.data,
+                              tushipic=os.path.basename(fullsavefilename), status=6)
+
+            db.session.add(dingdan)
+
+            flash('已成功追加, 状态转已收货')
 
         return redirect(url_for('main.showkehudd', id=khid))
 
