@@ -49,7 +49,7 @@ class WilladdcpForm(FlaskForm):
 class FineddidForm(FlaskForm):
     ddid = StringField('订单ID')
     status = SelectField('进度状态', coerce=int) #
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -78,7 +78,7 @@ class FineshddidForm(FlaskForm):
     chenghu = StringField('称呼')
     chanpin = SelectField('品类', coerce=int)
     status = SelectField('产品进度', coerce=int)
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -97,7 +97,7 @@ class FineshddidForm(FlaskForm):
 class FinefhddidForm(FlaskForm):
     ddid = StringField('订单ID')
     status = SelectField('进度状态', coerce=int) #
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -113,7 +113,7 @@ class FinepgddidForm(FlaskForm):
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     # chenghu = StringField('称呼')
     status = SelectField('进度状态', coerce=int) #
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -150,7 +150,7 @@ class azstopddidForm(FlaskForm):
 class FineqkddidForm(FlaskForm):
     ddid = StringField('订单ID')
     status = SelectField('进度状态', coerce=int) #
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -164,7 +164,7 @@ class FindkhForm(FlaskForm):
     infostring = StringField('客户查找 「房号」或「称呼」或「电话」. 部分文字)')
     status = SelectField('产品进度', coerce=int)
 
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
@@ -181,7 +181,7 @@ class KFfindForm(FlaskForm):
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     tel = StringField('电话.')
     status = SelectField('产品进度', coerce=int)
-    submit = SubmitField('开始过滤')
+    submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
