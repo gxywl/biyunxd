@@ -48,7 +48,7 @@ class WilladdcpForm(FlaskForm):
 # 入库员的过滤
 class FineddidForm(FlaskForm):
     ddid = StringField('订单ID')
-    status = SelectField('进度状态', coerce=int) #
+    status = SelectField('进度状态', coerce=int)  #
     submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
@@ -57,6 +57,7 @@ class FineddidForm(FlaskForm):
         self.status.choices = [(0, ''), (3, '已订货'), (4, '已入库')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 
 # # 收货员的过滤
 # class FineshddidForm(FlaskForm):
@@ -84,7 +85,7 @@ class FineshddidForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(FineshddidForm, self).__init__(*args, **kwargs)
         self.chanpin.choices = [(0, '')] + [(chanpin.id, chanpin.pinming) for chanpin in
-                                           Chanpin.query.order_by(Chanpin.beizhu).all()]
+                                            Chanpin.query.order_by(Chanpin.beizhu).all()]
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0, ''), (3, '待收货'), (6, '已收货')]
@@ -92,11 +93,10 @@ class FineshddidForm(FlaskForm):
         #                        (7, '安装中'), (8, '安装完成'), (9, '已清款')]
 
 
-
 # 发货员的过滤
 class FinefhddidForm(FlaskForm):
     ddid = StringField('订单ID')
-    status = SelectField('进度状态', coerce=int) #
+    status = SelectField('进度状态', coerce=int)  #
     submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
@@ -106,13 +106,14 @@ class FinefhddidForm(FlaskForm):
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+
 # 派工员的过滤
 class FinepgddidForm(FlaskForm):
     # ddid = StringField('订单ID')
     xiaoqu = SelectField('小区', coerce=int)
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     # chenghu = StringField('称呼')
-    status = SelectField('进度状态', coerce=int) #
+    status = SelectField('进度状态', coerce=int)  #
     submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
@@ -124,32 +125,37 @@ class FinepgddidForm(FlaskForm):
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+
 # 填写终止原因
 class stoplcddidForm(FlaskForm):
     # beizhue =  SelectField('终止原因描述', coerce=int) #StringField('终止原因描述')
     beizhue = SelectField("终止原因描述", validators=[DataRequired()],
-                          choices=[('', ''),('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'),('物流破损', '物流破损'), ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
+                          choices=[('', ''), ('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'), ('物流破损', '物流破损'),
+                                   ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
     submit = SubmitField('终止产品安装')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(stoplcddidForm, self).__init__(*args, **kwargs)
 
+
 # 填写终止原因
 class azstopddidForm(FlaskForm):
     # az_beizhue = StringField('终止安装原因描述')
     az_beizhue = SelectField("终止原因描述", validators=[DataRequired()],
-                          choices=[('', ''),('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'),('物流破损', '物流破损'), ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
+                             choices=[('', ''), ('量尺错误', '量尺错误'), ('设计错误', '设计错误'), ('生产错误', '生产错误'), ('物流破损', '物流破损'),
+                                      ('客户不满意', '客户不满意'), ('其他原因', '其他原因')])
     submit = SubmitField('终止产品安装')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(azstopddidForm, self).__init__(*args, **kwargs)
 
+
 # 清款的过滤
 class FineqkddidForm(FlaskForm):
     ddid = StringField('订单ID')
-    status = SelectField('进度状态', coerce=int) #
+    status = SelectField('进度状态', coerce=int)  #
     submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
@@ -158,6 +164,7 @@ class FineqkddidForm(FlaskForm):
         self.status.choices = [(0, ''), (8, '已完成'), (9, '已清款')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 
 # 业务员的过滤
 class FindkhForm(FlaskForm):
@@ -170,7 +177,7 @@ class FindkhForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(FindkhForm, self).__init__(*args, **kwargs)
         self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]  #, (4, '已入库'), (5, '已发货')
+                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]  # , (4, '已入库'), (5, '已发货')
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
@@ -189,17 +196,19 @@ class KFfindForm(FlaskForm):
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (9, '已清款')] # (4, '已入库'), (5, '已发货'),
+                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]  # (4, '已入库'), (5, '已发货'),
 
 
 # 杂项
 class JxForm(FlaskForm):
-
     weizhi = SelectField('位置', validators=[DataRequired()])
-    shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+    shuliang = SelectField('数量', validators=[DataRequired()],
+                           choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'),
+                                    ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'),
+                                    ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20')])
     xinghao = SelectField("型号", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     submit = SubmitField('保存修改')
 
@@ -233,7 +242,7 @@ class YxwForm(FlaskForm):
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -272,11 +281,11 @@ class YtcForm(FlaskForm):
     dungo = IntegerField("窗台高（毫米）", validators=[DataRequired()])
     lango = IntegerField("栏高（毫米）", validators=[DataRequired()])
     guanwei = SelectField("管位", validators=[DataRequired()],
-                          choices=[('', ''),('无', '无'), ('左', '左'), ('右', '右')])
+                          choices=[('', ''), ('无', '无'), ('左', '左'), ('右', '右')])
 
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -293,6 +302,7 @@ class YtcForm(FlaskForm):
         self.color.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
             pinming=u'阳台窗', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
+
 
 # 纱门
 class SmForm(FlaskForm):
@@ -314,7 +324,7 @@ class SmForm(FlaskForm):
     zhangfa = SelectField('装法', validators=[DataRequired()],
                           choices=[('', ''), ('内装', '内装'), ('外装', '外装')])
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -344,12 +354,11 @@ class LygForm(FlaskForm):
     chang = IntegerField("长（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
 
-
     gantiaoshu = SelectField('杆条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -383,7 +392,7 @@ class LyjForm(FlaskForm):
     color = SelectField("颜色", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -419,15 +428,16 @@ class ScForm(FlaskForm):
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
     bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('', ''), ('左', '左'), ('右', '右'),('左右锁', '左右锁'),('底锁', '底锁')])  # , ('下', '下')
+                          choices=[('', ''), ('左', '左'), ('右', '右'), ('左右锁', '左右锁'), ('底锁', '底锁')])  # , ('下', '下')
     color = SelectField("颜色", validators=[DataRequired()])
 
     dengfenshu = SelectField('等分数', validators=[DataRequired()],
-                             choices=[('', ''),  ('平均', '平均'), ('非平均', '非平均'), ('按图', '按图')])
-    ishaveht = SelectField('横条数', validators=[DataRequired()], choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+                             choices=[('', ''), ('平均', '平均'), ('非平均', '非平均'), ('按图', '按图')])
+    ishaveht = SelectField('横条数', validators=[DataRequired()],
+                           choices=[('0', '无横条'), ('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -461,7 +471,8 @@ class ChForm(FlaskForm):
     # digao= IntegerField("底高（毫米）", validators=[DataRequired()])
     bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('', ''), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下'),('左右锁', '左右锁')])  # ( '中', '中'),
+                          choices=[('', ''), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下'),
+                                   ('左右锁', '左右锁')])  # ( '中', '中'),
     color = SelectField("颜色", validators=[DataRequired()])
 
     # dengfenshu = SelectField('等分数', validators=[DataRequired()],
@@ -469,7 +480,7 @@ class ChForm(FlaskForm):
     # ishaveht = SelectField('有否横条', validators=[DataRequired()], choices=[('', ''), ('无横条', '无横条'), ('有横条', '有横条')])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 
@@ -504,7 +515,7 @@ class ZwsForm(FlaskForm):
     # bashoudg = IntegerField("把手底高（毫米）", validators=[DataRequired()])
 
     beizhu = StringField('备注')
-    uploadfile = FileField('上传图片/草图',validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
     # other = StringField("其他", validators=[DataRequired()])
 

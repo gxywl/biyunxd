@@ -826,7 +826,7 @@ def delkehu(id):
     # 如果有订单禁止删除
 
     if kehu.dingdans.count() > 0:
-        flash('先删订单才可以删')
+        flash('先删订单才可以删客户')
     else:
 
         # for dingdan in kehu.dingdans:
@@ -951,7 +951,8 @@ def addyxw(cpid, khid):
 
             dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                               xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                              color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                              color=form.color.data, beizhu=form.beizhu.data,
+                              tushipic=os.path.basename(fullsavefilename),
                               status=1)
 
             db.session.add(dingdan)
@@ -980,7 +981,8 @@ def addyxw(cpid, khid):
 
             dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
                               xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
-                              color=form.color.data, beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                              color=form.color.data, beizhu=form.beizhu.data,
+                              tushipic=os.path.basename(fullsavefilename),
                               status=6)
 
             db.session.add(dingdan)
@@ -1222,7 +1224,6 @@ def addlyj(cpid, khid):
 
             flash('已成功追加, 状态转已收货')
 
-
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu)
@@ -1348,7 +1349,6 @@ def addzws(cpid, khid):
 
     if form.validate_on_submit():
 
-
         if form.submit.data:
 
             uploaded_file = form.uploadfile.data
@@ -1396,7 +1396,6 @@ def addzws(cpid, khid):
             db.session.add(dingdan)
 
             flash('已成功追加, 状态转已收货')
-
 
         return redirect(url_for('main.showkehudd', id=khid))
 
@@ -1484,41 +1483,40 @@ def deldingdan(ddid, khid):
     return redirect(url_for('main.showkehudd', id=khid))
 
 
-
-
 @main.route('/readddingdan/<int:khid>/<int:ddid>', methods=['GET', 'POST'])
 @login_required
-def readddingdan(khid,ddid):
+def readddingdan(khid, ddid):
     if current_user.role != '业务员':
         return redirect(url_for('main.index'))
 
-# 复制  添加 跳转到编辑
+    # 复制  添加 跳转到编辑
 
     dingdano = Dingdan.query.get(ddid)
     # chanpin = Chanpin.query.get(dingdano)
     kehu = Kehu.query.get(khid)
 
     dingdan = Dingdan(chanpin=dingdano.chanpin, kehu=dingdano.kehu, weizhi=dingdano.weizhi, shuliang=dingdano.shuliang,
-                      xinghao=dingdano.xinghao, kuan_chang=dingdano.kuan_chang, gao=dingdano.gao,shuowei=dingdano.shuowei,
-                      zhonghengtiaoshu_gantiaoshu=dingdano.zhonghengtiaoshu_gantiaoshu, color=dingdano.color,meikongkuan_bashoudigao=dingdano.meikongkuan_bashoudigao,
-                      shanshu=dingdano.shanshu, zhangfa_dengfenshu_kaishuofangshi=dingdano.zhangfa_dengfenshu_kaishuofangshi,
-                      ishaveht=dingdano.ishaveht,beizhu='重订（'+str(ddid)+'）'+dingdano.beizhu, status=1)
+                      xinghao=dingdano.xinghao, kuan_chang=dingdano.kuan_chang, gao=dingdano.gao,
+                      shuowei=dingdano.shuowei,
+                      zhonghengtiaoshu_gantiaoshu=dingdano.zhonghengtiaoshu_gantiaoshu, color=dingdano.color,
+                      meikongkuan_bashoudigao=dingdano.meikongkuan_bashoudigao,
+                      shanshu=dingdano.shanshu,
+                      zhangfa_dengfenshu_kaishuofangshi=dingdano.zhangfa_dengfenshu_kaishuofangshi,
+                      ishaveht=dingdano.ishaveht, beizhu='重订（' + str(ddid) + '）' + dingdano.beizhu, status=1)
 
     db.session.add(dingdan)
     db.session.commit()
     ddid = dingdan.id
 
-    dingdano.beizhu='已重订（'+str(ddid)+'）'+dingdano.beizhu
+    dingdano.beizhu = '已重订（' + str(ddid) + '）' + dingdano.beizhu
     db.session.add(dingdano)
 
-
     user = current_user._get_current_object()
-
 
     toview = ''
     pinming = dingdano.chanpin.pinming
 
-    flash('重订同品类：'+pinming)
+    flash('重订同品类：' + pinming)
 
     if pinming == '隐形网':
         toview = 'edityxw'
@@ -1613,8 +1611,6 @@ def edityxw(ddid, khid):
             dingdan.tushipic = os.path.basename(fullsavefilename)
         # else:
         #     fullsavefilename = ''
-
-
 
         db.session.add(dingdan)
 
@@ -2380,7 +2376,7 @@ def udinghuoone(ddid):
 
     dingdan = Dingdan.query.get(ddid)
     dingdan.status = 2
-    dingdan.time3= None
+    dingdan.time3 = None
 
     db.session.add(dingdan)
     flash('已撤订')
@@ -2574,13 +2570,12 @@ def stoplc(ddid):
     form = stoplcddidForm()
 
     if form.validate_on_submit():
-
         dingdan = Dingdan.query.get(ddid)
         dingdan.status = -1
         dingdan.time_1 = datetime.utcnow()
         dingdan.user_1_id = current_user.id
 
-        dingdan.beizhue = form.beizhue.data #"终止流程"
+        dingdan.beizhue = form.beizhue.data  # "终止流程"
 
         # dingdan.duizhang = None
 
@@ -2589,9 +2584,7 @@ def stoplc(ddid):
 
         return redirect(url_for('main.paigonglist'))
 
-
     dingdan = Dingdan.query.get(ddid)
-
 
     form.beizhue.data = dingdan.beizhue
 
@@ -2609,13 +2602,12 @@ def azstop(ddid):
     form = azstopddidForm()
 
     if form.validate_on_submit():
-
         dingdan = Dingdan.query.get(ddid)
         dingdan.az_status = -1
         dingdan.az_time_1 = datetime.utcnow()
         # dingdan.az_user_1_id = current_user.id
 
-        dingdan.az_beizhue = form.az_beizhue.data #"终止流程"
+        dingdan.az_beizhue = form.az_beizhue.data  # "终止流程"
 
         # dingdan.duizhang = None
 
@@ -2624,15 +2616,14 @@ def azstop(ddid):
 
         return redirect(url_for('main.anzhuanglist'))
 
-
     dingdan = Dingdan.query.get(ddid)
-
 
     form.az_beizhue.data = dingdan.az_beizhue
 
     # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
 
     return render_template('azstop.html', form=form, dingdan=dingdan)
+
 
 @main.route('/getrenwu/<int:ddid>', methods=['GET', 'POST'])
 @login_required
@@ -2714,7 +2705,6 @@ def azwancheng(ddid):
     return redirect(url_for('main.anzhuanglist'))
 
 
-
 @main.route('/azwangongsel/<selids>', methods=['GET', 'POST'])
 @login_required
 def azwangongsel(selids):
@@ -2734,7 +2724,8 @@ def azwangongsel(selids):
     #
     #                                                            synchronize_session=False)
     dingdan = Dingdan.query.filter(Dingdan.id.in_(selids)).update(
-        {'az_status': 3, 'az_time3': datetime.utcnow(),'status':8,'time8':datetime.utcnow(),'user8_id':current_user.id},
+        {'az_status': 3, 'az_time3': datetime.utcnow(), 'status': 8, 'time8': datetime.utcnow(),
+         'user8_id': current_user.id},
         synchronize_session=False)
 
     flash('已申请完成')
