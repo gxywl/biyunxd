@@ -95,19 +95,19 @@
                         <div class="panel-heading">
 
                             <blockquote>
-                                <p>客户ID: {{ kehu.id }}</p>
+                                <p>客户ID: {{ kehu.id }}  <span style="color:orange">业务: {{ kehu.user.username }}
+                                    （ {{ kehu.user.tel }}
+                                    ）</span></p>
                                 <p>地址: 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.xiaoqu.xiaoqu }}
                                     小区 {{ kehu.fangjian }} 房</p>
                                 <p>称呼: {{ kehu.chenghu }}（电话: {{ kehu.tel }}）</p>
                                 <p>备注: {{ kehu.beizhu }}</p>
-                                <hr>
-                                <p style="color:orange">业务: {{ kehu.user.username }}
-                                    （ {{ kehu.user.tel }}
-                                    ）</p>
-                            </blockquote>
 
+                            </blockquote>
+                            <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                            data-toggle="collapse" data-target="#k{{ kehu.id }}">产品</button>
                         </div>
-                        <div class="post-body">
+                        <div  id='k{{ kehu.id }}' class="panel-body collapse off">
                             <blockquote>
 
                                 {% for dingdan in kehu.dingdans %}
@@ -151,19 +151,19 @@
                                              {% elif dingdan.status == -1 %}
                                                 <span style="font-weight:bold;color:red;">「已中止产品」(dingdan.beizhue)</span> {{ moment(dingdan.time_1).format('YY年M月D日') }}
                                             {% elif dingdan.status == 2 %}
-                                                「已下单」 {{ moment(dingdan.time2).format('YY年M月D日') }}
+                                                「已下单（未订货）」 {{ moment(dingdan.time2).format('YY年M月D日') }}
                                             {% elif dingdan.status == 3 %}
-                                                「已订货」 {{ moment(dingdan.time3).format('YY年M月D日') }}
+                                                「已订货(未收货)」 {{ moment(dingdan.time3).format('YY年M月D日') }}
                                             {% elif dingdan.status == 4 %}
                                                 「已入库」
                                             {% elif dingdan.status == 5 %}
                                                 「已发货」
                                             {% elif dingdan.status == 6 %}
-                                                「已收货」 {{ moment(dingdan.time6).format('YY年M月D日') }}
+                                                「已收货（未派工）」 {{ moment(dingdan.time6).format('YY年M月D日') }}
                                             {% elif dingdan.status == 7 %}
-                                                「安装中」 {{ moment(dingdan.time7).format('YY年M月D日') }}
+                                                「已派工（未完成）」 {{ moment(dingdan.time7).format('YY年M月D日') }}
                                             {% elif dingdan.status == 8 %}
-                                                「完成安装」 {{ moment(dingdan.time8).format('YY年M月D日') }}
+                                                「完成安装（未清款）」 {{ moment(dingdan.time8).format('YY年M月D日') }}
                                             {% elif dingdan.status == 9 %}
                                                 「已清款」 {{ moment(dingdan.time9).format('YY年M月D日')}}
                                             {% else %}
@@ -252,10 +252,9 @@
 
                             </blockquote>
                         </div>
-                        <div class="panel-footer">
 
-                        </div>
                     </div>
+                        <hr>
 
                     {% endif %}
 

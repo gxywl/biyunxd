@@ -195,8 +195,8 @@ class KFfindForm(FlaskForm):
         super(KFfindForm, self).__init__(*args, **kwargs)
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
-        self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]  # (4, '已入库'), (5, '已发货'),
+        self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单（未订货）'), (3, '已订货（未收货）'), (6, '已收货（未派工）'),
+                               (7, '已派工（未完成）'), (8, '安装完成（未清款）'), (9, '已清款')]  # (4, '已入库'), (5, '已发货'),
 
 
 # 杂项
