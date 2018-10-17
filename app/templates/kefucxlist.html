@@ -108,13 +108,15 @@
                             data-toggle="collapse" data-target="#k{{ kehu.id }}">产品</button>
                         </div>
                         <div  id='k{{ kehu.id }}' class="panel-body collapse off">
-                            <blockquote>
+
 
                                 {% for dingdan in kehu.dingdans %}
 
 
                                     {% if dingdan.status == status or  status==0 %}
-                                        <hr>
+                                        <blockquote>
+
+
                                         <h4> 订单号「 {{ dingdan.id }} 」 {{ dingdan.chanpin.pinming }}
 {##}
 {#                                            {% if dingdan.status == 1 %}#}
@@ -187,9 +189,16 @@
                                             <li>开锁: {{ dingdan.shuowei }}</li>
                                             {% endif %}
                                             <li>备注: {{ dingdan.beizhu }}</li>
-                                                图示:<br>
+                                                图示:
+                                            {% if dingdan.tushipic %}
+                                                <br>
                                                 <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+                                                {% else %}
+                                                无
+                                                {% endif %}
                                         </ul>
+                                        </blockquote>
+
                                     {% endif %}
 
                                     {#                    #}
@@ -250,7 +259,7 @@
 
                                 {% endfor %}
 
-                            </blockquote>
+
                         </div>
 
                     </div>

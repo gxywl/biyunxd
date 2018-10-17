@@ -154,9 +154,13 @@
                                             <span style="font-weight:bold;background-color: beige ;color:blue;">{{ dingdan.chanpin.pinming }}</span>
                                             / {{ dingdan.weizhi }} / {{ dingdan.xinghao }}
 
-                                            <br>图示:<br>
-                                            <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
-
+                                            <br>图示:
+                                            {% if dingdan.tushipic %}
+                                                <br>
+                                                <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+                                                {% else %}
+                                                无
+                                                {% endif %}
                                         </li>
 
                                         {#                                        #}

@@ -410,8 +410,13 @@
                         </tr>
                         {#                        <tr><td>图示:</td><td><img height="180" src="/static/upload/{{ dingdan.tushipic }}"></td></tr>#}
                     </table>
-                    图示:<br>
-                    <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+                    图示:
+                                            {% if dingdan.tushipic %}
+                                                <br>
+                                                <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+                                                {% else %}
+                                                无
+                                                {% endif %}
 
                 </blockquote>
             </div>
