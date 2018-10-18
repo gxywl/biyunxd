@@ -46,17 +46,17 @@
 
                         <p>房间: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.fangjian }}</p>
                         <p>客户: ({{ kehu.id }}){{ kehu.chenghu }}（{{ kehu.tel }}）
-                            {% if kehu.status == 1 %}
-                                已测尺
-                            {% elif kehu.status == 2 %}
-                                已下单
-                            {% elif kehu.status == 3 %}
-                                已安装
-                            {% elif kehu.status == 4 %}
-                                已清款
-                            {% else %}
-                                状态有误
-                            {% endif %}
+{#                            {% if kehu.status == 1 %}#}
+{#                                已测尺#}
+{#                            {% elif kehu.status == 2 %}#}
+{#                                已下单#}
+{#                            {% elif kehu.status == 3 %}#}
+{#                                已安装#}
+{#                            {% elif kehu.status == 4 %}#}
+{#                                已清款#}
+{#                            {% else %}#}
+{#                                状态有误#}
+{#                            {% endif %}#}
                         </p>
                     </h4>
 

@@ -188,6 +188,7 @@ class KFfindForm(FlaskForm):
     fangjian = StringField('客户的房号 格式（x-x-xxxx）')
     tel = StringField('电话.')
     status = SelectField('产品进度', coerce=int)
+
     submit = SubmitField('开始查找')
 
     # 在构造化Form实例时指定selectField的choices内容,
@@ -196,7 +197,7 @@ class KFfindForm(FlaskForm):
         self.xiaoqu.choices = [(0, '')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
                                            Xiaoqu.query.order_by(Xiaoqu.id).all()]
         self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单（未订货）'), (3, '已订货（未收货）'), (6, '已收货（未派工）'),
-                               (7, '已派工（未完成）'), (8, '安装完成（未清款）'), (9, '已清款')]  # (4, '已入库'), (5, '已发货'),
+                               (7, '已派工（未完成）'), (8, '安装完成（未清款）'), (9, '已清款'), (-1, '异常中止')]  # (4, '已入库'), (5, '已发货'),
 
 
 # 杂项

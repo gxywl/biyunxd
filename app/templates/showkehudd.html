@@ -26,19 +26,21 @@
 
                     <li>房间: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.fangjian }}</li>
                     <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）
-                        {% if kehu.status == 1 %}
-                            已测尺
-                        {% elif kehu.status == 2 %}
-                            已下单
-                        {% elif kehu.status == 3 %}
-                            已安装
-                        {% elif kehu.status == 4 %}
-                            已清款
-                        {% else %}
-                            状态有误
-                        {% endif %}
+{#                        {% if kehu.status == 1 %}#}
+{#                            已测尺#}
+{#                        {% elif kehu.status == 2 %}#}
+{#                            已下单#}
+{#                        {% elif kehu.status == 3 %}#}
+{#                            已安装#}
+{#                        {% elif kehu.status == 4 %}#}
+{#                            已清款#}
+{#                        {% else %}#}
+{#                            状态有误#}
+{#                        {% endif %}#}
                     </li>
+                    {% if kehu.beizhu %}
                     <li>备注: {{ kehu.beizhu }}</li>
+                    {% endif %}
                 </ul>
 
             </blockquote>

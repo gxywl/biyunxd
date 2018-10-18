@@ -44,7 +44,7 @@
         {% if get_var() == 1 %}
 
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h4>客户: {{ kehu.id }}
+                    <div class="panel-heading"><h4>客户( {{ kehu.id }} ):「{{ kehu.xiaoqu.xiaoqu }}」{{ kehu.fangjian }}
                         <span class="pull-right">
                     <a class="btn btn-danger glyphicon glyphicon-remove btn-sm"
                        href="{{ url_for('main.delkehu', id=kehu.id) }}"> 删</a>
@@ -59,21 +59,23 @@
                             {#                            <li>房间: {{ kehu.fangjian }}</li>#}
                             {#                            <li>称呼: {{ kehu.chenghu }}</li>#}
                             {#                            <li>电话: {{ kehu.tel }}</li>#}
-                            <li>房间: {{ kehu.xiaoqu.xiaoqu }} 「 {{ kehu.xiaoqu.dizhi }} 」{{ kehu.fangjian }}</li>
+                            <li>位置:  「 {{ kehu.xiaoqu.dizhi }} 」</li>
                             <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）
-                                {% if kehu.status == 1 %}
-                                    已测尺
-                                {% elif kehu.status == 2 %}
-                                    已下单
-                                {% elif kehu.status == 3 %}
-                                    已安装
-                                {% elif kehu.status == 4 %}
-                                    已清款
-                                {% else %}
-                                    状态有误
-                                {% endif %}
+{#                                {% if kehu.status == 1 %}#}
+{#                                    已测尺#}
+{#                                {% elif kehu.status == 2 %}#}
+{#                                    已下单#}
+{#                                {% elif kehu.status == 3 %}#}
+{#                                    已安装#}
+{#                                {% elif kehu.status == 4 %}#}
+{#                                    已清款#}
+{#                                {% else %}#}
+{#                                    状态有误#}
+{#                                {% endif %}#}
                             </li>
+                            {% if kehu.beizhu %}
                             <li>备注: {{ kehu.beizhu }}</li>
+                            {% endif %}
 
                         </ul>
                         {#                    </blockquote>#}
