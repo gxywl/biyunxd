@@ -168,6 +168,7 @@
                                         </h4>
                                         <ul class="list-unstyled">
                                             <li>位置: {{ dingdan.weizhi }}</li>
+                                            <li>数量: {{ dingdan.shuliang }}</li>
                                             <li>型号: {{ dingdan.xinghao }}</li>
 {#                                            <li>状态: {{ dingdan.status }}</li>#}
 {#                                            <li>状态:#}
@@ -198,21 +199,45 @@
 {#                                            </li>#}
                                         </ul>
                                         <ul class="list-unstyled">
-                                        {% if dingdan.chanpin.pinming not in ['指纹锁','纱门'] %}
-                                            <li>宽长: {{ dingdan.kuan_chang }}</li>
+                                        {% if dingdan.chanpin.pinming not in ['指纹锁','杂项'] %}
+                                            <li>宽(长): {{ dingdan.kuan_chang }}</li>
                                             <li>高度: {{ dingdan.gao }}</li>
                                         {% endif %}
                                          {% if dingdan.chanpin.pinming in ['纱门'] %}
-                                            <li>内空宽: {{ dingdan.meikongkuan_bashoudigao }}</li>
-                                            <li>高度: {{ dingdan.gao }}</li>
+                                            <li>纱门宽: {{ dingdan.meikongkuan_bashoudigao }}</li>
+                                            <li>扇数: {{ dingdan.shanshu }}</li>
+                                             <li>中横条数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
                                         {% endif %}
-                                            {% if dingdan.chanpin.pinming in ['纱门','纱窗'] %}
+                                        {% if dingdan.chanpin.pinming in ['晾衣机','晾衣杆'] %}
+                                            <li>杆数: {{ dingdan.zhonghengtiaoshu_gantiaoshu }}</li>
+                                        {% endif %}
+
+                                            {% if dingdan.chanpin.pinming in ['纱门','窗花'] %}
                                             <li>把手底高: {{ dingdan.meikongkuan_bashoudigao }}</li>
                                             {% endif %}
-                                            {% if dingdan.chanpin.pinming in ['窗花','纱门','纱窗'] %}
-                                            <li>开锁: {{ dingdan.shuowei }}</li>
+                                            {% if dingdan.chanpin.pinming in ['窗花','纱门','纱窗','指纹锁'] %}
+                                            <li>锁位: {{ dingdan.shuowei }}</li>
                                             {% endif %}
+                                            {% if dingdan.chanpin.pinming in ['指纹锁'] %}
+                                            <li>开锁方式: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>
+                                            {% endif %}
+
+                                            {% if dingdan.chanpin.pinming in ['纱窗'] %}
+                                            <li>等分条数: {{ dingdan.zhangfa_dengfenshu_kaishuofangshi }}</li>
+                                            <li>横条: {{ dingdan.ishaveht }}</li>
+                                        {% endif %}
+
+                                            {% if dingdan.chanpin.pinming in ['阳台窗'] %}
+                                            <li>阳台高: {{ dingdan.meikongkuan_bashoudigao }}</li>
+                                            <li>栏高: {{ dingdan.shanshu }}</li>
+                                            <li>管位: {{ dingdan.shuowei }}</li>
+                                        {% endif %}
+
+
                                             {%   if dingdan.beizhu %}
+                                            <li>
+                                                颜色: {{ dingdan.color }}
+                                            </li>
                                             <li>
                                                 备注: {{ dingdan.beizhu }}
                                             </li>

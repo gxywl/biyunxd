@@ -282,7 +282,7 @@ class YtcForm(FlaskForm):
     dungo = IntegerField("窗台高（毫米）", validators=[DataRequired()])
     lango = IntegerField("栏高（毫米）", validators=[DataRequired()])
     guanwei = SelectField("管位", validators=[DataRequired()],
-                          choices=[('', ''), ('无', '无'), ('左', '左'), ('右', '右')])
+                          choices=[('', ''), ('无', '无'), ('左', '左'), ('右', '右'), ('左右', '左右')])
 
     color = SelectField("颜色", validators=[DataRequired()])
     beizhu = StringField('备注')
@@ -316,14 +316,14 @@ class SmForm(FlaskForm):
     xinghao = SelectField("型号", validators=[DataRequired()])
     kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
     gao = IntegerField("高（毫米）", validators=[DataRequired()])
-    neikuan = IntegerField("内空宽（毫米）", validators=[DataRequired()])
+    neikuan = IntegerField("纱门宽（毫米）", validators=[DataRequired()])
     color = SelectField("颜色", validators=[DataRequired()])
-    shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
+    shanshu = SelectField('扇数', validators=[DataRequired()], choices=[('', ''), ('1/2', '1/2'), ('2/4', '2/4')])
     zhonghengtiaoshu = SelectField('中横条数', validators=[DataRequired()], choices=[('', ''), ('1', '1'), ('2', '2')])
     shuowei = SelectField('锁位', validators=[DataRequired()],
-                          choices=[('', ''), ('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
+                          choices=[('中', '中'), ('左', '左'), ('右', '右'), ('上', '上'), ('下', '下')])
     zhangfa = SelectField('装法', validators=[DataRequired()],
-                          choices=[('', ''), ('内装', '内装'), ('外装', '外装')])
+                          choices=[('外装', '外装'), ('内装', '内装')])
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
 
