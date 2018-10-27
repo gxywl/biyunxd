@@ -232,12 +232,12 @@
                                             <li>栏高: {{ dingdan.shanshu }}</li>
                                             <li>管位: {{ dingdan.shuowei }}</li>
                                         {% endif %}
-
-
-                                            {%   if dingdan.beizhu %}
+                                        {%   if dingdan.color %}
                                             <li>
                                                 颜色: {{ dingdan.color }}
                                             </li>
+                                             {% endif %}
+                                             {%   if dingdan.beizhu %}
                                             <li>
                                                 备注: {{ dingdan.beizhu }}
                                             </li>

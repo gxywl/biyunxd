@@ -49,7 +49,9 @@
 
 
                         <button id="outseltoxlsyxm" onclick="outseltoxls(this,'隐形网','A');" class="btn btn-primary glyphicon glyphicon-gift"> 导出电子表格</button>
-                        <button id="taggetitselyxm" onclick="taggetitsel(this,'隐形网','A');" class="btn btn-danger glyphicon glyphicon-gift"> 标志已订货</button>
+{#                        <button id="taggetitselyxm" onclick="taggetitsel(this,'隐形网','A');" class="btn btn-danger glyphicon glyphicon-gift"> 标志已订货</button>#}
+                        <button id="taggetitselyxm" onclick="javascript:if(confirm('您已导出电子表格了吗？\n因标志后将不可导出！\n先导出，再标志！')) { taggetitsel(this,'隐形网','A'); }" class="btn btn-danger glyphicon glyphicon-gift"> 标志已订货</button>
+
 
                         {#                        <a class="btn btn-success " href="{{ url_for('main.outtoxls', pm='隐形网') }}">导出数据xls(隐形网)</a>#}
                         {#                        <a class="btn btn-danger " href="{{ url_for('main.taggetit', pm='隐形网') }}">标志已订货</a>#}
