@@ -29,17 +29,42 @@
 
     {% for kehu in kehus %}
 
-        {{ set_var(0) }}
+        {% if status == 66 %}
 
-        {% if status != 0 %}
-        {% for dingdant in kehu.dingdans %}
-            {% if dingdant.status == status or status == 0  %}
+            {{ set_var(1) }}
+
+            {% for dingdant in kehu.dingdans %}
+                {% if dingdant.status >= 1 and dingdant.status < 8  or dingdant.status ==9 %}
+                    {{ set_var(0) }}
+                {% endif %}
+            {% endfor %}
+
+
+        {% elif status == 99 %}
+
+            {{ set_var(0) }}
+            {% if kehu.status==4 %}
                 {{ set_var(1) }}
             {% endif %}
-        {% endfor %}
+
+
         {% else %}
-            {{ set_var(1) }}
+
+           {{ set_var(0) }}
+
+            {% if status != 0 %}
+            {% for dingdant in kehu.dingdans %}
+                {% if dingdant.status == status or status == 0  %}
+                    {{ set_var(1) }}
+                {% endif %}
+            {% endfor %}
+            {% else %}
+                {{ set_var(1) }}
+            {% endif %}
+
         {% endif %}
+
+
 
         {% if get_var() == 1 %}
 
@@ -80,65 +105,144 @@
                         </ul>
                         {#                    </blockquote>#}
 
+
+                    {% if status == 66  %}
+                        <a class="btn btn-primary  glyphicon glyphicon-lock"
+                           href="{{ url_for('main.qingkunonek', khid=kehu.id) }}"> 清款</a>
+
+                    {% elif status == 99  %}
+{#                        <a class="btn btn-danger  glyphicon glyphicon-repeat"#}
+{#                           href="{{ url_for('main.unqingkunonek', khid=kehu.id) }}"> 撤清款</a>#}
+                        <a class="btn btn-danger  glyphicon glyphicon-repeat" disabled="true"
+                           href="#"> 撤清款</a>
+                    {% else %}
+
                         <button type="button" class="btn btn-primary glyphicon glyphicon-th-list" data-toggle="collapse"
                                 data-target="#c{{ kehu.id }}">
                             订单概况
                         </button>
+
+
                         <a class="btn btn-success glyphicon glyphicon-th-large"
                            href="{{ url_for('main.showkehudd', id=kehu.id) }}"> 订单详细</a>
+                     {% endif  %}
+
 
                     </div>
-                    <div id="c{{ kehu.id }}" class="panel-body collapse off">
+
+                    {% if status == 66 or status == 99  %}
+                        <div id="c{{ kehu.id }}" class="panel-body">
+
+                    {% else %}
+                            <div id="c{{ kehu.id }}" class="panel-body collapse off ">
+                    {% endif %}
 
 
                         {% for dingdan in kehu.dingdans %}
 
-                              {% if dingdan.status >= status or status == 0  %}
-                            <ul class="list-unstyled">
+                            {% if status == 66 or status == 99 %}
 
-                                <li>No：{{ loop.index }}
-                                    {% if dingdan.status == 1 %}
-                                        「已量尺{{ moment(dingdan.time1).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 2 %}
-                                        「已下单{{ moment(dingdan.time2).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 3 %}
-                                        「已订货{{ moment(dingdan.time3).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 4 %}
-                                        「已入库」
-                                    {% elif dingdan.status == 5 %}
-                                        「已发货」
-                                    {% elif dingdan.status == 6 %}
-                                        「已收货{{ moment(dingdan.time6).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 7 %}
-                                        「安装中{{ moment(dingdan.time7).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 8 %}
-                                        「完成安装{{ moment(dingdan.time8).format('YY.MM.DD') }}」
-                                    {% elif dingdan.status == 9 %}
-                                        「已清款{{ moment(dingdan.time9).format('YY.MM.DD') }}」
-                                    {% else %}
-                                        「状态有误」
-                                    {% endif %}
-                                </li>
-                                <li>产品型号：【<span
-                                        style="font-weight:bold;color:darkblue;">{{ dingdan.chanpin.pinming }}</span>】（{{ dingdan.xinghao }}）
-                                </li>
+                                <ul class="list-unstyled">
 
-                                <li>位置面积：{{ dingdan.weizhi }}（
-                                    {% if dingdan.chanpin.pinming in ["隐形网","纱窗","窗花"] %}
-                                        {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
-                                        {{ "%.2f"|format(dingdan.gao * dingdan.kuan_chang/1000000) }}
-                                    {% endif %}
+                                    <li>No：{{ loop.index }}
+                                        {% if dingdan.status == 1 %}
+                                            「已量尺{{ moment(dingdan.time1).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 2 %}
+                                            「已下单{{ moment(dingdan.time2).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 3 %}
+                                            「已订货{{ moment(dingdan.time3).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 4 %}
+                                            「已入库」
+                                        {% elif dingdan.status == 5 %}
+                                            「已发货」
+                                        {% elif dingdan.status == 6 %}
+                                            「已收货{{ moment(dingdan.time6).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 7 %}
+                                            「安装中{{ moment(dingdan.time7).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 8 %}
+                                            「完成安装{{ moment(dingdan.time8).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 9 %}
+                                            「已清款{{ moment(dingdan.time9).format('YY.MM.DD') }}」
+                                        {% else %}
+                                            「状态有误」
+                                        {% endif %}
+                                    </li>
+                                    <li>产品型号：【<span
+                                            style="font-weight:bold;color:darkblue;">{{ dingdan.chanpin.pinming }}</span>】（{{ dingdan.xinghao }}）
+                                    </li>
 
-                                    {% if dingdan.chanpin.pinming in ["纱门"] %}
-                                        {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
-                                        {{ "%.2f"|format(dingdan.gao * dingdan.meikongkuan_bashoudigao/1000000) }}
-                                    {% endif %}
-                                    ）
-                                </li>
-                                {#                            <li>1―2―3―4―5▲―6―7―8―9</li>#}
-                            </ul>
+                                    <li>位置面积：{{ dingdan.weizhi }}（
+                                        {% if dingdan.chanpin.pinming in ["隐形网","纱窗","窗花","玻璃"] %}
+                                            {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.2f"|format(dingdan.gao * dingdan.kuan_chang/1000000) }}
+                                        {% endif %}
 
-                             {% endif %}
+                                        {% if dingdan.chanpin.pinming in ["纱门"] %}
+                                            {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.2f"|format(dingdan.gao * dingdan.meikongkuan_bashoudigao/1000000) }}
+                                        {% endif %}
+                                        ）
+                                    </li>
+                                    {#                            <li>1―2―3―4―5▲―6―7―8―9</li>#}
+                                </ul>
+
+
+                            {% else %}
+
+
+
+                                  {% if dingdan.status >= status or status == 0  %}
+                                <ul class="list-unstyled">
+
+                                    <li>No：{{ loop.index }}
+                                        {% if dingdan.status == 1 %}
+                                            「已量尺{{ moment(dingdan.time1).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 2 %}
+                                            「已下单{{ moment(dingdan.time2).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 3 %}
+                                            「已订货{{ moment(dingdan.time3).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 4 %}
+                                            「已入库」
+                                        {% elif dingdan.status == 5 %}
+                                            「已发货」
+                                        {% elif dingdan.status == 6 %}
+                                            「已收货{{ moment(dingdan.time6).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 7 %}
+                                            「安装中{{ moment(dingdan.time7).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 8 %}
+                                            「完成安装{{ moment(dingdan.time8).format('YY.MM.DD') }}」
+                                        {% elif dingdan.status == 9 %}
+                                            「已清款{{ moment(dingdan.time9).format('YY.MM.DD') }}」
+                                        {% else %}
+                                            「状态有误」
+                                        {% endif %}
+                                    </li>
+                                    <li>产品型号：【<span
+                                            style="font-weight:bold;color:darkblue;">{{ dingdan.chanpin.pinming }}</span>】（{{ dingdan.xinghao }}）
+                                    </li>
+
+                                    <li>位置面积：{{ dingdan.weizhi }}（
+                                        {% if dingdan.chanpin.pinming in ["隐形网","纱窗","窗花"] %}
+                                            {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.2f"|format(dingdan.gao * dingdan.kuan_chang/1000000) }}
+                                        {% endif %}
+
+                                        {% if dingdan.chanpin.pinming in ["纱门"] %}
+                                            {#                                            {{ dingdan.gao }}*{{ dingdan.kuan_chang }}=#}
+                                            {{ "%.2f"|format(dingdan.gao * dingdan.meikongkuan_bashoudigao/1000000) }}
+                                        {% endif %}
+                                        ）
+                                    </li>
+                                    {#                            <li>1―2―3―4―5▲―6―7―8―9</li>#}
+                                </ul>
+
+                                 {% endif %}
+
+
+
+
+                            {% endif %}
+
                         {% endfor %}
 
                     </div>

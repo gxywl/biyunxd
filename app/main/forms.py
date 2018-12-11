@@ -17,7 +17,9 @@ class KehuForm(FlaskForm):
     zje = FloatField('总金额')
     # status = SelectField('进度状态', validators=[DataRequired()],
     #                      choices=[('0', '已测尺'), ('1', '已下单'), ('2', '已安装'), ('3', '已清款')])
-    status = SelectField('进度状态', validators=[DataRequired()], coerce=int)
+
+    # status = SelectField('进度状态', validators=[DataRequired()], coerce=int)
+
     # 状态：测尺，已下单，已安装，已清款
 
     beizhu = StringField('备注')
@@ -28,7 +30,8 @@ class KehuForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(KehuForm, self).__init__(*args, **kwargs)
         self.xiaoqu.choices = [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in Xiaoqu.query.order_by(Xiaoqu.id).all()]
-        self.status.choices = [(1, '已测尺'), (2, '已下单'), (3, '已安装'), (4, '已清款')]
+        # self.status.choices = [(1, '已测尺'), (2, '已下单'), (3, '已安装')]  #, (4, '已清款')
+
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 
@@ -177,7 +180,7 @@ class FindkhForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(FindkhForm, self).__init__(*args, **kwargs)
         self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (9, '已清款')]  # , (4, '已入库'), (5, '已发货')
+                               (7, '安装中'), (8, '安装完成'), (66,'全装完成(待清款)'), (99, '已清款客户')]  # , (4, '已入库'), (5, '已发货')
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 

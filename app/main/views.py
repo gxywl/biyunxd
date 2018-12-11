@@ -121,9 +121,13 @@ def kehulist():
 
     status = session.get('status', 0)
 
+
+
     kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
         or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
             Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+
+
 
     # kehus = Kehu.query.filter_by(user=current_user._get_current_object(),).order_by(
     #     Kehu.id.desc())  # .order_by(Guke.outtime.desc())
@@ -775,7 +779,7 @@ def addkehu():
     if form.validate_on_submit():
         xiaoqu = Xiaoqu.query.get(form.xiaoqu.data)
         kehu = Kehu(user=user, xiaoqu=xiaoqu, fangjian=form.fangjian.data, chenghu=form.chenghu.data, tel=form.tel.data,
-                    zje=form.zje.data, beizhu=form.beizhu.data, status=form.status.data)  # status='No'
+                    zje=form.zje.data, beizhu=form.beizhu.data)  # , status=form.status.data,status='No'
         db.session.add(kehu)
         flash('已成功添加客户')
         return redirect(url_for('main.kehulist'))
@@ -805,7 +809,7 @@ def editkehu(id):
         kehu.chenghu = form.chenghu.data
         kehu.tel = form.tel.data
         kehu.zje = form.zje.data
-        kehu.status = form.status.data
+        # kehu.status = form.status.data
         kehu.beizhu = form.beizhu.data
 
         db.session.add(kehu)
@@ -817,7 +821,7 @@ def editkehu(id):
     form.chenghu.data = kehu.chenghu
     form.tel.data = kehu.tel
     form.zje.data = kehu.zje
-    form.status.data = kehu.status
+    # form.status.data = kehu.status
     form.beizhu.data = kehu.beizhu
 
     return render_template('addkehu.html', form=form)
@@ -2963,6 +2967,65 @@ def unqingkunone(ddid):
     dingdan.time9 = None
 
     db.session.add(dingdan)
+    flash('已撤清款')
+
+    return redirect(url_for('main.qingkuanlist'))
+
+
+
+@main.route('/qingkunonek/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def qingkunonek(khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    kehu = Kehu.query.get(khid)
+    kehu.status = 4
+    kehu.time3 = datetime.utcnow()
+
+    for dingdan in kehu.dingdans:
+        if dingdan.status == 8:
+            dingdan.status = 9
+            dingdan.time9 = datetime.utcnow()
+
+    db.session.add(kehu)
+
+    # dingdan = Dingdan.query.get(khid)
+    # dingdan.status = 9
+    # dingdan.time9 = datetime.utcnow()
+    #
+    # db.session.add(dingdan)
+
+    flash('已确认清款')
+
+    return redirect(url_for('main.kehulist'))
+
+
+@main.route('/unqingkunonek/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def unqingkunonek(khid):
+
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    kehu = Kehu.query.get(khid)
+    kehu.status = 3
+    #kehu.time2 = datetime.utcnow()
+    kehu.time3 = None
+
+    for dingdan in kehu.dingdans:
+        if dingdan.status == 9:
+            dingdan.status = 8
+            #dingdan.time9 = datetime.utcnow()
+            dingdan.time9 = None
+
+    db.session.add(kehu)
+
+    # dingdan = Dingdan.query.get(ddid)
+    # dingdan.status = 8
+    # dingdan.time9 = None
+    #
+    # db.session.add(dingdan)
     flash('已撤清款')
 
     return redirect(url_for('main.qingkuanlist'))
