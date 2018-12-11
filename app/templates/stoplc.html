@@ -94,6 +94,36 @@
                                 <td>{{ dingdan.color }}</td>
                             </tr>
 
+
+                        {% elif dingdan.chanpin.pinming == '玻璃' %}
+
+                            <tr>
+                                <td>宽(mm):</td>
+                                <td>{{ dingdan.kuan_chang }}</td>
+                            </tr>
+                            <tr>
+                                <td>高(mm):</td>
+                                <td>{{ dingdan.gao }}</td>
+                            </tr>
+
+{#                            <tr>#}
+{#                                <td>窗台高(mm):</td>#}
+{#                                <td>{{ dingdan.meikongkuan_bashoudigao }}</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>栏高(mm):</td>#}
+{#                                <td>{{ dingdan.shanshu }}</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>管位:</td>#}
+{#                                <td>{{ dingdan.shuowei }}</td>#}
+{#                            </tr>#}
+{#                            <tr>#}
+{#                                <td>颜色:</td>#}
+{#                                <td>{{ dingdan.color }}</td>#}
+{#                            </tr>#}
+
+
                         {% elif dingdan.chanpin.pinming == '纱门' %}
 
                             <tr>

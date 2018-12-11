@@ -13,6 +13,10 @@
                 <li>窗台高(mm): {{ dingdan.meikuan_digao }}</li>
                 <li>栏高: {{ dingdan.shanshu }}</li>
                 <li>管位: {{ dingdan.shuowei }}</li>
+            {% elif dingdan.chanpin.pinming == '玻璃' %}
+                <li>宽(mm): {{ dingdan.kuan_chang }}</li>
+                <li>高(mm): {{ dingdan.gao }}</li>
+
             {% elif dingdan.chanpin.pinming == '纱门' %}
                 <li>宽(mm): {{ dingdan.kuan_chang }}</li>
                 <li>高(mm): {{ dingdan.gao }}</li>

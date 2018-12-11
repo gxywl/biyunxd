@@ -13,7 +13,7 @@ from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu  # , Gongren
 from .. import db
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
     KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm, \
-    stoplcddidForm, azstopddidForm
+    stoplcddidForm, azstopddidForm, BlForm
 from . import main
 
 import tablib
@@ -62,9 +62,18 @@ def index():
         # 一般用户转转到首页..
         return redirect(url_for('main.paigonglist'))
 
+
     elif current_user.role == '清款员':
         # 一般用户转转到首页..
         return redirect(url_for('main.qingkuanlist'))
+
+
+    # elif current_user.role == '统计员':
+    #     # 一般用户转转到首页..
+    #     return redirect(url_for('main.tongjilist'))
+
+
+
     else:
         # 一般用户转转到首页..
         # return redirect(request.args.get('next') or url_for('main.kehulist'))
@@ -869,6 +878,8 @@ def showkehudd(id):
 
         elif chanpin.pinming == '阳台窗':
             toview = 'addytc'
+        elif chanpin.pinming == '玻璃':
+            toview = 'addbl'
 
         elif chanpin.pinming == '纱门':
             toview = 'addsm'
@@ -882,8 +893,6 @@ def showkehudd(id):
             toview = 'addch'
         elif chanpin.pinming == '指纹锁':
             toview = 'addzws'
-        elif chanpin.pinming == '杂项':
-            toview = 'addjx'
 
         else:
             pass
@@ -1039,6 +1048,55 @@ def addytc(cpid, khid):
         return redirect(url_for('main.showkehudd', id=khid))
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
+
+
+
+# 玻璃
+@main.route('/addbl/<int:cpid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def addbl(cpid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = BlForm()
+
+    chanpin = Chanpin.query.get(cpid)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    if form.validate_on_submit():
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+        else:
+            fullsavefilename = ''
+
+        # savefilename
+
+        dingdan = Dingdan(chanpin=chanpin, kehu=kehu, weizhi=form.weizhi.data, shuliang=form.shuliang.data,
+                          xinghao=form.xinghao.data, kuan_chang=form.kuan.data, gao=form.gao.data,
+                          beizhu=form.beizhu.data, tushipic=os.path.basename(fullsavefilename),
+                          status=1)
+
+        db.session.add(dingdan)
+
+        flash('已成功添加')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc='')
+
+
 
 
 # # 纱门
@@ -1522,6 +1580,8 @@ def readddingdan(khid, ddid):
         toview = 'edityxw'
     elif pinming == '阳台窗':
         toview = 'editytc'
+    elif pinming == '玻璃':
+        toview = 'editbl'
     elif pinming == '纱门':
         toview = 'editsm'
     elif pinming == '晾衣杆':
@@ -1536,6 +1596,7 @@ def readddingdan(khid, ddid):
         toview = 'editzws'
     elif pinming == '杂项':
         toview = 'editjx'
+
     else:
         pass
 
@@ -1557,6 +1618,8 @@ def editdingdan(ddid, khid):
         toview = 'edityxw'
     elif pinming == '阳台窗':
         toview = 'editytc'
+    elif pinming == '玻璃':
+        toview = 'editbl'
     elif pinming == '纱门':
         toview = 'editsm'
     elif pinming == '晾衣杆':
@@ -1709,6 +1772,80 @@ def editytc(ddid, khid):
     # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
 
     return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
+
+
+# 玻璃
+@main.route('/editbl/<int:ddid>/<int:khid>', methods=['GET', 'POST'])
+@login_required
+def editbl(ddid, khid):
+    if current_user.role != '业务员':
+        return redirect(url_for('main.index'))
+
+    form = BlForm()
+
+    if form.validate_on_submit():
+        dingdan = Dingdan.query.get(ddid)
+
+        dingdan.weizhi = form.weizhi.data
+        dingdan.shuliang = form.shuliang.data
+        dingdan.xinghao = form.xinghao.data
+        dingdan.kuan_chang = form.kuan.data
+        dingdan.gao = form.gao.data
+
+        # dingdan.meikongkuan_bashoudigao = form.dungo.data
+        # dingdan.shanshu = form.lango.data
+        # dingdan.shuowei = form.guanwei.data
+
+        # dingdan.color = form.color.data
+        dingdan.beizhu = form.beizhu.data
+
+        uploaded_file = form.uploadfile.data
+        if uploaded_file:
+            # # 获取文件的大小了，单位是字节
+            # size = len(uploaded_file.read())
+            # if size > 1048576:  # 取不到
+            #     flash('文件超过1M，不能上传')
+            #     fullsavefilename = ''
+            # else:
+            #     uploaded_file = form.uploadfile.data
+            fullsavefilename = getnewfilename(uploaded_file.filename)
+            uploaded_file.save(fullsavefilename)
+            dingdan.tushipic = os.path.basename(fullsavefilename)
+        # else:
+        #     fullsavefilename = ''
+
+        db.session.add(dingdan)
+
+        flash('已成功修改')
+
+        return redirect(url_for('main.showkehudd', id=khid))
+
+    dingdan = Dingdan.query.get(ddid)
+
+    chanpin = Chanpin.query.get(dingdan.chanpin.id)
+    kehu = Kehu.query.get(khid)
+
+    # form.cpid.data = chanpin
+    # form.khid.data = kehu.id
+
+    form.weizhi.data = dingdan.weizhi
+    form.shuliang.data = str(dingdan.shuliang)
+    form.xinghao.data = dingdan.xinghao
+    form.kuan.data = dingdan.kuan_chang
+    form.gao.data = dingdan.gao
+
+    # form.dungo.data = dingdan.meikongkuan_bashoudigao
+    # form.lango.data = dingdan.shanshu
+    # form.guanwei.data = dingdan.shuowei
+
+    # form.color.data = dingdan.color
+    form.beizhu.data = dingdan.beizhu
+
+    # form.beizhu.tushipic = fullsavefilename,  dingdan.tushipic
+
+    return render_template('adddingdan.html', form=form, chanpin=chanpin, kehu=kehu, imgsrc=dingdan.tushipic)
+
 
 
 # # 纱门
@@ -2883,6 +3020,11 @@ def outseltoxls(pm, selids):
             u'栏高（毫米）', u'管位', u"颜色",
             u"备注", u"业务员（电话）")
 
+    elif pm == '玻璃':
+        headers = (
+            u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"备注", u"业务员（电话）")
+
     elif pm == '纱门':
         headers = (
             u"订单号", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）",
@@ -2932,6 +3074,13 @@ def outseltoxls(pm, selids):
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'阳台窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shanshu, dingdan.shuowei, dingdan.color,
+                 dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
+
+        elif pm == '玻璃':
+            data.append(
+                [dingdan.id, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                 dingdan.kehu.chenghu, dingdan.kehu.tel, u'玻璃', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '纱门':
@@ -3063,6 +3212,11 @@ def outtoxls(pm):
             u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"窗台高（毫米）", u'栏高（毫米）', u'管位', u"颜色",
             u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
 
+    elif pm == '玻璃':
+        headers = (
+            u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
+
     elif pm == '纱门':
         headers = (
             u"订单号", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）", u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
@@ -3102,6 +3256,12 @@ def outtoxls(pm):
             data.append(
                 [dingdan.id, u'阳台窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shanshu, dingdan.shuowei, dingdan.color,
+                 dingdan.beizhu, dingdan.kehu.chenghu,
+                 dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
+
+        elif pm == '玻璃':
+            data.append(
+                [dingdan.id, u'玻璃', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
                  dingdan.beizhu, dingdan.kehu.chenghu,
                  dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 

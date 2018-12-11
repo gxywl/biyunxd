@@ -227,11 +227,18 @@
                                             <li>横条: {{ dingdan.ishaveht }}</li>
                                         {% endif %}
 
-                                            {% if dingdan.chanpin.pinming in ['阳台窗'] %}
+                                        {% if dingdan.chanpin.pinming in ['阳台窗'] %}
                                             <li>阳台高: {{ dingdan.meikongkuan_bashoudigao }}</li>
                                             <li>栏高: {{ dingdan.shanshu }}</li>
                                             <li>管位: {{ dingdan.shuowei }}</li>
                                         {% endif %}
+
+                                        {% if dingdan.chanpin.pinming in ['玻璃'] %}
+{#                                            <li>阳台高: {{ dingdan.meikongkuan_bashoudigao }}</li>#}
+{#                                            <li>栏高: {{ dingdan.shanshu }}</li>#}
+{#                                            <li>管位: {{ dingdan.shuowei }}</li>#}
+                                        {% endif %}
+
                                         {%   if dingdan.color %}
                                             <li>
                                                 颜色: {{ dingdan.color }}

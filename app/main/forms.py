@@ -304,6 +304,34 @@ class YtcForm(FlaskForm):
             pinming=u'阳台窗', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
+#阳台窗--玻璃
+class BlForm(FlaskForm):
+    # wweizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('固定扇', '固定扇'), ('推拉扇', '推拉扇'), ('纱扇', '纱扇'), ('平开扇', '平开扇'), ('其他', '其他')])
+    weizhi = SelectField('位置', validators=[DataRequired()])
+    shuliang = SelectField('数量', validators=[DataRequired()], choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4')])
+    # xinghao = SelectField("型号", validators=[DataRequired()],
+    #                       choices=[('', ''), ('恒大标配', '恒大标配'), ('标准型', '标准型'), ('普及型', '普及型')])
+    xinghao = SelectField("型号", validators=[DataRequired()])
+    kuan = IntegerField("宽（毫米）", validators=[DataRequired()])
+    gao = IntegerField("高（毫米）", validators=[DataRequired()])
+
+    beizhu = StringField('备注')
+    uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
+
+    # other = StringField("其他", validators=[DataRequired()])
+
+    # jine = IntegerField("金额", validators=[DataRequired()])
+    submit = SubmitField('保存修改')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(BlForm, self).__init__(*args, **kwargs)
+        self.weizhi.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming=u'玻璃', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
+        self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
+            pinming=u'玻璃', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
+
+
 
 # 纱门
 class SmForm(FlaskForm):
