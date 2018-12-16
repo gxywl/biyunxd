@@ -577,12 +577,13 @@ def tongjilist():
     # dingdans = Dingdan.query.filter(Dingdan.status == 8).filter_by(azd_id=sgdid,status=status).order_by(Dingdan.time8)
 
     dingdans = Dingdan.query.filter(
-        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,Dingdan.kehu_id)
+        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                               Dingdan.kehu_id)
 
     # form.sgdid.data = sgdid
 
-    form.dayB.data =datetime.strptime(dayB,'%Y-%m-%d')   #datetime.utcnow() # dayB.strftime('%Y-%m-%d')
-    form.dayE.data =datetime.strptime(dayE,'%Y-%m-%d')  #dayE.strftime('%Y-%m-%d')
+    form.dayB.data = datetime.strptime(dayB, '%Y-%m-%d')  # datetime.utcnow() # dayB.strftime('%Y-%m-%d')
+    form.dayE.data = datetime.strptime(dayE, '%Y-%m-%d')  # dayE.strftime('%Y-%m-%d')
 
     form.status.data = status
     #
@@ -613,8 +614,8 @@ def tongjilist():
     # return render_template('tongjilist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
     #                        status=status)  #
     #
-    return render_template('tongjilist.html', form=form, dingdans=dingdans, status=status, users=users,dayB=dayB,dayE=dayE)
-
+    return render_template('tongjilist.html', form=form, dingdans=dingdans, status=status, users=users, dayB=dayB,
+                           dayE=dayE)
 
 
 @main.route('/outaztoxls/<int:status>', methods=['GET', 'POST'])
@@ -623,55 +624,50 @@ def outaztoxls(status):
     if current_user.role != '统计员':
         return redirect(url_for('main.index'))
 
-
-
     dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
     dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
     status = session.get('status', 8)
 
     dingdans = Dingdan.query.filter(
-        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,Dingdan.time8)
+        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                               Dingdan.time8)
 
     users = User.query.filter_by(role=u'安装队').all()
-
-
 
     headers = (u"No", u"安装队", u"小区", u"房间", u"产品", u"型号", u"数量", u"单位", u"时间", u"状态")
 
     info = []
     data = tablib.Dataset(*info, headers=headers)  # headers 数量要与 data 致
 
+    i = 0
     for dingdan in dingdans:
 
-        azdname=''
-        for  user in users:
+        i += 1
+        azdname = ''
+        for user in users:
             if user.id == dingdan.azd_id:
-                azdname=user.username
+                azdname = user.username
 
-        shuliang=0
-        dw=''
+        shuliang = 0
+        dw = ''
         if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网' or dingdan.chanpin.pinming == '纱门':
-            shuliang =dingdan.kuan_chang * dingdan.gao / 1000 / 1000
-            dw=u'平方'
+            shuliang = dingdan.kuan_chang * dingdan.gao / 1000 / 1000
+            dw = u'平方'
         else:
-            shuliang =dingdan.shuliang
+            shuliang = dingdan.shuliang
             dw = u'个'
 
         statusP = ''
         if dingdan.status == 8:
-            statusP=u'(装完)'
+            statusP = u'(装完)'
         elif dingdan.status == 7:
-            statusP =u'(未完工)'
+            statusP = u'(未完工)'
         elif dingdan.status == -1:
-           statusP=u'【终止】'
+            statusP = u'【终止】'
 
-
-        data.append(['',azdname, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.chanpin.pinming, dingdan.xinghao,
-             shuliang,dw,dingdan.time8.strftime('%Y-%m-%d'),statusP])
-
-
-
-
+        data.append(
+            [i, azdname, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.chanpin.pinming, dingdan.xinghao,
+             shuliang, dw, dingdan.time8.strftime('%Y-%m-%d'), statusP])
 
     t = time.time()
     nowTime = lambda: int(round(t * 1000))
