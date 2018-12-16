@@ -65,7 +65,7 @@
     {{ dingdan.chanpin.pinming }} </td><td>{{ dingdan.xinghao }} </td><td>
 
     {% if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网' or dingdan.chanpin.pinming == '纱门' %}
-    {{ dingdan.kuan_chang * dingdan.hao/1000/1000 }} (平方)
+    {{ dingdan.kuan_chang * dingdan.gao/1000/1000 }} (平方)
         {% else %}
     {{ dingdan.shuliang }} (个）
     {% endif %}
