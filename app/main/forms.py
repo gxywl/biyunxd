@@ -1,9 +1,9 @@
 # _*_ encoding: utf-8 _*_
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed
-from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField, FloatField
+from wtforms import StringField, SubmitField, IntegerField, SelectField, HiddenField, FileField, FloatField, DateField
 from wtforms.validators import DataRequired, InputRequired
-from ..models import Chanpin, Xiaoqu, Chanpinxx
+from ..models import Chanpin, Xiaoqu, Chanpinxx, User
 
 
 # 客户
@@ -60,6 +60,28 @@ class FineddidForm(FlaskForm):
         self.status.choices = [(0, ''), (3, '已订货'), (4, '已入库')]
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
+
+
+# 统计员的过滤
+class SgdtjForm(FlaskForm):
+    # ddid = StringField('订单ID')
+    # sgdid = SelectField('安装队', coerce=int)  #
+
+    dayB = DateField('时间段始')
+    dayE = DateField('时间段终')
+
+    status = SelectField('进度状态', coerce=int)  #
+    submit = SubmitField('开始统计')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(SgdtjForm, self).__init__(*args, **kwargs)
+        self.status.choices = [(8, '已完成'), (7, '未完成'), (-1, '已终止')]
+        # self.sgdid.choices = [(user.id, user.username) for user in User.query.filter_by(
+        #     role=u'安装队').order_by(User.beizhu).all()]
+    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 
 
 # # 收货员的过滤

@@ -13,7 +13,7 @@ from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu  # , Gongren
 from .. import db, moment
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
     KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm, \
-    stoplcddidForm, azstopddidForm, BlForm
+    stoplcddidForm, azstopddidForm, BlForm, SgdtjForm
 from . import main
 
 import tablib
@@ -66,6 +66,10 @@ def index():
     elif current_user.role == '清款员':
         # 一般用户转转到首页..
         return redirect(url_for('main.qingkuanlist'))
+
+    elif current_user.role == '统计员':
+        # 一般用户转转到首页..
+        return redirect(url_for('main.tongjilist'))
 
 
     # elif current_user.role == '统计员':
@@ -535,6 +539,83 @@ def qingkuanlist():
                            status=status)  #
 
 
+@main.route('/tongjilist', methods=['GET', 'POST'])
+@login_required
+def tongjilist():
+    if current_user.role != '统计员':
+        return redirect(url_for('main.index'))
+
+    form = SgdtjForm()
+
+    if form.validate_on_submit():
+        # session['sgdid'] = form.sgdid.data
+        session['dayB'] = form.dayB.data.strftime('%Y-%m-%d')
+        session['dayE'] = form.dayE.data.strftime('%Y-%m-%d')
+        session['status'] = form.status.data
+        return redirect(url_for('main.tongjilist'))
+
+    # sgdid = session.get('sgdid', '')
+    dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
+    dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
+    status = session.get('status', 0)
+
+    # dayB = datetime.utcnow().strftime('%Y-%m-%d')
+    # dayE = datetime.utcnow().strftime('%Y-%m-%d')
+
+    # # 下单时间超过6小时的才在此显示
+    # # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes > 2).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+    #
+    # # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1+datetime.timedelta(minutes=2))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+    #
+    # # dingdans = Dingdan.query.filter(Dingdan.status==2).filter(datetime.utcnow() > (Dingdan.time1 + timedelta(days=10))).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+    #
+    # # dingdans = Dingdan.query.filter(Dingdan.status==2).filter((datetime.utcnow()-Dingdan.time1).minutes>9000).order_by(Dingdan.chanpin_id, Dingdan.kehu_id)
+    #
+    # # dingdans = Dingdan.query.filter_by(status="已下单").order_by(Dingdan.chanpin.id)  # .order_by(Guke.outtime.desc())
+    #
+
+    # dingdans = Dingdan.query.filter(Dingdan.status == 8).filter_by(azd_id=sgdid,status=status).order_by(Dingdan.time8)
+
+    dingdans = Dingdan.query.filter(
+        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,Dingdan.time8)
+
+    # form.sgdid.data = sgdid
+
+    form.dayB.data =datetime.strptime(dayB,'%Y-%m-%d')   #datetime.utcnow() # dayB.strftime('%Y-%m-%d')
+    form.dayE.data =datetime.strptime(dayE,'%Y-%m-%d')  #dayE.strftime('%Y-%m-%d')
+
+    form.status.data = status
+    #
+    # if status == 0:
+    #     if ddid != '':
+    #         dingdans = Dingdan.query.filter(or_(Dingdan.status == 8, Dingdan.status == 9)).filter_by(id=ddid).order_by(
+    #             Dingdan.chanpin_id,
+    #             Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     else:
+    #         ddid = 0
+    #
+    #         dingdans = Dingdan.query.filter(or_(Dingdan.status == 8, Dingdan.status == 9)).order_by(Dingdan.chanpin_id,
+    #                                                                                                 Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    # else:
+    #     if ddid != '':
+    #         dingdans = Dingdan.query.filter_by(status=status).filter_by(id=ddid).order_by(
+    #             Dingdan.chanpin_id, Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #     else:
+    #         ddid = 0
+    #
+    #         dingdans = Dingdan.query.filter_by(status=status).order_by(Dingdan.chanpin_id,
+    #                                                                    Dingdan.kehu_id)  # .order_by(Guke.outtime.desc())
+    #
+    # dayB = datetime.utcnow()
+
+    users = User.query.filter_by(role=u'安装队').all()
+
+    # return render_template('tongjilist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
+    #                        status=status)  #
+    #
+    return render_template('tongjilist.html', form=form, dingdans=dingdans, status=status, users=users,dayB=dayB,dayE=dayE)
+
+
 @main.route('/anzhuanglist', methods=['GET', 'POST'])
 @login_required
 def anzhuanglist():
@@ -891,7 +972,8 @@ def showkehudd(id):
             toview = 'addch'
         elif chanpin.pinming == '指纹锁':
             toview = 'addzws'
-
+        elif chanpin.pinming == '杂项':
+            toview = 'addjx'
         else:
             pass
 
@@ -3061,12 +3143,14 @@ def outseltoxls(pm, selids):
 
     if pm == '隐形网':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色",
+            u"备注",
             u"业务员（电话）")
 
     elif pm == '阳台窗':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"窗台高（毫米）",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"窗台高（毫米）",
             u'栏高（毫米）', u'管位', u"颜色",
             u"备注", u"业务员（电话）")
 
@@ -3077,30 +3161,35 @@ def outseltoxls(pm, selids):
 
     elif pm == '纱门':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"内空宽（毫米）",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"内空宽（毫米）",
             u"颜色", u'扇数', u'中横条数', u'锁位', u'装法',
             u"备注", u"业务员（电话）")
 
     elif pm == '晾衣杆' or pm == '晾衣机':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数", u"颜色",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"长（毫米）", u"高（毫米）", u"杆条数",
+            u"颜色",
             u"备注", u"业务员（电话）")
 
     elif pm == '纱窗':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"把手底高（毫米）",
             u"锁位", u"颜色", u"等分数", u"有否横条", u"备注",
             u"业务员（电话）")
 
     elif pm == '窗花':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"把手底高（毫米）",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）",
+            u"把手底高（毫米）",
             u"锁位", u"颜色", u"备注",
             u"业务员（电话）")
 
     elif pm == '指纹锁':
         headers = (
-            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式", u"备注",
+            u"订单号", u"下单时间", u"小区", u"地址", u"房间", u"客户", u"电话", u"产品", u"位置", u"数量", u"型号", u"颜色", u"锁位", u"开锁方式",
+            u"备注",
             u"业务员（电话）")
 
     elif pm == '杂项':
@@ -3113,14 +3202,16 @@ def outseltoxls(pm, selids):
 
         if pm == '隐形网':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.color, dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '阳台窗':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'阳台窗', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shanshu, dingdan.shuowei, dingdan.color,
@@ -3128,14 +3219,16 @@ def outseltoxls(pm, selids):
 
         elif pm == '玻璃':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'玻璃', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
         elif pm == '纱门':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'纱门', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.color, dingdan.shanshu, dingdan.zhonghengtiaoshu_gantiaoshu,
@@ -3144,7 +3237,8 @@ def outseltoxls(pm, selids):
 
         elif pm == '晾衣杆' or pm == '晾衣机':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.zhonghengtiaoshu_gantiaoshu, dingdan.color, dingdan.beizhu,
@@ -3152,7 +3246,8 @@ def outseltoxls(pm, selids):
 
         elif pm == '纱窗':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
@@ -3161,7 +3256,8 @@ def outseltoxls(pm, selids):
 
         elif pm == '窗花':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.kuan_chang, dingdan.gao,
                  dingdan.meikongkuan_bashoudigao, dingdan.shuowei, dingdan.color,
@@ -3169,7 +3265,8 @@ def outseltoxls(pm, selids):
 
         elif pm == '指纹锁':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, u'指纹锁', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.color, dingdan.shuowei,
                  dingdan.zhangfa_dengfenshu_kaishuofangshi, dingdan.beizhu,
@@ -3177,7 +3274,8 @@ def outseltoxls(pm, selids):
 
         elif pm == '杂项':
             data.append(
-                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
+                [dingdan.id, dingdan.time2.strftime('%Y-%m-%d %H:%M'), dingdan.kehu.xiaoqu.xiaoqu,
+                 dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.fangjian,
                  dingdan.kehu.chenghu, dingdan.kehu.tel, pm, dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
                  dingdan.beizhu, dingdan.kehu.user.username + '(' + dingdan.kehu.user.tel + ')'])
 
@@ -3262,7 +3360,8 @@ def outtoxls(pm):
 
     if pm == '隐形网':
         headers = (
-            u"订单号", u"下单时间", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区", u"房间")
+            u"订单号", u"下单时间", u"产品", u"位置", u"数量", u"型号", u"宽（毫米）", u"高（毫米）", u"颜色", u"备注", u"客户", u"电话", u"地址", u"小区",
+            u"房间")
 
     elif pm == '阳台窗':
         headers = (
@@ -3305,7 +3404,8 @@ def outtoxls(pm):
 
         if pm == '隐形网':
             data.append(
-                [dingdan.id, dingdan.time2, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao, dingdan.kuan_chang, dingdan.gao,
+                [dingdan.id, dingdan.time2, u'隐形网', dingdan.weizhi, dingdan.shuliang, dingdan.xinghao,
+                 dingdan.kuan_chang, dingdan.gao,
                  dingdan.color, dingdan.beizhu, dingdan.kehu.chenghu,
                  dingdan.kehu.tel, dingdan.kehu.xiaoqu.dizhi, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian])
 

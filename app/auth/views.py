@@ -68,6 +68,12 @@ def loginto(u,p):
             # 一般用户转转到首页..
             return redirect(url_for('main.qingkuanlist'))
 
+
+        elif user.role == '统计员':
+            # 一般用户转转到首页..
+            return redirect(url_for('main.tongjilist'))
+
+
         elif user.role == '安装队':
             # 一般用户转转到首页..
             return redirect(url_for('main.anzhuanglist'))
@@ -125,6 +131,11 @@ def login():
             elif user.role == '清款员':
                 # 一般用户转转到首页..
                 return redirect(url_for('main.qingkuanlist'))
+
+            elif user.role == '统计员':
+                # 一般用户转转到首页..
+                return redirect(url_for('main.tongjilist'))
+
 
             elif user.role == '安装队':
                 # 一般用户转转到首页..
