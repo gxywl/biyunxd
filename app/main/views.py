@@ -577,11 +577,12 @@ def tongjilist():
     # dingdans = Dingdan.query.filter(Dingdan.status == 8).filter_by(azd_id=sgdid,status=status).order_by(Dingdan.time8)
     if status == 8:
         dingdans = Dingdan.query.filter(
-            and_(or_(Dingdan.status == 8,Dingdan.status == 9),Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                                   Dingdan.kehu_id)
+            and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+            Dingdan.azd_id,
+            Dingdan.kehu_id)
     else:
         dingdans = Dingdan.query.filter(
-            and_(Dingdan.status == status,Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+            and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
                                                                                                    Dingdan.kehu_id)
     # form.sgdid.data = sgdid
 
@@ -630,10 +631,14 @@ def outaztoxls(status):
     dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
     dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
     status = session.get('status', 8)
-
-    dingdans = Dingdan.query.filter(
-        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                               Dingdan.time8)
+    if status == 8:
+        dingdans = Dingdan.query.filter(
+            and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+            Dingdan.azd_id, Dingdan.time8)
+    else:
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                   Dingdan.time8)
 
     users = User.query.filter_by(role=u'安装队').all()
 
@@ -661,16 +666,19 @@ def outaztoxls(status):
             dw = u'个'
 
         statusP = ''
-        timeF=dingdan.time8.strftime('%Y-%m-%d')
+        timeF = dingdan.time8.strftime('%Y-%m-%d')
         if dingdan.status == 8:
             statusP = u'(装完)'
-            timeF =dingdan.time8.strftime('%Y-%m-%d')
+            timeF = dingdan.time8.strftime('%Y-%m-%d')
+        elif dingdan.status == 9:
+            statusP = u'(装完-清款)'
+            timeF = dingdan.time8.strftime('%Y-%m-%d')
         elif dingdan.status == 7:
             statusP = u'(未完工)'
-            timeF =dingdan.time8.strftime('%Y-%m-%d')
+            timeF = dingdan.time8.strftime('%Y-%m-%d')
         elif dingdan.status == -1:
             statusP = u'【终止】'
-            timeF =dingdan.time8.strftime('%Y-%m-%d')
+            timeF = dingdan.time8.strftime('%Y-%m-%d')
 
         data.append(
             [i, azdname, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.chanpin.pinming, dingdan.xinghao,
