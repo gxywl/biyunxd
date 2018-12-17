@@ -74,15 +74,27 @@
     {% endif %}
      </td><td>
 
-    {{ moment(dingdan.time8).format('YYYY-M-D') }} </td><td>
+    {% if dingdan.status==8 or  dingdan.status==9 %}
+    {{ moment(dingdan.time8).format('YYYY-M-D') }}
+    {% elif dingdan.status == 7 %}
+    {{ moment(dingdan.time7).format('YYYY-M-D') }}
+    {% elif dingdan.status == -1 %}
+    {{ moment(dingdan.time_1).format('YYYY-M-D') }}
+    {% endif %}
+
+</td><td>
 
 
     {% if dingdan.status==8 %}
         <span  style="color:#1303ff"> (装完) </span>
+    {% elif dingdan.status == 9 %}
+        <span  style="color:#1303ff"> (装完-清款) </span>
     {% elif dingdan.status == 7 %}
         <span  style="color:#ff9030"> (未完工) </span>
     {% elif dingdan.status == -1 %}
         <span  style="color:#F00">【终止】 </span>
+    {% else %}
+        <span  style="color:#F00">?? </span>
     {% endif %}
     </td>
    </tr>

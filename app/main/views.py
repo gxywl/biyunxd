@@ -575,11 +575,14 @@ def tongjilist():
     #
 
     # dingdans = Dingdan.query.filter(Dingdan.status == 8).filter_by(azd_id=sgdid,status=status).order_by(Dingdan.time8)
-
-    dingdans = Dingdan.query.filter(
-        and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                               Dingdan.kehu_id)
-
+    if status == 8:
+        dingdans = Dingdan.query.filter(
+            and_(or_(Dingdan.status == 8,Dingdan.status == 9),Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                   Dingdan.kehu_id)
+    else:
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status,Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                   Dingdan.kehu_id)
     # form.sgdid.data = sgdid
 
     form.dayB.data = datetime.strptime(dayB, '%Y-%m-%d')  # datetime.utcnow() # dayB.strftime('%Y-%m-%d')
@@ -658,16 +661,20 @@ def outaztoxls(status):
             dw = u'个'
 
         statusP = ''
+        timeF=dingdan.time8.strftime('%Y-%m-%d')
         if dingdan.status == 8:
             statusP = u'(装完)'
+            timeF =dingdan.time8.strftime('%Y-%m-%d')
         elif dingdan.status == 7:
             statusP = u'(未完工)'
+            timeF =dingdan.time8.strftime('%Y-%m-%d')
         elif dingdan.status == -1:
             statusP = u'【终止】'
+            timeF =dingdan.time8.strftime('%Y-%m-%d')
 
         data.append(
             [i, azdname, dingdan.kehu.xiaoqu.xiaoqu, dingdan.kehu.fangjian, dingdan.chanpin.pinming, dingdan.xinghao,
-             shuliang, dw, dingdan.time8.strftime('%Y-%m-%d'), statusP])
+             shuliang, dw, timeF, statusP])
 
     t = time.time()
     nowTime = lambda: int(round(t * 1000))
