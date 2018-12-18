@@ -67,10 +67,12 @@
     {{ dingdan.kehu.xiaoqu.xiaoqu}} </td><td>{{ dingdan.kehu.fangjian}}  </td><td>
     {{ dingdan.chanpin.pinming }} </td><td>{{ dingdan.xinghao }} </td><td>
 
-    {% if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网' or dingdan.chanpin.pinming == '纱门' %}
-    {{ dingdan.kuan_chang * dingdan.gao/1000/1000 }} (平方)
-        {% else %}
-    {{ dingdan.shuliang }} (个）
+    {% if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网'  %}
+        {{ '%.2f'|format(dingdan.kuan_chang * dingdan.gao/1000/1000) }} (平方)
+     {% elif dingdan.chanpin.pinming == '纱门' %}
+        {{ '%.2f'|format(dingdan.meikongkuan_bashoudigao * dingdan.gao/1000/1000) }} (平方)
+    {% else %}
+        {{ dingdan.shuliang }} (个）
     {% endif %}
      </td><td>
 

@@ -658,8 +658,11 @@ def outaztoxls(status):
 
         shuliang = 0
         dw = ''
-        if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网' or dingdan.chanpin.pinming == '纱门':
-            shuliang = dingdan.kuan_chang * dingdan.gao / 1000 / 1000
+        if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网':
+            shuliang = format(float(dingdan.kuan_chang) * float(dingdan.gao) / 1000 / 1000, '.2f')
+            dw = u'平方'
+        elif  dingdan.chanpin.pinming == '纱门':
+            shuliang = format(float(dingdan.meikongkuan_bashoudigao) *float(dingdan.gao) / 1000 / 1000, '.2f')
             dw = u'平方'
         else:
             shuliang = dingdan.shuliang
