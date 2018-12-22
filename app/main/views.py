@@ -13,7 +13,7 @@ from app.models import User, Kehu, Dingdan, Chanpin, Xiaoqu  # , Gongren
 from .. import db, moment
 from .forms import NameForm, KehuForm, WilladdcpForm, YxwForm, SmForm, LyjForm, ScForm, ZwsForm, ChForm, FindkhForm, \
     KFfindForm, FineddidForm, LygForm, FinefhddidForm, FineshddidForm, FinepgddidForm, FineqkddidForm, YtcForm, JxForm, \
-    stoplcddidForm, azstopddidForm, BlForm, SgdtjForm
+    stoplcddidForm, azstopddidForm, BlForm, SgdtjForm, DdzttjForm
 from . import main
 
 import tablib
@@ -661,8 +661,8 @@ def outaztoxls(status):
         if dingdan.chanpin.pinming == '阳台窗' or dingdan.chanpin.pinming == '隐形网':
             shuliang = format(float(dingdan.kuan_chang) * float(dingdan.gao) / 1000 / 1000, '.2f')
             dw = u'平方'
-        elif  dingdan.chanpin.pinming == '纱门':
-            shuliang = format(float(dingdan.meikongkuan_bashoudigao) *float(dingdan.gao) / 1000 / 1000, '.2f')
+        elif dingdan.chanpin.pinming == '纱门':
+            shuliang = format(float(dingdan.meikongkuan_bashoudigao) * float(dingdan.gao) / 1000 / 1000, '.2f')
             dw = u'平方'
         else:
             shuliang = dingdan.shuliang
@@ -702,6 +702,94 @@ def outaztoxls(status):
     return response
 
     # return redirect(url_for('main.showkehudd', id=1))
+
+
+@main.route('/tongjilistq', methods=['GET', 'POST'])
+@login_required
+def tongjilistq():
+    if current_user.role != '统计员':
+        return redirect(url_for('main.index'))
+
+    form = DdzttjForm()
+
+    if form.validate_on_submit():
+        # session['sgdid'] = form.sgdid.data
+        session['dayB'] = form.dayB.data.strftime('%Y-%m-%d')
+        session['dayE'] = form.dayE.data.strftime('%Y-%m-%d')
+        session['status'] = form.status.data
+        session['ywyid'] = form.ywyid.data
+
+        return redirect(url_for('main.tongjilistq'))
+
+    # sgdid = session.get('sgdid', '')
+    dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
+    dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
+    status = session.get('status', 8)
+    ywyid = session.get('ywyid', 0)
+
+    # if status == 8:
+    #     dingdans = Dingdan.query.filter(
+    #         and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+    #         Dingdan.azd_id,
+    #         Dingdan.kehu_id)
+    # else:
+
+
+    if status==1:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time1 >= dayB, Dingdan.time1 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==2:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time2 >= dayB, Dingdan.time2 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==3:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time3 >= dayB, Dingdan.time3 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==6:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time6 >= dayB, Dingdan.time6 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==7:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time7 >= dayB, Dingdan.time7 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==8:
+        # 完成
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==9:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time9 >= dayB, Dingdan.time9 <= dayE)).order_by(Dingdan.kehu_id)
+    elif status==-1:
+        # 量尺
+        dingdans = Dingdan.query.filter(
+            and_(Dingdan.status == status, Dingdan.time_1 >= dayB, Dingdan.time_1 <= dayE)).order_by(Dingdan.kehu_id)
+
+    # form.sgdid.data = sgdid
+
+    form.dayB.data = datetime.strptime(dayB, '%Y-%m-%d')  # datetime.utcnow() # dayB.strftime('%Y-%m-%d')
+    form.dayE.data = datetime.strptime(dayE, '%Y-%m-%d')  # dayE.strftime('%Y-%m-%d')
+
+    form.status.data = status
+    form.ywyid.data = ywyid
+
+    if ywyid == 0:
+        kehus = Kehu.query.all()
+    else:
+        kehus = Kehu.query.filter_by(user_id=ywyid).all()
+
+    return render_template('tongjilistq.html', form=form, dingdans=dingdans, status=status, kehus=kehus, dayB=dayB,
+                           dayE=dayE, ywyid=ywyid)
+
+
+@main.route('/tongjilistc', methods=['GET', 'POST'])
+@login_required
+def tongjilistc():
+    return render_template(
+        'tongjilistc.html')  # , form=form, dingdans=dingdans, status=status, users=users, dayB=dayB, dayE=dayE)
 
 
 @main.route('/anzhuanglist', methods=['GET', 'POST'])

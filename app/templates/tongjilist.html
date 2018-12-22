@@ -4,7 +4,7 @@
 {% block title %} 广东碧云量尺跟单系统 {% endblock %}
 
 {% block page_content %}
-    <h1>统计员</h1>
+    <h1>统计员--【安装统计】</h1>
     {#    <div class="page-header">#}
     {#    <h4>订货员：{{ current_user.username }}</h4>#}
     {#        <p>订货列表</p>#}
@@ -21,6 +21,14 @@
     {#        </div>#}
     {#    </div>#}
 
+    <div>
+    【安装统计】
+    <a class="btn btn-success  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.tongjilistq') }}"> 状态统计 </a>
+        <a class="btn btn-success  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.tongjilistc') }}"> 品类统计 </a>
+    </div>
+<hr>
     <div class="panel panel-primary">
         <div class="panel-heading">
             安装队工作统计

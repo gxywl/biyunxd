@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
+
+{% block page_content %}
+    <h1>统计员--【状态统计】</h1>
+    {#    <div class="page-header">#}
+    {#    <h4>订货员：{{ current_user.username }}</h4>#}
+    {#        <p>订货列表</p>#}
+    {#    </div>#}
+
+    {#    <div class="panel panel-default">#}
+    {#        <div class="panel-heading">#}
+    {#            <h4>{{ done }}#}
+    {#                {% if done=='已入库' %}#}
+    {#                    <a class="btn btn-success" href="{{ url_for('main.rukulist') }}">转－待入库</a>#}
+    {#                {% else %}#}
+    {#                    <a class="btn btn-primary " href="{{ url_for('main.rukuedlist') }}">转－已入库</a>#}
+    {#                {% endif %}</h4>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <div>
+    <a class="btn btn-success  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.tongjilist') }}"> 安装统计 </a>
+    【状态统计】
+        <a class="btn btn-success  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.tongjilistc') }}"> 品类统计 </a>
+    </div>
+<hr>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            订单状态统计
+        </div>
+        <div class="post-body">
+            <blockquote>
+                {{ wtf.quick_form(form) }}
+            </blockquote>
+        </div>
+        <div class="panel-footer"></div>
+    </div>
+{##}
+{#    <a class="btn btn-danger  glyphicon glyphicon-export"#}
+{#                                       href="{{ url_for('main.outaztoxls', status=status) }}"> 导出XLS </a>#}
+{##}
+{#{{ dayB }} | {{ dayE }}#}
+
+
+
+
+
+
+    {#----------^^待接单、安装    ..已完成安装----------#}
+
+
+    {% for kehu in kehus %}
+
+        {{ set_var(0) }}
+        {% for dingdant in dingdans %}
+            {% if kehu.id == dingdant.kehu_id %}
+                {{ set_var(1) }}
+            {% endif %}
+        {% endfor %}
+
+
+        {% if get_var() == 1 %}
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <ul class="list-unstyled">
+{#                        <li>地址: {{ kehu.xiaoqu.dizhi }}</li>#}
+                        <li>小区: {{ kehu.xiaoqu.xiaoqu }}{{ kehu.fangjian }}</li>
+                        <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）</li>
+                        <li><span style="font-weight:bold;background-color: beige ;color:#1303ff;">业务员: {{ kehu.user.username }}（{{ kehu.user.tel }}）</span></li>
+                    </ul>
+                    <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                            data-toggle="collapse" data-target="#k{{ kehu.id }}">
+                        产品
+                    </button>
+                </div>
+                <div id='k{{ kehu.id }}' class="panel-body collapse off">
+
+                    <ol>
+                        {% for dingdan in dingdans %}
+                            {% if  kehu.id == dingdan.kehu_id %}
+                                <li>
+
+                                {% if dingdan.status == 1 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">量尺</span>】
+                                    ( {{ moment(dingdan.time1).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 2 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">下单</span>】
+                                    ( {{ moment(dingdan.time2).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 3 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">订货</span>】
+                                     ( {{ moment(dingdan.time3).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 6 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">收货</span>】
+                                     ( {{ moment(dingdan.time6).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 7 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>】
+                                     ( {{ moment(dingdan.time7).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 8 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">装完</span>】
+                                    ( {{ moment(dingdan.time8).fromNow(refresh=True) }})
+                                {% elif dingdan.status == 9 %}
+                                    【<span style="font-weight:bold;background-color: beige ;color:red;">清款</span>】
+                                    ( {{ moment(dingdan.time9).fromNow(refresh=True) }})
+                                {% elif dingdan.status == -1 %}
+                                    「<span style="font-weight:bold;color:blue;">已终止</span>」
+                                    ( {{ moment(dingdan.time_1).fromNow(refresh=True) }})
+                                {% else %}
+                                          {{ dingdan.status }}
+                                {% endif %}
+
+                                {{ dingdan.chanpin.pinming }}/{{ dingdan.weizhi }}
+                                <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                                        data-toggle="collapse" data-target="#c{{ dingdan.id }}">
+                                    详细
+                                </button>
+                                <div id="c{{ dingdan.id }}" class="collapse off">
+                                    {{ macors.render_listcpvar(dingdan) }}
+                                </div>
+                            {% endif %}
+
+                        {% endfor %}
+                    </ol>
+
+                </div>
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+
+
+
+{% endblock %}

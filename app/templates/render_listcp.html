@@ -41,7 +41,9 @@
             {% endif %}
             <li>颜色: {{ dingdan.color }}</li>
             <li>备注: {{ dingdan.beizhu }}</li>
+            {% if dingdan.tushipic %}
                 图示:<br>
                 <img height="180" src="/static/upload/{{ dingdan.tushipic }}">
+            {% endif %}
         </ul>
     {% endmacro %}

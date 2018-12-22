@@ -82,7 +82,27 @@ class SgdtjForm(FlaskForm):
         #     role=u'安装队').order_by(User.beizhu).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+# 统计员的过滤
+class DdzttjForm(FlaskForm):
+    # ddid = StringField('订单ID')
+    # sgdid = SelectField('安装队', coerce=int)  #
 
+    dayB = DateField('时间段始')
+    dayE = DateField('时间段终')
+
+    status = SelectField('进度状态', coerce=int)  #
+
+    ywyid = SelectField('业务员', coerce=int)  #
+
+    submit = SubmitField('开始统计')
+
+    # 在构造化Form实例时指定selectField的choices内容,
+    def __init__(self, *args, **kwargs):
+        super(DdzttjForm, self).__init__(*args, **kwargs)
+        self.status.choices = [(1, '已下单（未订货）'), (2, '已订货（未收货）'), (6, '已收货（未派工）'), (7, '已派工（未完成）'), (8, '已完成（未清歀）'), (9, '已清歀'), (-1, '已终止')]
+        self.ywyid.choices =[(0, '全部业务员')] + [(user.id, user.username) for user in User.query.filter_by(
+            role=u'业务员').order_by(User.username).all()]
+    #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 # # 收货员的过滤
 # class FineshddidForm(FlaskForm):
