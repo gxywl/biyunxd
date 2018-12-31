@@ -548,13 +548,13 @@ def tongjilist():
     form = SgdtjForm()
 
     if form.validate_on_submit():
-        # session['sgdid'] = form.sgdid.data
+        session['sgdid'] = form.sgdid.data
         session['dayB'] = form.dayB.data.strftime('%Y-%m-%d')
         session['dayE'] = form.dayE.data.strftime('%Y-%m-%d')
         session['status'] = form.status.data
         return redirect(url_for('main.tongjilist'))
 
-    # sgdid = session.get('sgdid', '')
+    sgdid = session.get('sgdid', 0)
     dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
     dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
     status = session.get('status', 8)
@@ -575,16 +575,27 @@ def tongjilist():
     #
 
     # dingdans = Dingdan.query.filter(Dingdan.status == 8).filter_by(azd_id=sgdid,status=status).order_by(Dingdan.time8)
-    if status == 8:
-        dingdans = Dingdan.query.filter(
-            and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-            Dingdan.azd_id,
-            Dingdan.kehu_id)
-    else:
-        dingdans = Dingdan.query.filter(
-            and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                                   Dingdan.kehu_id)
-    # form.sgdid.data = sgdid
+
+    if sgdid == 0:
+        if status == 8:
+            dingdans = Dingdan.query.filter(
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id,Dingdan.kehu_id)
+        else:
+            dingdans = Dingdan.query.filter(
+                and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                       Dingdan.kehu_id)
+    else: #azd_id
+        if status == 8:
+            dingdans = Dingdan.query.filter(
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id,Dingdan.kehu_id)
+        else:
+            dingdans = Dingdan.query.filter(
+                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                       Dingdan.kehu_id)
+
+    form.sgdid.data = sgdid
 
     form.dayB.data = datetime.strptime(dayB, '%Y-%m-%d')  # datetime.utcnow() # dayB.strftime('%Y-%m-%d')
     form.dayE.data = datetime.strptime(dayE, '%Y-%m-%d')  # dayE.strftime('%Y-%m-%d')
@@ -613,8 +624,11 @@ def tongjilist():
     #
     # dayB = datetime.utcnow()
 
-    users = User.query.filter_by(role=u'安装队').all()
 
+    if sgdid==0:
+        users = User.query.filter_by(role=u'安装队').all()
+    else:
+        users = User.query.filter_by(id=sgdid).all()
     # return render_template('tongjilist.html', form=form, dingdans=dingdans, kehus=kehus, done='待发货', ddid=ddid,
     #                        status=status)  #
     #
@@ -628,17 +642,41 @@ def outaztoxls(status):
     if current_user.role != '统计员':
         return redirect(url_for('main.index'))
 
+    sgdid = session.get('sgdid', 0)
     dayB = session.get('dayB', datetime.utcnow().strftime('%Y-%m-%d'))
     dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
     status = session.get('status', 8)
-    if status == 8:
-        dingdans = Dingdan.query.filter(
-            and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-            Dingdan.azd_id, Dingdan.time8)
-    else:
-        dingdans = Dingdan.query.filter(
-            and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                                   Dingdan.time8)
+
+    #
+    # if status == 8:
+    #     dingdans = Dingdan.query.filter(
+    #         and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+    #         Dingdan.azd_id, Dingdan.time8)
+    # else:
+    #     dingdans = Dingdan.query.filter(
+    #         and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+    #                                                                                                Dingdan.time8)
+
+
+    if sgdid == 0:
+        if status == 8:
+            dingdans = Dingdan.query.filter(
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id,Dingdan.kehu_id)
+        else:
+            dingdans = Dingdan.query.filter(
+                and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                       Dingdan.kehu_id)
+    else: #azd_id
+        if status == 8:
+            dingdans = Dingdan.query.filter(
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id,Dingdan.kehu_id)
+        else:
+            dingdans = Dingdan.query.filter(
+                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                                                                       Dingdan.kehu_id)
+
 
     users = User.query.filter_by(role=u'安装队').all()
 
@@ -713,11 +751,13 @@ def tongjilistq():
     form = DdzttjForm()
 
     if form.validate_on_submit():
-        # session['sgdid'] = form.sgdid.data
+
         session['dayB'] = form.dayB.data.strftime('%Y-%m-%d')
         session['dayE'] = form.dayE.data.strftime('%Y-%m-%d')
         session['status'] = form.status.data
         session['ywyid'] = form.ywyid.data
+
+        session['xiaoquid'] = form.xiaoquid.data
 
         return redirect(url_for('main.tongjilistq'))
 
@@ -726,6 +766,8 @@ def tongjilistq():
     dayE = session.get('dayE', datetime.utcnow().strftime('%Y-%m-%d'))
     status = session.get('status', 8)
     ywyid = session.get('ywyid', 0)
+
+    xiaoquid = session.get('xiaoquid', 0)
 
     # if status == 8:
     #     dingdans = Dingdan.query.filter(
@@ -776,13 +818,25 @@ def tongjilistq():
     form.status.data = status
     form.ywyid.data = ywyid
 
-    if ywyid == 0:
-        kehus = Kehu.query.all()
+    form.xiaoquid.data = xiaoquid
+
+    if xiaoquid == 0:   #所有小区
+        if ywyid == 0:
+            kehus = Kehu.query.all()
+        else:
+            kehus = Kehu.query.filter_by(user_id=ywyid).all()
     else:
-        kehus = Kehu.query.filter_by(user_id=ywyid).all()
+        if ywyid == 0:
+            kehus = Kehu.query.filter_by(xiaoqu_id=xiaoquid).all()
+        else:
+            kehus = Kehu.query.filter_by(xiaoqu_id=xiaoquid).filter_by(user_id=ywyid).all()
+
+
+
+        
 
     return render_template('tongjilistq.html', form=form, dingdans=dingdans, status=status, kehus=kehus, dayB=dayB,
-                           dayE=dayE, ywyid=ywyid)
+                           dayE=dayE, ywyid=ywyid,xiaoquid=xiaoquid)
 
 
 @main.route('/tongjilistc', methods=['GET', 'POST'])

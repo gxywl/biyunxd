@@ -22,10 +22,10 @@
     {#    </div>#}
 
     <div>
-    <a class="btn btn-success  glyphicon glyphicon-export"
+    <a class="btn btn-danger  glyphicon glyphicon-export"
                                        href="{{ url_for('main.tongjilist') }}"> 安装统计 </a>
     【状态统计】
-        <a class="btn btn-success  glyphicon glyphicon-export"
+        <a class="btn btn-primary  glyphicon glyphicon-export"
                                        href="{{ url_for('main.tongjilistc') }}"> 品类统计 </a>
     </div>
 <hr>
@@ -70,7 +70,7 @@
                 <div class="panel-heading">
                     <ul class="list-unstyled">
 {#                        <li>地址: {{ kehu.xiaoqu.dizhi }}</li>#}
-                        <li>小区: {{ kehu.xiaoqu.xiaoqu }}{{ kehu.fangjian }}</li>
+                        <li>小区: 【{{ kehu.xiaoqu.xiaoqu }}】{{ kehu.fangjian }}</li>
                         <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）</li>
                         <li><span style="font-weight:bold;background-color: beige ;color:#1303ff;">业务员: {{ kehu.user.username }}（{{ kehu.user.tel }}）</span></li>
                     </ul>

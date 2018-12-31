@@ -62,11 +62,11 @@ class FineddidForm(FlaskForm):
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
 
-
 # 统计员的过滤
+# 施工队
 class SgdtjForm(FlaskForm):
     # ddid = StringField('订单ID')
-    # sgdid = SelectField('安装队', coerce=int)  #
+    sgdid = SelectField('安装队', coerce=int)  #
 
     dayB = DateField('时间段始')
     dayE = DateField('时间段终')
@@ -78,11 +78,13 @@ class SgdtjForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(SgdtjForm, self).__init__(*args, **kwargs)
         self.status.choices = [(8, '已完成'), (7, '未完成'), (-1, '已终止')]
-        # self.sgdid.choices = [(user.id, user.username) for user in User.query.filter_by(
-        #     role=u'安装队').order_by(User.beizhu).all()]
+        self.sgdid.choices = [(0, '全部安装队')] + [(user.id, user.username) for user in User.query.filter_by(
+            role=u'安装队').order_by(User.beizhu).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
+
 # 统计员的过滤
+# 状态查询
 class DdzttjForm(FlaskForm):
     # ddid = StringField('订单ID')
     # sgdid = SelectField('安装队', coerce=int)  #
@@ -94,15 +96,22 @@ class DdzttjForm(FlaskForm):
 
     ywyid = SelectField('业务员', coerce=int)  #
 
+    xiaoquid = SelectField('小区', coerce=int)  #
+
     submit = SubmitField('开始统计')
 
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(DdzttjForm, self).__init__(*args, **kwargs)
-        self.status.choices = [(1, '已下单（未订货）'), (2, '已订货（未收货）'), (6, '已收货（未派工）'), (7, '已派工（未完成）'), (8, '已完成（未清歀）'), (9, '已清歀'), (-1, '已终止')]
-        self.ywyid.choices =[(0, '全部业务员')] + [(user.id, user.username) for user in User.query.filter_by(
+        self.status.choices = [(1, '已下单（未订货）'), (2, '已订货（未收货）'), (6, '已收货（未派工）'), (7, '已派工（未完成）'), (8, '已完成（未清歀）'),
+                               (9, '已清歀'), (-1, '已终止')]
+        self.ywyid.choices = [(0, '全部业务员')] + [(user.id, user.username) for user in User.query.filter_by(
             role=u'业务员').order_by(User.username).all()]
+
+        self.xiaoquid.choices = [(0, '所有小区')] + [(xiaoqu.id, xiaoqu.xiaoqu) for xiaoqu in
+                                                 Xiaoqu.query.order_by(Xiaoqu.xiaoqu).all()]
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
+
 
 # # 收货员的过滤
 # class FineshddidForm(FlaskForm):
@@ -222,7 +231,7 @@ class FindkhForm(FlaskForm):
     def __init__(self, *args, **kwargs):
         super(FindkhForm, self).__init__(*args, **kwargs)
         self.status.choices = [(0, ''), (1, '已量尺'), (2, '已下单'), (3, '已订货'), (6, '已收货'),
-                               (7, '安装中'), (8, '安装完成'), (66,'全装完成(待清款)'), (99, '已清款客户')]  # , (4, '已入库'), (5, '已发货')
+                               (7, '安装中'), (8, '安装完成'), (66, '全装完成(待清款)'), (99, '已清款客户')]  # , (4, '已入库'), (5, '已发货')
     #    self.chanpin.choices = [(chanpin.id, chanpin.pinming) for chanpin in Chanpin.query.order_by(Chanpin.beizhu).all()] # Chanpin.id
     #     self.color.choices = [('0', '深灰'), ('1', '墨绿'), ('2', '白色')]
 
@@ -251,7 +260,8 @@ class JxForm(FlaskForm):
     shuliang = SelectField('数量', validators=[DataRequired()],
                            choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5'), ('6', '6'), ('7', '7'),
                                     ('8', '8'), ('9', '9'), ('10', '10'), ('11', '11'), ('12', '12'), ('13', '13'),
-                                    ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'), ('20', '20')])
+                                    ('14', '14'), ('15', '15'), ('16', '16'), ('17', '17'), ('18', '18'), ('19', '19'),
+                                    ('20', '20')])
     xinghao = SelectField("型号", validators=[DataRequired()])
     beizhu = StringField('备注')
     uploadfile = FileField('上传图片/草图', validators=[FileAllowed(['jpg', 'png'], message=u'jpg/png allowde!')])
@@ -349,7 +359,8 @@ class YtcForm(FlaskForm):
             pinming=u'阳台窗', chanshux=u'颜色').order_by(Chanpinxx.xuhao).all()]
         # self.color.choices = [('', ''), ('银色', '银色'), ('香槟色', '香槟色'), ('白色', '白色')]
 
-#阳台窗--玻璃
+
+# 阳台窗--玻璃
 class BlForm(FlaskForm):
     # wweizhi = SelectField('位置', validators=[DataRequired()], choices=[('', ''), ('固定扇', '固定扇'), ('推拉扇', '推拉扇'), ('纱扇', '纱扇'), ('平开扇', '平开扇'), ('其他', '其他')])
     weizhi = SelectField('位置', validators=[DataRequired()])
@@ -375,7 +386,6 @@ class BlForm(FlaskForm):
             pinming=u'玻璃', chanshux=u'位置').order_by(Chanpinxx.xuhao).all()]  # and Chanpinxx.chanshux == '位置'
         self.xinghao.choices = [(chanpinxx.chanshuz, chanpinxx.chanshuz) for chanpinxx in Chanpinxx.query.filter_by(
             pinming=u'玻璃', chanshux=u'型号').order_by(Chanpinxx.xuhao).all()]
-
 
 
 # 纱门
