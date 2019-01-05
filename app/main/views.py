@@ -579,21 +579,24 @@ def tongjilist():
     if sgdid == 0:
         if status == 8:
             dingdans = Dingdan.query.filter(
-                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-                Dingdan.azd_id,Dingdan.kehu_id)
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id, Dingdan.kehu_id)
         else:
             dingdans = Dingdan.query.filter(
                 and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
                                                                                                        Dingdan.kehu_id)
-    else: #azd_id
+    else:  # azd_id
         if status == 8:
             dingdans = Dingdan.query.filter(
-                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-                Dingdan.azd_id,Dingdan.kehu_id)
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id, Dingdan.kehu_id)
         else:
             dingdans = Dingdan.query.filter(
-                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                                       Dingdan.kehu_id)
+                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                      Dingdan.kehu_id)
 
     form.sgdid.data = sgdid
 
@@ -624,8 +627,7 @@ def tongjilist():
     #
     # dayB = datetime.utcnow()
 
-
-    if sgdid==0:
+    if sgdid == 0:
         users = User.query.filter_by(role=u'安装队').all()
     else:
         users = User.query.filter_by(id=sgdid).all()
@@ -657,26 +659,27 @@ def outaztoxls(status):
     #         and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
     #                                                                                                Dingdan.time8)
 
-
     if sgdid == 0:
         if status == 8:
             dingdans = Dingdan.query.filter(
-                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-                Dingdan.azd_id,Dingdan.kehu_id)
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id, Dingdan.kehu_id)
         else:
             dingdans = Dingdan.query.filter(
                 and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
                                                                                                        Dingdan.kehu_id)
-    else: #azd_id
+    else:  # azd_id
         if status == 8:
             dingdans = Dingdan.query.filter(
-                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(
-                Dingdan.azd_id,Dingdan.kehu_id)
+                and_(or_(Dingdan.status == 8, Dingdan.status == 9), Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(
+                Dingdan.azd_id, Dingdan.kehu_id)
         else:
             dingdans = Dingdan.query.filter(
-                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
-                                                                                                       Dingdan.kehu_id)
-
+                and_(Dingdan.status == status, Dingdan.azd_id == sgdid, Dingdan.time8 >= dayB,
+                     Dingdan.time8 <= dayE)).order_by(Dingdan.azd_id,
+                                                      Dingdan.kehu_id)
 
     users = User.query.filter_by(role=u'安装队').all()
 
@@ -751,7 +754,6 @@ def tongjilistq():
     form = DdzttjForm()
 
     if form.validate_on_submit():
-
         session['dayB'] = form.dayB.data.strftime('%Y-%m-%d')
         session['dayE'] = form.dayE.data.strftime('%Y-%m-%d')
         session['status'] = form.status.data
@@ -776,36 +778,37 @@ def tongjilistq():
     #         Dingdan.kehu_id)
     # else:
 
+    dingdans = Dingdan.query.filter_by(id=-1).all()
 
-    if status==1:
+    if status == 1:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time1 >= dayB, Dingdan.time1 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==2:
+    elif status == 2:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time2 >= dayB, Dingdan.time2 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==3:
+    elif status == 3:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time3 >= dayB, Dingdan.time3 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==6:
+    elif status == 6:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time6 >= dayB, Dingdan.time6 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==7:
+    elif status == 7:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time7 >= dayB, Dingdan.time7 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==8:
+    elif status == 8:
         # 完成
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time8 >= dayB, Dingdan.time8 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==9:
+    elif status == 9:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time9 >= dayB, Dingdan.time9 <= dayE)).order_by(Dingdan.kehu_id)
-    elif status==-1:
+    elif status == -1:
         # 量尺
         dingdans = Dingdan.query.filter(
             and_(Dingdan.status == status, Dingdan.time_1 >= dayB, Dingdan.time_1 <= dayE)).order_by(Dingdan.kehu_id)
@@ -820,7 +823,7 @@ def tongjilistq():
 
     form.xiaoquid.data = xiaoquid
 
-    if xiaoquid == 0:   #所有小区
+    if xiaoquid == 0:  # 所有小区
         if ywyid == 0:
             kehus = Kehu.query.all()
         else:
@@ -831,12 +834,8 @@ def tongjilistq():
         else:
             kehus = Kehu.query.filter_by(xiaoqu_id=xiaoquid).filter_by(user_id=ywyid).all()
 
-
-
-        
-
     return render_template('tongjilistq.html', form=form, dingdans=dingdans, status=status, kehus=kehus, dayB=dayB,
-                           dayE=dayE, ywyid=ywyid,xiaoquid=xiaoquid)
+                           dayE=dayE, ywyid=ywyid, xiaoquid=xiaoquid)
 
 
 @main.route('/tongjilistc', methods=['GET', 'POST'])

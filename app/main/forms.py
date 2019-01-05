@@ -103,7 +103,7 @@ class DdzttjForm(FlaskForm):
     # 在构造化Form实例时指定selectField的choices内容,
     def __init__(self, *args, **kwargs):
         super(DdzttjForm, self).__init__(*args, **kwargs)
-        self.status.choices = [(1, '已下单（未订货）'), (2, '已订货（未收货）'), (6, '已收货（未派工）'), (7, '已派工（未完成）'), (8, '已完成（未清歀）'),
+        self.status.choices = [(1, '已量尺（未下单）'),(2, '已下单（未订货）'), (3, '已订货（未收货）'), (6, '已收货（未派工）'), (7, '已派工（未完成）'), (8, '已完成（未清歀）'),
                                (9, '已清歀'), (-1, '已终止')]
         self.ywyid.choices = [(0, '全部业务员')] + [(user.id, user.username) for user in User.query.filter_by(
             role=u'业务员').order_by(User.username).all()]

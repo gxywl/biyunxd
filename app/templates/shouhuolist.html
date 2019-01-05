@@ -350,8 +350,9 @@
                         {#                            「状态有误」#}
                         {#                        {% endif %}#}
 
-                        {{ dingdan.chanpin.pinming }}
-                    </label>
+                        {{ dingdan.chanpin.pinming }}.
+                        {{ dingdan.xinghao }}
+                    </label><br>
                         {% if dingdan.status == 3 %}
                             [下订：{{ moment(dingdan.time3).format('YYYY.MM.D') }}]
 

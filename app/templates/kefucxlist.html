@@ -150,8 +150,12 @@
                                                 <br>时间：{{ moment(dingdan.time6).format('YY年M月D日') }}
                                             {% elif dingdan.status == 7 %}
                                                 <span style="font-weight:bold;color:red;">「已派工（未完成）」</span>
+
+
+                                                <br><span style="font-weight:bold;color:#1303ff;">安装队：{{ dingdan.dingdan_azd.username }}</span>
+
                                                 <br>已过：{{ moment(dingdan.time7).fromNow(refresh=True) }}
-                                                <br>时间：{{ moment(dingdan.time7).format('YY年M月D日') }}
+                                                <br>派工时间：{{ moment(dingdan.time7).format('YY年M月D日') }}
                                             {% elif dingdan.status == 8 %}
                                                 <span style="font-weight:bold;color:red;">「完成安装（未清款）」</span>
                                                 <br>已过：{{ moment(dingdan.time8).fromNow(refresh=True) }}
