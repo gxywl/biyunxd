@@ -72,6 +72,11 @@ def index():
         return redirect(url_for('main.tongjilist'))
 
 
+
+    elif current_user.role == '安装队':
+        # 一般用户转转到首页..
+        return redirect(url_for('main.azdwillget'))
+
     # elif current_user.role == '统计员':
     #     # 一般用户转转到首页..
     #     return redirect(url_for('main.tongjilist'))
@@ -844,10 +849,76 @@ def tongjilistc():
     return render_template(
         'tongjilistc.html')  # , form=form, dingdans=dingdans, status=status, users=users, dayB=dayB, dayE=dayE)
 
+#
+# @main.route('/anzhuanglist', methods=['GET', 'POST'])
+# @login_required
+# def anzhuanglist():
+#     if current_user.role != '安装队':
+#         return redirect(url_for('main.index'))
+#     #
+#     # form = FindkhForm()
+#     # # bujuan=None
+#     #
+#     # user = current_user._get_current_object()
+#     # if form.validate_on_submit():
+#     #     session['infostring'] = form.infostring.data
+#     #     session['status'] = form.status.data
+#     #     return redirect(url_for('main.kehulist'))
+#     #
+#     # # form.infosing.data = '％'
+#     # if session.get('infostring') != None:
+#     #     infostring = '%' + session.get('infostring') + '%'
+#     # else:
+#     #     infostring = '%'
+#     #
+#     # prewhere = session.get('infostring')
+#     #
+#     # status = session.get('status', 0)
+#     #
+#     # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
+#     #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
+#     #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+#     #
+#     # form.infostring.data = session.get('infostring', '')
+#     # form.status.data = status
+#     #
+#     # return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
+#
+#     dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == current_user._get_current_object()).order_by(
+#         Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
+#
+#     kehus = Kehu.query.all()
+#
+#     azdobj = current_user._get_current_object()
+#
+#     # form.infostring.data = session.get('infostring', '')
+#     # form.status.data = status
+#
+#     return render_template('anzhuanglist.html', dingdans=dingdans, kehus=kehus,
+#                            azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
 
-@main.route('/anzhuanglist', methods=['GET', 'POST'])
+
+@main.route('/azdwillget', methods=['GET', 'POST'])
 @login_required
-def anzhuanglist():
+def azdwillget():
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+
+    azdobj = current_user._get_current_object()
+
+    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == azdobj).order_by(
+        Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+
+    return render_template('azdwillget.html', dingdans=dingdans, kehus=kehus,
+                           azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+
+
+@main.route('/azddoing', methods=['GET', 'POST'])
+@login_required
+def azddoing():
     if current_user.role != '安装队':
         return redirect(url_for('main.index'))
     #
@@ -879,18 +950,124 @@ def anzhuanglist():
     #
     # return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
 
-    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == current_user._get_current_object()).order_by(
+    azdobj = current_user._get_current_object()
+
+    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == azdobj).order_by(
         Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
 
     kehus = Kehu.query.all()
 
-    azdobj = current_user._get_current_object()
+
 
     # form.infostring.data = session.get('infostring', '')
     # form.status.data = status
 
-    return render_template('anzhuanglist.html', dingdans=dingdans, kehus=kehus,
+    return render_template('azddoing.html', dingdans=dingdans, kehus=kehus,
                            azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+
+
+@main.route('/azdfinished', methods=['GET', 'POST'])
+@login_required
+def azdfinished():
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+    #
+    # form = FindkhForm()
+    # # bujuan=None
+    #
+    # user = current_user._get_current_object()
+    # if form.validate_on_submit():
+    #     session['infostring'] = form.infostring.data
+    #     session['status'] = form.status.data
+    #     return redirect(url_for('main.kehulist'))
+    #
+    # # form.infosing.data = '％'
+    # if session.get('infostring') != None:
+    #     infostring = '%' + session.get('infostring') + '%'
+    # else:
+    #     infostring = '%'
+    #
+    # prewhere = session.get('infostring')
+    #
+    # status = session.get('status', 0)
+    #
+    # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
+    #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
+    #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+    #
+    # form.infostring.data = session.get('infostring', '')
+    # form.status.data = status
+    #
+    # return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
+
+    azdobj = current_user._get_current_object()
+
+    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == azdobj).order_by(
+        Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+
+
+    # form.infostring.data = session.get('infostring', '')
+    # form.status.data = status
+
+    return render_template('azdfinished.html', dingdans=dingdans, kehus=kehus,
+                           azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+
+
+
+@main.route('/azdstoped', methods=['GET', 'POST'])
+@login_required
+def azdstoped ():
+    if current_user.role != '安装队':
+        return redirect(url_for('main.index'))
+    #
+    # form = FindkhForm()
+    # # bujuan=None
+    #
+    # user = current_user._get_current_object()
+    # if form.validate_on_submit():
+    #     session['infostring'] = form.infostring.data
+    #     session['status'] = form.status.data
+    #     return redirect(url_for('main.kehulist'))
+    #
+    # # form.infosing.data = '％'
+    # if session.get('infostring') != None:
+    #     infostring = '%' + session.get('infostring') + '%'
+    # else:
+    #     infostring = '%'
+    #
+    # prewhere = session.get('infostring')
+    #
+    # status = session.get('status', 0)
+    #
+    # kehus = Kehu.query.filter(Kehu.user == current_user._get_current_object()).filter(
+    #     or_(Kehu.fangjian.like(infostring), Kehu.chenghu.like(infostring),
+    #         Kehu.tel.like(infostring))).order_by(Kehu.id.desc())  # .order_by(Guke.outtime.desc())
+    #
+    # form.infostring.data = session.get('infostring', '')
+    # form.status.data = status
+    #
+    # return render_template('kehulist.html', kehus=kehus, form=form, prewhere=prewhere, status=status)  # ,
+
+    azdobj = current_user._get_current_object()
+
+    dingdans = Dingdan.query.filter(Dingdan.dingdan_azd == azdobj).order_by(
+        Dingdan.id.desc())  # .order_by(Guke.outtime.desc())
+
+    kehus = Kehu.query.all()
+
+
+
+    # form.infostring.data = session.get('infostring', '')
+    # form.status.data = status
+
+    return render_template('azdstoped.html', dingdans=dingdans, kehus=kehus,
+                           azdobj=azdobj)  # ,, form=form, prewhere=prewhere, status=status
+
+
+
 
 
 @main.route('/kefucxlist', methods=['GET', 'POST'])
@@ -3034,6 +3211,30 @@ def stoplc(ddid):
     return render_template('stoplc.html', form=form, dingdan=dingdan)
 
 
+
+@main.route('/accstop/<int:ddid>', methods=['GET', 'POST'])
+@login_required
+def accstop(ddid):
+    if current_user.role != '派工员':
+        return redirect(url_for('main.index'))
+
+
+    dingdan = Dingdan.query.get(ddid)
+    dingdan.status = -1
+    dingdan.time_1 = datetime.utcnow()
+    dingdan.user_1_id = current_user.id
+
+    dingdan.beizhue = dingdan.az_beizhue
+
+    # dingdan.duizhang = None
+
+    db.session.add(dingdan)
+    flash('已终止流程')
+
+    return redirect(url_for('main.paigonglist'))
+
+
+
 @main.route('/azstop/<int:ddid>', methods=['GET', 'POST'])
 @login_required
 def azstop(ddid):
@@ -3052,10 +3253,13 @@ def azstop(ddid):
 
         # dingdan.duizhang = None
 
+        # dingdan.status = -1
+        # dingdan.time_1 = datetime.utcnow()
+
         db.session.add(dingdan)
         flash('已终止安装')
 
-        return redirect(url_for('main.anzhuanglist'))
+        return redirect(url_for('main.azddoing'))
 
     dingdan = Dingdan.query.get(ddid)
 
@@ -3087,7 +3291,7 @@ def getrenwu(ddid):
     db.session.add(dingdan)
     flash('已确认接单')
 
-    return redirect(url_for('main.anzhuanglist'))
+    return redirect(url_for('main.azdwillget'))
 
 
 @main.route('/azjiedansel/<selids>', methods=['GET', 'POST'])
@@ -3114,7 +3318,7 @@ def azjiedansel(selids):
 
     flash('已确认接单')
 
-    return redirect(url_for('main.anzhuanglist'))
+    return redirect(url_for('main.azdwillget'))
 
 
 @main.route('/azwancheng/<int:ddid>', methods=['GET', 'POST'])

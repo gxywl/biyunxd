@@ -118,8 +118,11 @@
 
                                                 {% if dingdan.az_status == -1 %}
                                                     <span style="font-weight:bold;color:red;">申请停止[{{ dingdan.az_beizhue }}]</span>
-                                                     {{ moment(dingdan.az_time_1).format('YYYY.M.D') }}]
+                                                     {{ moment(dingdan.az_time_1).format('YYYY.M.D') }}
 
+                                             <a class="btn btn-danger  glyphicon glyphicon-stop"
+                                                   href="{{ url_for('main.accstop', ddid=dingdan.id) }}">
+                                                    同意终止</a>
 
                                                 {% endif %}
 

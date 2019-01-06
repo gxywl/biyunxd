@@ -74,9 +74,13 @@ def loginto(u,p):
             return redirect(url_for('main.tongjilist'))
 
 
+        # elif user.role == '安装队':
+        #     # 一般用户转转到首页..
+        #     return redirect(url_for('main.anzhuanglist'))
+
         elif user.role == '安装队':
             # 一般用户转转到首页..
-            return redirect(url_for('main.anzhuanglist'))
+            return redirect(url_for('main.azdwillget'))
 
         else:
             # 一般用户转转到首页..
@@ -137,9 +141,13 @@ def login():
                 return redirect(url_for('main.tongjilist'))
 
 
+            # elif user.role == '安装队':
+            #     # 一般用户转转到首页..
+            #     return redirect(url_for('main.anzhuanglist'))
+
             elif user.role == '安装队':
                 # 一般用户转转到首页..
-                return redirect(url_for('main.anzhuanglist'))
+                return redirect(url_for('main.azdwillget'))
 
             else:
             #一般用户转转到首页..

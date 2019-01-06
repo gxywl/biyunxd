@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %} 广东碧云量尺跟单系统 {% endblock %}
+
+{% block page_content %}
+
+    <h3>安装队--【安装中】</h3>
+
+
+    <div>
+        <a class="btn btn-success  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.azdwillget') }}">待接单 </a>
+    【安装中】
+        <a class="btn btn-primary  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.azdfinished') }}">已完成 </a>
+         <a class="btn btn-primary  glyphicon glyphicon-export"
+                                       href="{{ url_for('main.azdstoped') }}">已终止 </a>
+    </div>
+<hr>
+
+    {% for kehu in kehus %}
+
+        {{ set_var(0) }}
+        {% for dingdant in kehu.dingdans %}
+            {% if dingdant.dingdan_azd == azdobj and dingdant.status in [7] and dingdant.az_status==1 %}
+                {{ set_var(1) }}
+            {% endif %}
+        {% endfor %}
+
+        {% if get_var() == 1 %}
+
+            <div class="panel panel-default panel-danger">
+                <div class="panel-heading">
+                    <ul class="list-unstyled">
+                        <li>地址: {{ kehu.xiaoqu.dizhi }}</li>
+                        <li>小区: {{ kehu.xiaoqu.xiaoqu }}（{{ kehu.fangjian }}）</li>
+                        <li>客户: {{ kehu.chenghu }}（{{ kehu.tel }}）</li>
+                    </ul>
+
+                </div>
+                <div class="panel-body">
+
+                    <ol>
+                        {% for dingdan in kehu.dingdans %}
+                            {% if  dingdan.dingdan_azd == azdobj and dingdan.status  in [7,8,9]  and dingdan.az_status==1  %}
+                                <li>
+                                    {% if dingdan.status == 7 %}
+
+                                        <label class="checkbox-inline">
+
+                                                <input name="willsel" type="checkbox"
+                                                       value="{{ dingdan.id }}"/>
+
+                                        【<span style="font-weight:bold;background-color: beige ;color:red;">派工</span>( {{ moment(dingdan.time7).fromNow(refresh=True) }})】
+
+                                        {% if not dingdan.az_status %}
+{#                                                <a class="btn btn-success  glyphicon glyphicon-send"#}
+{#                                                   href="{{ url_for('main.getrenwu', ddid=dingdan.id) }}">#}
+{#                                                    接单</a>#}
+                                        {% endif %}
+
+                                        {% if dingdan.az_status == -1 %}
+                                            已请求中止( {{ moment(dingdan.az_time_1).fromNow(refresh=True) }})
+                                            [{{ dingdan.az_beizhue }}]
+                                                <a class="btn btn-success  glyphicon glyphicon-send"
+                                                   href="{{ url_for('main.getrenwu', ddid=dingdan.id) }}">
+                                                    继续</a>
+                                        {% endif %}
+
+                                        {% if dingdan.az_status == 1 %}
+                                            (已接单{{ moment(dingdan.az_time1).fromNow(refresh=True) }})
+                                                <a class="btn btn-danger  glyphicon glyphicon-send"
+                                                   href="{{ url_for('main.azstop', ddid=dingdan.id) }}">
+                                                    终止</a>
+
+{#                                                <a class="btn btn-primary  glyphicon glyphicon-send"#}
+{#                                                   href="{{ url_for('main.azwancheng', ddid=dingdan.id) }}">#}
+{#                                                    完成</a>#}
+                                        {% endif %}
+
+                                        </label>
+
+                                        {% if dingdan.az_status == 3 %}
+                                            已请求完成( {{ moment(dingdan.az_time3).fromNow(refresh=True) }})
+                                        {% endif %}
+                                    {% elif dingdan.status == 8 or dingdan.status == 9 %}
+                                        「<span style="font-weight:bold;color:blue;">已完成</span>」
+                                        ( {{ moment(dingdan.time8).fromNow(refresh=True) }})
+                                    {% else %}
+                                        {#                                        {{ dingdan.status }}#}
+                                    {% endif %}
+                                    {{ dingdan.chanpin.pinming }}/{{ dingdan.weizhi }}
+                                    <button type="button" class="btn btn-primary glyphicon glyphicon-th-list"
+                                            data-toggle="collapse" data-target="#c{{ dingdan.id }}">
+                                        详细
+                                    </button>
+                                    <div id="c{{ dingdan.id }}"  class="collapse off">
+                                        {{ macors.render_listcpvar(dingdan) }}
+                                    </div>
+                                </li>
+                            {% endif %}
+
+                        {% endfor %}
+                    </ol>
+
+                </div>
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+
+
+  <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="form-group">
+                    <div class="input-group col-xs-12">
+{#                        <div class="input-group-btn">#}
+{#                            <button id="azjiedansel" class="btn btn-success  glyphicon glyphicon-send"> 接单</button>#}
+{#                        </div>#}
+                        <div class="input-group-btn">
+                            <button id="azwangongsel" class="btn btn-primary glyphicon glyphicon-gift"> 完工</button>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+  </div>
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+
+
+        $("#azjiedansel").click(function () {
+
+            var selids = ''
+            $.each($('input[name="willsel"]:checkbox:checked'), function () {
+                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+
+                selids = selids + $(this).val() + ','
+            });
+
+
+
+                $.ajax({
+                    type: "get",
+                    {#url : "{{ url_for('main.doselshouhuo',selids) }}",#}
+                    {#data : "",#}
+
+                    {#url : "doselshouhuo",#}
+                    {#data : "selids=" + selids,#}
+
+                    url: "azjiedansel/" + selids ,
+                    {#data : "selids=" + selids,                #}
+                    async: true,
+                    success: function (data) {
+                        //sdata = eval("(" + data + ")");
+                        //aDataSet = data;
+                        //alert(data);
+                        //opener.location.reload()
+                        window.location.reload()
+
+                    }
+                });
+
+
+        });
+
+
+
+        $("#azwangongsel").click(function () {
+
+            var selids = ''
+            $.each($('input[name="willsel"]:checkbox:checked'), function () {
+                //window.alert("你选了："+$('input[type=checkbox]:checked').length+"个，其中有："+$(this).val());
+
+                selids = selids + $(this).val() + ','
+            });
+
+
+
+                $.ajax({
+                    type: "get",
+                    {#url : "{{ url_for('main.doselshouhuo',selids) }}",#}
+                    {#data : "",#}
+
+                    {#url : "doselshouhuo",#}
+                    {#data : "selids=" + selids,#}
+
+                    url: "azwangongsel/" + selids ,
+                    {#data : "selids=" + selids,                #}
+                    async: true,
+                    success: function (data) {
+                        //sdata = eval("(" + data + ")");
+                        //aDataSet = data;
+                        //alert(data);
+                        //opener.location.reload()
+                        window.location.reload()
+
+                    }
+                });
+
+
+        });
+    </script>
+
+{% endblock %}
