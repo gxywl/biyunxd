@@ -3375,7 +3375,7 @@ def azwangongsel(selids):
 
     flash('已申请完成')
 
-    return redirect(url_for('main.anzhuanglist'))
+    return redirect(url_for('main.azddoing'))
 
 
 @main.route('/wanchengone/<int:ddid>', methods=['GET', 'POST'])
